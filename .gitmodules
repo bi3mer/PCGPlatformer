@@ -1,0 +1,3 @@
+[submodule "Assets/Plugins/UnityAITools"]
+	path = Assets/Plugins/UnityAITools
+	url = https://github.com/bi3mer/UnityAITools.git
