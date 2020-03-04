@@ -93,7 +93,7 @@ public static class TileExtensions
             case Tile.crate:
                 return "Crate";
             case Tile.playerOneStart:
-                return "Blocks_8";
+                return "Blocks_7";
             case Tile.playerOneFinish:
                 return "Blocks_8";
             case Tile.basicEnemy:

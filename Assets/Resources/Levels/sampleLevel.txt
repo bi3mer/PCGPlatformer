@@ -9,5 +9,5 @@ b       $              $ $                        bbb                      b
 b      $ $            $ c $                                                b
 b                    $ ccc $                   bb                         fb
 b      bbb          $ ccccc $                                              b
-b f  bbbbbb          ccccccc                                               b
+b s  bbbbbb          ccccccc                                               b
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  bbbbbbbbbbbbbb            bbbbbbbbbbbbbbbb
