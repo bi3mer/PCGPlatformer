@@ -1,17 +1,13 @@
-                                                                             
-                                                                             
-                                                                             
-                                                                             
-b                                                                          b 
-b                                                            $             b 
-b                                                             $            b 
-b                                                              $           b 
-b                                                        bb                b 
-b                                                     bb                   b 
-b                       $                                                  b 
-b       $              $ $                        bbb                      b 
-b      $ $            $ c $                                                b 
-b                    $ ccc $                   bb                         fb 
-b      bbb          $ ccccc $                                              b 
-b s  bbbbbb          ccccccc                                               b 
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  bbbbbbbbbbbbbb            bbbbbbbbbbbbbbbb 
+b                                                                          b
+b                                                            $             b
+b                                                             $            b
+b                                                              $           b
+b                                                        bb                b
+b                                                     bb                   b
+b                       $                                                  b
+b       $              $ $                        bbb                      b
+b      $ $            $ c $                                                b
+b                    $ ccc $                   bb                         fb
+b      bbb          $ ccccc $                                              b
+b f  bbbbbb          ccccccc                                               b
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  bbbbbbbbbbbbbb            bbbbbbbbbbbbbbbb
