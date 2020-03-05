@@ -57,6 +57,7 @@ public static class LevelLoader
                     if (tile == Tile.playerOneStart)
                     {
                         follow.target = go.transform;
+                        go.GetComponent<Player>().LowestY = CalculateLowestY(tilemap, h);
                     }
                     else if(tile.IsEnemyTile())
                     {
@@ -125,5 +126,10 @@ public static class LevelLoader
         }
 
         return map;
+    }
+
+    private static float CalculateLowestY(Tilemap tilemap, int h)
+    {
+        return tilemap.CellToWorld(new Vector3Int(0, 0, 0)).y;
     }
 }

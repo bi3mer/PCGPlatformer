@@ -25,6 +25,11 @@ namespace CustomInspector
             {
                 levelBuilder.Load();
             }
+
+            if (GUILayout.Button("Clear"))
+            {
+                levelBuilder.Clear();
+            }
         }
     }
 }

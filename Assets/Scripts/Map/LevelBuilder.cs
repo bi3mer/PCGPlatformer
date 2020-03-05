@@ -56,6 +56,12 @@ public class LevelBuilder : MonoBehaviour
         LevelLoader.LoadAndBuildEditorOnly(levelName, tilemap);
     }
 
+    public void Clear()
+    {
+        CheckValues();
+        tilemap.ClearAllTiles();
+    }
+
     private string GenerateMap()
     {
         // load in the map from the tile map

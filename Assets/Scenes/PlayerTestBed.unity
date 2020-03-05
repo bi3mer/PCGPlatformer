@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c15afb585554a74fad1023c56534934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: sampleLevel
+  levelName: level002
   cameraFollow: {fileID: 1594975869}
 --- !u!483693784 &945701288
 TilemapRenderer:
@@ -473,7 +473,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
