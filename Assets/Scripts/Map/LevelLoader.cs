@@ -30,16 +30,16 @@ public static class LevelLoader
                         tilemap.SetTile(pos, tiles[y][x].GetTile());
                         break;
                     case Tile.playerOneFinish:
-                        go = Resources.Load<GameObject>($"Prefabs/EndGoal");
+                        go = Resources.Load<GameObject>("Prefabs/EndGoal");
                         break;
                     case Tile.playerOneStart:
-                        go = Resources.Load<GameObject>($"Prefabs/Character");
+                        go = Resources.Load<GameObject>("Prefabs/Character");
                         break;
                     case Tile.basicEnemy:
-                        Debug.LogWarning("Enemy not in game.");
+                        go = Resources.Load<GameObject>("Prefabs/BasicEnemy");
                         break;
                     case Tile.coin:
-                        go = Resources.Load<GameObject>($"Prefabs/Coin");
+                        go = Resources.Load<GameObject>("Prefabs/Coin");
                         break;
                     default:
                         Debug.LogWarning($"{tile} not found.");
@@ -54,6 +54,10 @@ public static class LevelLoader
                     if (tile == Tile.playerOneStart)
                     {
                         follow.target = go.transform;
+                    }
+                    else if(tile == Tile.basicEnemy)
+                    {
+                        go.GetComponent<BaseBehavior>().Map = tilemap;
                     }
                 }
             }

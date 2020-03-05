@@ -31,6 +31,8 @@ public static class TileExtensions
                 return Tile.playerOneFinish;
             case "Gems_1":
                 return Tile.coin;
+            case "basic_enemy":
+                return Tile.basicEnemy;
             default:
                 throw new Exception($"{tileName} not found");
         }
@@ -97,8 +99,7 @@ public static class TileExtensions
             case Tile.playerOneFinish:
                 return "Blocks_8";
             case Tile.basicEnemy:
-                Debug.LogWarning("basic enemy not implemented.");
-                return "";
+                return "basic_enemy";
             case Tile.coin:
                 return "Gems_1";
             default:
