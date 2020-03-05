@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets._2D;
 
 public class StompBehavior : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class StompBehavior : MonoBehaviour
     {
         if (collision.tag.Equals(Tags.Player))
         {
+            collision.GetComponent<PlatformerCharacter2D>().Jump(true);
+
             Destroy(gameObject);
         }
     }
