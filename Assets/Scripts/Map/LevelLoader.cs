@@ -15,9 +15,40 @@ public static class LevelLoader
         {
             for (int x = 0; x < tiles[y].Count; ++x)
             {
-                // origin is at the top so we subtract height from y to get 
-                // the level correctly oriented
-                tilemap.SetTile(new Vector3Int(x, h - y, 0), tiles[y][x].GetTile());
+                Vector3Int pos = new Vector3Int(x, h - y, 0);
+                Tile tile = tiles[y][x];
+                GameObject go = null;
+
+
+                switch (tile)
+                {
+                    case Tile.empty:
+                    case Tile.block:
+                    case Tile.crate:
+                        tilemap.SetTile(pos, tiles[y][x].GetTile());
+                        break;
+                    case Tile.playerOneFinish:
+                        go = Resources.Load<GameObject>($"Prefabs/EndGoal");
+                        break;
+                    case Tile.playerOneStart:
+                        Debug.LogWarning("Have not yet implemented this part.");
+                        break;
+                    case Tile.basicEnemy:
+                        Debug.LogWarning("Enemy not in game.");
+                        break;
+                    case Tile.coin:
+                        go = Resources.Load<GameObject>($"Prefabs/Coin");
+                        break;
+                    default:
+                        Debug.LogWarning($"{tile} not found.");
+                        break;
+                }
+
+                if (go != null)
+                {
+                    go = Object.Instantiate(go);
+                    go.transform.position = tilemap.GetCellCenterWorld(pos);
+                }
             }
         }
     }

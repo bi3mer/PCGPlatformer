@@ -6,7 +6,8 @@ public class EndLevel : MonoBehaviour
     {
         if (collision.tag.Equals("Player"))
         {
-            Debug.Log("The game is theoretically over!");
+            collision.gameObject.SetActive(false);
+            MessagePanel.Instance.Active = true;
         }
     }
 }
