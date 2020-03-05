@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 9086794614487900023}
   - component: {fileID: 530556685486009077}
   - component: {fileID: 530556685486009073}
-  - component: {fileID: 1257801182276938078}
+  - component: {fileID: 3956472285931800675}
   m_Layer: 0
-  m_Name: BasicEnemy
+  m_Name: AcceleratingEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3083089168873209362, guid: 3970d29b02637e64d8d26bf517356906,
+  m_Sprite: {fileID: -4031619653288768660, guid: 3970d29b02637e64d8d26bf517356906,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -105,7 +105,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.75, y: 1}
+    oldSize: {x: 0.75, y: 1.1}
     newSize: {x: 0.75, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -131,7 +131,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.75, y: 1}
+    oldSize: {x: 0.75, y: 1.1}
     newSize: {x: 0.75, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -148,7 +148,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 530556685486009071}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
---- !u!114 &1257801182276938078
+--- !u!114 &3956472285931800675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 530556685486009071}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93cfcb0c14ae2fb449cd2d51bf3e87ee, type: 3}
+  m_Script: {fileID: 11500000, guid: f89ae5a7325e2de4da7595aa460d9bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1

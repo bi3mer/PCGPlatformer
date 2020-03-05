@@ -708,5 +708,25 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7241335908526807806, guid: 2863893f811e4ac4d89d75512eeacdd0,
+        type: 3}
+      propertyPath: m_text
+      value: That's all there is right now. Next time there'll be turrets!
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241335908526807806, guid: 2863893f811e4ac4d89d75512eeacdd0,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 61
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241335908526807806, guid: 2863893f811e4ac4d89d75512eeacdd0,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241335908526807806, guid: 2863893f811e4ac4d89d75512eeacdd0,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2863893f811e4ac4d89d75512eeacdd0, type: 3}

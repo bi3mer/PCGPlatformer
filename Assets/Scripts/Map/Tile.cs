@@ -10,6 +10,7 @@ public enum Tile
     playerOneStart,
     playerOneFinish,
     basicEnemy,
+    acceleratingEnemy,
     coin
 }
 
@@ -33,6 +34,8 @@ public static class TileExtensions
                 return Tile.coin;
             case "basic_enemy":
                 return Tile.basicEnemy;
+            case "accelerating_enemy":
+                return Tile.acceleratingEnemy;
             default:
                 throw new Exception($"{tileName} not found");
         }
@@ -54,6 +57,8 @@ public static class TileExtensions
                 return 'f';
             case Tile.basicEnemy:
                 return 'B';
+            case Tile.acceleratingEnemy:
+                return 'A';
             case Tile.coin:
                 return '$';
             default:
@@ -77,6 +82,8 @@ public static class TileExtensions
                 return Tile.playerOneFinish;
             case 'B':
                 return Tile.basicEnemy;
+            case 'A':
+                return Tile.acceleratingEnemy;
             case '$':
                 return Tile.coin;
             default:
@@ -100,6 +107,8 @@ public static class TileExtensions
                 return "Blocks_8";
             case Tile.basicEnemy:
                 return "basic_enemy";
+            case Tile.acceleratingEnemy:
+                return "accelerating_enemy";
             case Tile.coin:
                 return "Gems_1";
             default:
@@ -114,6 +123,7 @@ public static class TileExtensions
         {
             case Tile.empty:
                 return null;
+            case Tile.acceleratingEnemy:
             case Tile.playerOneFinish:
             case Tile.playerOneStart:
             case Tile.basicEnemy:
@@ -125,5 +135,10 @@ public static class TileExtensions
                 Debug.LogWarning($"{tile} not found.");
                 return null;
         }
+    }
+
+    public static bool IsEnemyTile(this Tile tile)
+    {
+        return tile == Tile.basicEnemy || tile == Tile.acceleratingEnemy;
     }
 }

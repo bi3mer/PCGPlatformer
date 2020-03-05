@@ -41,6 +41,9 @@ public static class LevelLoader
                     case Tile.coin:
                         go = Resources.Load<GameObject>("Prefabs/Coin");
                         break;
+                    case Tile.acceleratingEnemy:
+                        go = Resources.Load<GameObject>("Prefabs/AcceleratingEnemy");
+                        break;
                     default:
                         Debug.LogWarning($"{tile} not found.");
                         break;
@@ -55,7 +58,7 @@ public static class LevelLoader
                     {
                         follow.target = go.transform;
                     }
-                    else if(tile == Tile.basicEnemy)
+                    else if(tile.IsEnemyTile())
                     {
                         go.GetComponent<BaseBehavior>().Map = tilemap;
                     }

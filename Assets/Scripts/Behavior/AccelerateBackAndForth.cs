@@ -54,5 +54,6 @@ public class AccelerateBackAndForth : BaseBehavior
     private void Collided()
     {
         direction *= -1;
+        rb.velocity = Vector2.zero;
     }
 }
