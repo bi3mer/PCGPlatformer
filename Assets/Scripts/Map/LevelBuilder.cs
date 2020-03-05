@@ -53,7 +53,7 @@ public class LevelBuilder : MonoBehaviour
     public void Load()
     {
         CheckValues();
-        LevelLoader.LoadAndBuild(levelName, tilemap);
+        LevelLoader.LoadAndBuildEditorOnly(levelName, tilemap);
     }
 
     private string GenerateMap()
