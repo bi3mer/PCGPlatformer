@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(LowestY);
         if (transform.position.y < LowestY)
         {
             Debug.LogWarning("Nothing else is done with death at the moment.");

@@ -13,7 +13,6 @@ public static class LevelLoader
     {
         tilemap.ClearAllTiles();
         JsonArray matrix = Load(levelName);
-        int h = matrix.Count;
 
         foreach (JsonArray row in matrix)
         {
@@ -29,8 +28,7 @@ public static class LevelLoader
                     case Tile.empty:
                     case Tile.block:
                     case Tile.crate:
-                        TileBase tilePrefab = tile.GetPrefab();
-                        tilemap.SetTile(pos, tilePrefab);
+                        tilemap.SetTile(pos, tile.GetPrefab());
                         break;
                     case Tile.playerOneFinish:
                         go = Resources.Load<GameObject>("Prefabs/EndGoal");
@@ -61,7 +59,7 @@ public static class LevelLoader
                     if (tile == Tile.playerOneStart)
                     {
                         follow.target = go.transform;
-                        go.GetComponent<Player>().LowestY = CalculateLowestY(tilemap, h);
+                        go.GetComponent<Player>().LowestY = CalculateLowestY(tilemap);
                     }
                     else if (tile.IsEnemyTile())
                     {
@@ -138,8 +136,8 @@ public static class LevelLoader
     //    return map;
     //}
 
-    private static float CalculateLowestY(Tilemap tilemap, int h)
+    private static float CalculateLowestY(Tilemap tilemap)
     {
-        return tilemap.CellToWorld(new Vector3Int(0, 0, 0)).y;
+        return tilemap.CellToWorld(new Vector3Int(0, tilemap.cellBounds.yMin, 0)).y;
     }
 }
