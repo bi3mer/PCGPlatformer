@@ -107,7 +107,7 @@ public class LevelBuilder : MonoBehaviour
             map.Add(row);
         }
 
-        return map.ToString(true);
+        return map.ToString();
     }
 
     private void RemoveRows(List<List<char>> map)
