@@ -16,7 +16,7 @@ public enum Tile
 
 public static class TileExtensions
 {
-    public static Tile NameToFile(string tileName)
+    public static Tile NameToTile(this string tileName)
     {
         switch (tileName)
         {
@@ -41,53 +41,54 @@ public static class TileExtensions
         }
     }
 
-    public static char ToChar(this Tile tile)
+    public static string ToMapString(this Tile tile)
     {
         switch (tile)
         {
             case Tile.empty:
-                return ' ';
+                return " ";
             case Tile.block:
-                return 'b';
+                return "b";
             case Tile.crate:
-                return 'c';
+                return "c";
             case Tile.playerOneStart:
-                return 's';
+                return "s";
             case Tile.playerOneFinish:
-                return 'f';
+                return "f";
             case Tile.basicEnemy:
-                return 'B';
+                return "B";
             case Tile.acceleratingEnemy:
-                return 'A';
+                return "A";
             case Tile.coin:
-                return '$';
+                return "$";
             default:
                 throw new Exception($"{tile} does not have valid to character entry");
         }
     }
 
-    public static Tile CharToTile(this char character)
+    public static Tile ToTile(this string id)
     {
-        switch (character)
+        switch (id)
         {
-            case ' ':
+            case " ":
+            case "":
                 return Tile.empty;
-            case 'b':
+            case "b":
                 return Tile.block;
-            case 'c':
+            case "c":
                 return Tile.crate;
-            case 's':
+            case "s":
                 return Tile.playerOneStart;
-            case 'f':
+            case "f":
                 return Tile.playerOneFinish;
-            case 'B':
+            case "B":
                 return Tile.basicEnemy;
-            case 'A':
+            case "A":
                 return Tile.acceleratingEnemy;
-            case '$':
+            case "$":
                 return Tile.coin;
             default:
-                throw new Exception($"{character} does not have valid to character entry");
+                throw new Exception($"|{id}| does not have valid to character entry");
         }
     }
 
@@ -117,7 +118,7 @@ public static class TileExtensions
         }
     }
 
-    public static TileBase GetTile(this Tile tile)
+    public static TileBase GetPrefab(this Tile tile)
     {
         switch (tile)
         {

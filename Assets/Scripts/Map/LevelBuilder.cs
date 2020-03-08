@@ -72,53 +72,42 @@ public class LevelBuilder : MonoBehaviour
         int yMin = tilemap.cellBounds.yMin;
         int yMax = tilemap.cellBounds.yMax;
 
-        List<List<char>> map = new List<List<char>>();
-        List<Vector3Int> specialTiles = new List<Vector3Int>();
+        JsonArray map = new JsonArray();
 
         for (int y = yMax; y >= yMin; --y)
         {
-            List<char> row = new List<char>();
+            JsonArray row = new JsonArray();
             for (int x = xMin; x < xMax; ++x)
             {
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
                 TileBase tile = tilemap.GetTile(tilePosition);
+                string name;
                 if (tile == null)
                 {
-                    row.Add(' ');
+                    name = "";
                 }
                 else
                 {
-                    Tile t = TileExtensions.NameToFile(tile.name);
-                    if (t.IsEnemyTile())
-                    {
-                        specialTiles.Add(tilePosition);
-                    }
-
-                    row.Add(t.ToChar());
+                    name = tile.name;
                 }
+                
+                Tile t = name.NameToTile();
+                Vector3Int position = new Vector3Int(x, y, 0);
+                Vector3 rotation = tilemap.GetTransformMatrix(position).rotation.eulerAngles;
+                rotation = new Vector3(rotation.x, rotation.y, 0);
+
+                row.Add(new JsonObject
+                {
+                    { MapSerializationKeys.Tile, t.ToMapString() },
+                    { MapSerializationKeys.Position, position.ToJsonObject() },
+                    { MapSerializationKeys.Rotation, rotation.ToJsonObject() }
+                });
             }
 
             map.Add(row);
         }
 
-        JsonArray tileData = new JsonArray();
-        foreach (Vector3Int pos in specialTiles)
-        {
-            Quaternion rotation = tilemap.GetTransformMatrix(pos).rotation;
-            tileData.Add(new JsonObject
-            {
-                { MapSerializationKeys.TileDataKeys.Position, pos.ToJsonObject() },
-                { MapSerializationKeys.TileDataKeys.Rotation, rotation.ToJsonObject() }
-            });
-        }
-
-        JsonObject data = new JsonObject
-        {
-            { MapSerializationKeys.Map, MapToString(map) },
-            { MapSerializationKeys.TileData, tileData }
-        };
-
-        return data.ToString(true);
+        return map.ToString(true);
     }
 
     private void RemoveRows(List<List<char>> map)
@@ -182,20 +171,21 @@ public class LevelBuilder : MonoBehaviour
         }
     }
 
-    private string MapToString(List<List<char>> map)
+    private JsonArray MapToJSONMatrix(List<List<string>> map)
     {
-        string str = "";
+        JsonArray matrix = new JsonArray();
         for (int y = 0; y < map.Count; ++y)
         {
+            JsonArray row = new JsonArray();
             for (int x = 0; x < map[y].Count; ++x)
             {
-                str += map[y][x];
+                row.Add(map[y][x]);
             }
 
-            str += '\n';
+            matrix.Add(row);
         }
 
-        return str;
+        return matrix;
     }
 }
 

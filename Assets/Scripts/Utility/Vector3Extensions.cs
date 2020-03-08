@@ -2,7 +2,7 @@
 using UnityEngine;
 using LightJson;
 
-public static class Vector3IntExtensions
+public static class Vector3Extensions
 {
     public static class Keys
     {
@@ -11,7 +11,7 @@ public static class Vector3IntExtensions
         public const string Z = "z";
     }
 
-    public static JsonObject ToJsonObject(this Vector3Int vec)
+    public static JsonObject ToJsonObject(this Vector3 vec)
     {
         return new JsonObject
         {
@@ -21,13 +21,13 @@ public static class Vector3IntExtensions
         };
     }
 
-    public static Vector3Int ToVector3Int(this JsonObject obj)
+    public static Vector3 ToVector3(this JsonObject obj)
     {
         Assert.IsTrue(obj.ContainsKey(Keys.X));
         Assert.IsTrue(obj.ContainsKey(Keys.Y));
         Assert.IsTrue(obj.ContainsKey(Keys.Z));
 
-        return new Vector3Int(
+        return new Vector3(
             obj[Keys.X].AsInteger,
             obj[Keys.Y].AsInteger,
             obj[Keys.Z].AsInteger);
