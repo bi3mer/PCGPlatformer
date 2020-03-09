@@ -8,9 +8,13 @@ public class AccelerateBackAndForth : BaseBehavior
     [SerializeField]
     private float speed = 1f;
 
-    private int direction = 1;
     private Vector3 velocity;
     private Rigidbody2D rb;
+
+    private int Direction
+    {
+        get { return (int)transform.forward.z; }
+    }
 
     private void Awake()
     {
@@ -30,11 +34,11 @@ public class AccelerateBackAndForth : BaseBehavior
     private void FixedUpdate()
     {
         Vector3Int cellPos = Map.WorldToCell(transform.position);
-        Vector3Int nextPos = new Vector3Int(cellPos.x + direction, cellPos.y, cellPos.z);
+        Vector3Int nextPos = new Vector3Int(cellPos.x + Direction, cellPos.y, cellPos.z);
 
         if (Map.GetTile(nextPos) != null)
         {
-            direction *= -1;
+            Flip();
             rb.velocity = Vector2.zero;
         }
         else
@@ -43,17 +47,17 @@ public class AccelerateBackAndForth : BaseBehavior
 
             if (Map.GetTile(belowNextPos) == null)
             {
-                direction *= -1;
+                Flip();
                 rb.velocity = Vector2.zero;
             }
         }
 
-        rb.velocity += new Vector2(direction * Time.fixedDeltaTime, 0);
+        rb.velocity += new Vector2(speed * Direction * Time.fixedDeltaTime, 0);
     }
 
     private void Collided()
     {
-        direction *= -1;
+        Flip();
         rb.velocity = Vector2.zero;
     }
 }

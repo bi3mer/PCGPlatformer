@@ -8,4 +8,9 @@ public abstract class BaseBehavior : MonoBehaviour
         protected get;
         set;
     }
+
+    protected void Flip()
+    {
+        transform.Rotate(new Vector3(0, 180, 0));
+    }
 }

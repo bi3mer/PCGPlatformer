@@ -8,9 +8,13 @@ public class MoveBackAndForth : BaseBehavior
     [SerializeField]
     private float speed = 1f;
 
-    private int direction = 1;
     private Vector3 velocity;
     private Rigidbody2D rb;
+
+    private int Direction
+    {
+        get { return (int)transform.forward.z; }
+    }
 
     private void Awake()
     {
@@ -19,8 +23,8 @@ public class MoveBackAndForth : BaseBehavior
         AttackPlayer attackPlayer = GetComponent<AttackPlayer>();
         Assert.IsNotNull(attackPlayer);
 
-        attackPlayer.AddHitEnemyCallback(Collided);
-        attackPlayer.AddHitPlayerCallback(Collided);
+        attackPlayer.AddHitEnemyCallback(Flip);
+        attackPlayer.AddHitPlayerCallback(Flip);
 
         rb = GetComponent<Rigidbody2D>();
         Assert.IsNotNull(rb);
@@ -29,11 +33,12 @@ public class MoveBackAndForth : BaseBehavior
     private void FixedUpdate()
     {
         Vector3Int cellPos = Map.WorldToCell(transform.position);
-        Vector3Int nextPos = new Vector3Int(cellPos.x + direction, cellPos.y, cellPos.z);
+        Vector3Int nextPos = new Vector3Int(cellPos.x + Direction, cellPos.y, cellPos.z);
+        Debug.Log(Direction);
 
         if (Map.GetTile(nextPos) != null)
         {
-            direction *= -1;
+            Flip();
         }
         else
         {
@@ -41,16 +46,11 @@ public class MoveBackAndForth : BaseBehavior
 
             if (Map.GetTile(belowNextPos) == null)
             {
-                direction *= -1;
+                Flip();
             }
         }
 
-        Vector3 vec = new Vector3(speed * direction * Time.fixedDeltaTime, 0, 0);
+        Vector3 vec = new Vector3(speed * Direction * Time.fixedDeltaTime, 0, 0);
         transform.position += vec;
-    }
-
-    private void Collided()
-    {
-        direction *= -1;
     }
 }

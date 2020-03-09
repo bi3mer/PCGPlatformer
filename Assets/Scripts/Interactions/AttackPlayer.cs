@@ -29,7 +29,6 @@ public class AttackPlayer : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.tag);
         if (collision.gameObject.tag.Equals(Tags.Player))
         {
             Debug.LogWarning("Cannot damage player yet!");
