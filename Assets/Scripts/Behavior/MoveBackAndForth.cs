@@ -34,7 +34,6 @@ public class MoveBackAndForth : BaseBehavior
     {
         Vector3Int cellPos = Map.WorldToCell(transform.position);
         Vector3Int nextPos = new Vector3Int(cellPos.x + Direction, cellPos.y, cellPos.z);
-        Debug.Log(Direction);
 
         if (Map.GetTile(nextPos) != null)
         {

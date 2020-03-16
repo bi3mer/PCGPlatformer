@@ -45,6 +45,9 @@ public static class LevelLoader
                     case Tile.acceleratingEnemy:
                         go = Resources.Load<GameObject>("Prefabs/AcceleratingEnemy");
                         break;
+                    case Tile.missileLauncher:
+                        go = Resources.Load<GameObject>("Prefabs/MissileLauncher");
+                        break;
                     default:
                         Debug.LogWarning($"{tile} not found.");
                         break;
@@ -116,25 +119,6 @@ public static class LevelLoader
 
         return JsonValue.Parse(text.text).AsJsonArray;
     }
-
-    //private static List<List<Tile>> BuildMap(string[] content)
-    //{
-    //    List<List<Tile>> map = new List<List<Tile>>();
-    //    for (int y = 0; y < content.Length; ++y)
-    //    {
-    //        char[] charRow = content[y].ToCharArray();
-    //        List<Tile> row = new List<Tile>();
-
-    //        for (int x = 0; x < charRow.Length; ++x)
-    //        {
-    //            row.Add(charRow[x].CharToTile());
-    //        }
-
-    //        map.Add(row);
-    //    }
-
-    //    return map;
-    //}
 
     private static float CalculateLowestY(Tilemap tilemap)
     {

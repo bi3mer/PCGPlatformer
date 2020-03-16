@@ -11,6 +11,7 @@ public enum Tile
     playerOneFinish,
     basicEnemy,
     acceleratingEnemy,
+    missileLauncher,
     coin
 }
 
@@ -36,6 +37,8 @@ public static class TileExtensions
                 return Tile.basicEnemy;
             case "accelerating_enemy":
                 return Tile.acceleratingEnemy;
+            case "missile_launcher":
+                return Tile.missileLauncher;
             default:
                 throw new Exception($"{tileName} not found");
         }
@@ -61,6 +64,8 @@ public static class TileExtensions
                 return "A";
             case Tile.coin:
                 return "$";
+            case Tile.missileLauncher:
+                return "M";
             default:
                 throw new Exception($"{tile} does not have valid to character entry");
         }
@@ -87,6 +92,8 @@ public static class TileExtensions
                 return Tile.acceleratingEnemy;
             case "$":
                 return Tile.coin;
+            case "M":
+                return Tile.missileLauncher;
             default:
                 throw new Exception($"|{id}| does not have valid to character entry");
         }
@@ -112,6 +119,8 @@ public static class TileExtensions
                 return "accelerating_enemy";
             case Tile.coin:
                 return "Gems_1";
+            case Tile.missileLauncher:
+                return "missile_launcher";
             default:
                 Debug.LogWarning($"{tile} has no corresponding name.");
                 return "";
@@ -125,6 +134,7 @@ public static class TileExtensions
             case Tile.empty:
                 return null;
             case Tile.acceleratingEnemy:
+            case Tile.missileLauncher:
             case Tile.playerOneFinish:
             case Tile.playerOneStart:
             case Tile.basicEnemy:

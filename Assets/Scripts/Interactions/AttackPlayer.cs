@@ -7,6 +7,9 @@ public class AttackPlayer : MonoBehaviour
     [SerializeField]
     private int damage = 1;
 
+    [SerializeField]
+    private bool onTriggerDamage = false;
+
     private Action hitPlayer;
     private Action hitEnemy;
 
@@ -29,14 +32,30 @@ public class AttackPlayer : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals(Tags.Player))
+        if (onTriggerDamage == false)
+        {
+            RunHit(collision.gameObject.tag);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (onTriggerDamage)
+        {
+            RunHit(collision.tag);
+        }
+    }
+
+    private void RunHit(string tag)
+    {
+        if (tag.Equals(Tags.Player))
         {
             Debug.LogWarning("Cannot damage player yet!");
-            hitPlayer();
+            hitPlayer?.Invoke();
         }
-        else if (collision.gameObject.tag.Equals(Tags.Enemy))
+        else if (tag.Equals(Tags.Enemy))
         {
-            hitEnemy();
+            hitEnemy?.Invoke();
         }
     }
 }
