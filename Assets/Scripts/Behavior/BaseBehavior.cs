@@ -1,4 +1,5 @@
-﻿using UnityEngine.Tilemaps;
+﻿using UnityEngine.Assertions;
+using UnityEngine.Tilemaps;
 using UnityEngine;
 
 public abstract class BaseBehavior : MonoBehaviour
@@ -12,5 +13,10 @@ public abstract class BaseBehavior : MonoBehaviour
     protected void Flip()
     {
         transform.Rotate(new Vector3(0, 180, 0));
+    }
+
+    public void Start()
+    {
+        Assert.IsNotNull(Map);
     }
 }

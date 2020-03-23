@@ -175,9 +175,26 @@ public static class TileExtensions
         }
     }
 
-    public static bool IsEnemyTile(this Tile tile)
+    public static bool NeedsMap(this Tile tile)
     {
-        return tile == Tile.basicEnemy || tile == Tile.acceleratingEnemy;
+        switch (tile)
+        {
+            case Tile.acceleratingEnemyReverse:
+            case Tile.basicEnemyReverse:
+            case Tile.acceleratingEnemy:
+            case Tile.basicEnemy:
+                return true;
+            case Tile.missileLauncherReverse:
+            case Tile.playerOneFinish:
+            case Tile.missileLauncher:
+            case Tile.playerOneStart:
+            case Tile.empty:
+            case Tile.crate:
+            case Tile.block:
+            case Tile.coin:
+            default:
+                return false;
+        }
     }
 
     public static Tile GetReverse(this Tile tile)

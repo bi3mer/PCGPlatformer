@@ -16,9 +16,6 @@ public class FireMissile : MonoBehaviour
 
         // sprite is facing backwards so this is the only way.
         forward = transform.forward * -1;
-        Debug.Log(forward);
-        Debug.Log(transform.rotation);
-        Debug.Log(transform.localScale);
 
         InvokeRepeating("Fire", 0.05f, fireRate);
     }

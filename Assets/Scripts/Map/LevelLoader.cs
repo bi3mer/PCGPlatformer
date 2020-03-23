@@ -11,13 +11,14 @@ public static class LevelLoader
         tilemap.ClearAllTiles();
         JsonArray matrix = Load(levelName);
 
+        int y = matrix.Count;
         foreach (JsonArray row in matrix)
         {
-            foreach (JsonObject tileData in row)
+            int x = 0;
+            foreach (string tileString in row)
             {
-                Tile tile = tileData[MapSerializationKeys.Tile].AsString.ToTile();
-                Vector3Int pos = tileData[MapSerializationKeys.Position].AsJsonObject.ToVector3Int();
-                Vector3 rotation = tileData[MapSerializationKeys.Rotation].AsJsonObject.ToVector3();
+                Tile tile = tileString.ToTile();
+                Vector3Int pos = new Vector3Int(x, y, 0);
                 GameObject go = null;
 
                 switch (tile)
@@ -33,15 +34,18 @@ public static class LevelLoader
                     case Tile.playerOneStart:
                         go = Resources.Load<GameObject>("Prefabs/Character");
                         break;
+                    case Tile.basicEnemyReverse:
                     case Tile.basicEnemy:
                         go = Resources.Load<GameObject>("Prefabs/BasicEnemy");
                         break;
                     case Tile.coin:
                         go = Resources.Load<GameObject>("Prefabs/Coin");
                         break;
+                    case Tile.acceleratingEnemyReverse:
                     case Tile.acceleratingEnemy:
                         go = Resources.Load<GameObject>("Prefabs/AcceleratingEnemy");
                         break;
+                    case Tile.missileLauncherReverse:
                     case Tile.missileLauncher:
                         go = Resources.Load<GameObject>("Prefabs/MissileLauncher");
                         break;
@@ -54,19 +58,27 @@ public static class LevelLoader
                 {
                     go = Object.Instantiate(go);
                     go.transform.position = tilemap.GetCellCenterWorld(pos);
-                    go.transform.eulerAngles = rotation;
+
+                    if (tile.IsReverseTile())
+                    {
+                        go.transform.eulerAngles = new Vector3(0, 180, 0);
+                    }
 
                     if (tile == Tile.playerOneStart)
                     {
                         follow.target = go.transform;
                         go.GetComponent<Player>().LowestY = CalculateLowestY(tilemap);
                     }
-                    else if (tile.IsEnemyTile())
+                    else if (tile.NeedsMap())
                     {
                         go.GetComponent<BaseBehavior>().Map = tilemap;
                     }
                 }
+
+                ++x;
             }
+
+            --y;
         }
     }
 
@@ -102,10 +114,10 @@ public static class LevelLoader
                     tilemap.SetTransformMatrix(pos, mat);
                 }
 
-                x += 1;
+                ++x;
             }
 
-            y -= 1;
+            --y;
         }
     }
 #endif
