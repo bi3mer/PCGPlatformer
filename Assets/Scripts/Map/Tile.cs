@@ -10,8 +10,11 @@ public enum Tile
     playerOneStart,
     playerOneFinish,
     basicEnemy,
+    basicEnemyReverse,
     acceleratingEnemy,
+    acceleratingEnemyReverse,
     missileLauncher,
+    missileLauncherReverse,
     coin
 }
 
@@ -35,10 +38,16 @@ public static class TileExtensions
                 return Tile.coin;
             case "basic_enemy":
                 return Tile.basicEnemy;
+            case "basic_enemey_reverse":
+                return Tile.basicEnemyReverse;
             case "accelerating_enemy":
                 return Tile.acceleratingEnemy;
+            case "accelerating_enemy_reverse":
+                return Tile.acceleratingEnemyReverse;
             case "missile_launcher":
                 return Tile.missileLauncher;
+            case "missile_launcher_reverse":
+                return Tile.missileLauncherReverse;
             default:
                 throw new Exception($"{tileName} not found");
         }
@@ -60,12 +69,18 @@ public static class TileExtensions
                 return "f";
             case Tile.basicEnemy:
                 return "B";
+            case Tile.basicEnemyReverse:
+                return "𐐒";
             case Tile.acceleratingEnemy:
                 return "A";
+            case Tile.acceleratingEnemyReverse:
+                return "∀";
             case Tile.coin:
                 return "$";
             case Tile.missileLauncher:
                 return "M";
+            case Tile.missileLauncherReverse:
+                return "W";
             default:
                 throw new Exception($"{tile} does not have valid to character entry");
         }
@@ -88,12 +103,18 @@ public static class TileExtensions
                 return Tile.playerOneFinish;
             case "B":
                 return Tile.basicEnemy;
+            case "𐐒":
+                return Tile.basicEnemyReverse;
             case "A":
                 return Tile.acceleratingEnemy;
+            case "∀":
+                return Tile.acceleratingEnemyReverse;
             case "$":
                 return Tile.coin;
             case "M":
                 return Tile.missileLauncher;
+            case "W":
+                return Tile.missileLauncherReverse;
             default:
                 throw new Exception($"|{id}| does not have valid to character entry");
         }
@@ -113,12 +134,15 @@ public static class TileExtensions
                 return "Blocks_7";
             case Tile.playerOneFinish:
                 return "Blocks_8";
+            case Tile.basicEnemyReverse:
             case Tile.basicEnemy:
                 return "basic_enemy";
+            case Tile.acceleratingEnemyReverse:
             case Tile.acceleratingEnemy:
                 return "accelerating_enemy";
             case Tile.coin:
                 return "Gems_1";
+            case Tile.missileLauncherReverse:
             case Tile.missileLauncher:
                 return "missile_launcher";
             default:
@@ -133,6 +157,9 @@ public static class TileExtensions
         {
             case Tile.empty:
                 return null;
+            case Tile.acceleratingEnemyReverse:
+            case Tile.missileLauncherReverse:
+            case Tile.basicEnemyReverse:
             case Tile.acceleratingEnemy:
             case Tile.missileLauncher:
             case Tile.playerOneFinish:
@@ -151,5 +178,31 @@ public static class TileExtensions
     public static bool IsEnemyTile(this Tile tile)
     {
         return tile == Tile.basicEnemy || tile == Tile.acceleratingEnemy;
+    }
+
+    public static Tile GetReverse(this Tile tile)
+    {
+        switch (tile)
+        {
+            case Tile.acceleratingEnemy:
+                return Tile.acceleratingEnemyReverse;
+            case Tile.missileLauncher:
+                return Tile.missileLauncherReverse;
+            case Tile.basicEnemy:
+                return Tile.basicEnemyReverse;
+            case Tile.empty:
+            case Tile.block:
+            case Tile.crate:
+            case Tile.playerOneStart:
+            case Tile.playerOneFinish:
+            case Tile.coin:
+                return tile;
+            case Tile.acceleratingEnemyReverse:
+            case Tile.missileLauncherReverse:
+            case Tile.basicEnemyReverse:
+            default:
+                Debug.LogError($"{tile} not found in Tile.GetReverse");
+                return Tile.empty;
+        }
     }
 }

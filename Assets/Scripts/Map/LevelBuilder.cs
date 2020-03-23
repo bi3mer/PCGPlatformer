@@ -94,14 +94,13 @@ public class LevelBuilder : MonoBehaviour
                 Tile t = name.NameToTile();
                 Vector3Int position = new Vector3Int(x, y, 0);
                 Vector3 rotation = tilemap.GetTransformMatrix(position).rotation.eulerAngles;
-                rotation = new Vector3(rotation.x, rotation.y, 0);
 
-                row.Add(new JsonObject
+                if (rotation.Equals(Vector3.zero) == false)
                 {
-                    { MapSerializationKeys.Tile, t.ToMapString() },
-                    { MapSerializationKeys.Position, position.ToJsonObject() },
-                    { MapSerializationKeys.Rotation, rotation.ToJsonObject() }
-                });
+                    t = t.GetReverse();
+                }
+
+                row.Add(t.ToMapString());
             }
 
             map.Add(row);

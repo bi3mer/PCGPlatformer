@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-
-using UnityEngine.Assertions;
-using UnityEngine.Tilemaps;
+﻿using UnityEngine.Tilemaps;
 using UnityEngine;
 
 using UnityStandardAssets._2D;
