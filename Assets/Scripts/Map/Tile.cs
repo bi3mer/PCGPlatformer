@@ -205,4 +205,26 @@ public static class TileExtensions
                 return Tile.empty;
         }
     }
+
+    public static bool IsReverseTile(this Tile tile)
+    {
+        switch (tile)
+        {
+            case Tile.acceleratingEnemyReverse:
+            case Tile.missileLauncherReverse:
+            case Tile.basicEnemyReverse:
+                return true;
+            case Tile.empty:
+            case Tile.block:
+            case Tile.crate:
+            case Tile.playerOneStart:
+            case Tile.playerOneFinish:
+            case Tile.basicEnemy:
+            case Tile.acceleratingEnemy:
+            case Tile.missileLauncher:
+            case Tile.coin:
+            default:
+                return false;
+        }
+    }
 }

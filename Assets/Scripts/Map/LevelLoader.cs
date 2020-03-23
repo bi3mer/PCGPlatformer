@@ -83,23 +83,29 @@ public static class LevelLoader
         tilemap.ClearAllTiles();
         JsonArray matrix = Load(levelName);
 
+        int y = matrix.Count;
         foreach (JsonArray row in matrix)
         {
-            foreach (JsonObject tileData in row)
+            int x = 0;
+            foreach (string tile in row)
             {
-                // origin is at the top so we subtract height from y to get 
-                // the level correctly oriented
-                Tile tile = tileData[MapSerializationKeys.Tile].AsString.ToTile();
-                Vector3Int pos = tileData[MapSerializationKeys.Position].AsJsonObject.ToVector3Int();
-                Vector3 rotation = tileData[MapSerializationKeys.Rotation].AsJsonObject.ToVector3();
+                Tile t = tile.ToTile();
 
-                TileBase tilePrefab = tile.GetPrefab();
-                Quaternion rot = Quaternion.Euler(rotation);
-                Matrix4x4 mat = Matrix4x4.TRS(Vector3.zero, rot, Vector3.one);
-
+                TileBase tilePrefab = t.GetPrefab();
+                Vector3Int pos = new Vector3Int(x, y, 0);
                 tilemap.SetTile(pos, tilePrefab);
-                tilemap.SetTransformMatrix(pos, mat);
+
+                if (t.IsReverseTile())
+                {
+                    Quaternion rot = Quaternion.Euler(new Vector3(0, 180, 0));
+                    Matrix4x4 mat = Matrix4x4.TRS(Vector3.zero, rot, Vector3.one);
+                    tilemap.SetTransformMatrix(pos, mat);
+                }
+
+                x += 1;
             }
+
+            y -= 1;
         }
     }
 #endif
