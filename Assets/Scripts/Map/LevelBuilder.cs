@@ -106,19 +106,21 @@ public class LevelBuilder : MonoBehaviour
             map.Add(row);
         }
 
+        RemoveRows(map);
         return map.ToString();
     }
 
-    private void RemoveRows(List<List<char>> map)
+    private void RemoveRows(JsonArray map)
     {
         // remove all empty rows starting from 0
         int rowsToRemove = 0;
         for (int y = 0; y < map.Count; ++y)
         {
+            JsonArray row = map[y].AsJsonArray;
             bool removeRow = true;
-            for (int x = 0; x < map[y].Count; ++x)
+            for (int x = 0; x < row.Count; ++x)
             {
-                if (map[y][x] != ' ')
+                if (row[x] != " ")
                 {
                     removeRow = false;
                     break;
@@ -137,17 +139,18 @@ public class LevelBuilder : MonoBehaviour
 
         for (int i = 0; i < rowsToRemove; ++i)
         {
-            map.RemoveAt(0);
+            map.Remove(0);
         }
 
         // remove all empty rows starting length - 1
         rowsToRemove = 0;
         for (int y = map.Count - 1; y >= 0; --y)
         {
+            JsonArray row = map[y].AsJsonArray;
             bool removeRow = true;
-            for (int x = 0; x < map[y].Count; ++x)
+            for (int x = 0; x < row.Count; ++x)
             {
-                if (map[y][x] != ' ')
+                if (row[x] != " ")
                 {
                     removeRow = false;
                     break;
@@ -163,28 +166,11 @@ public class LevelBuilder : MonoBehaviour
                 break;
             }
         }
-
+        
         for (int i = 0; i < rowsToRemove; ++i)
         {
-            map.RemoveAt(map.Count - 1);
+            map.Remove(map.Count - 1);
         }
-    }
-
-    private JsonArray MapToJSONMatrix(List<List<string>> map)
-    {
-        JsonArray matrix = new JsonArray();
-        for (int y = 0; y < map.Count; ++y)
-        {
-            JsonArray row = new JsonArray();
-            for (int x = 0; x < map[y].Count; ++x)
-            {
-                row.Add(map[y][x]);
-            }
-
-            matrix.Add(row);
-        }
-
-        return matrix;
     }
 }
 
