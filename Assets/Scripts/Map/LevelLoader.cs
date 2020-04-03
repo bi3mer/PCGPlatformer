@@ -1,4 +1,5 @@
-﻿using UnityEngine.Tilemaps;
+﻿using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 using UnityEngine;
 
 using UnityStandardAssets._2D;
@@ -6,6 +7,24 @@ using LightJson;
 
 public static class LevelLoader
 {
+    public static void Build(List<List<string>> tiles, Tilemap tilemap, Camera2DFollow follow)
+    {
+        tilemap.ClearAllTiles();
+        
+        int x = 0;
+        foreach (List<string> row in tiles)
+        {
+            int y = row.Count;
+            foreach (string tile in row)
+            {
+                BuildTile(tile, x, y, tilemap, follow);
+                --y;
+            }
+
+            ++x;
+        }
+    }
+
     public static void LoadAndBuild(string levelName, Tilemap tilemap, Camera2DFollow follow)
     {
         tilemap.ClearAllTiles();
@@ -17,68 +36,72 @@ public static class LevelLoader
             int x = 0;
             foreach (string tileString in row)
             {
-                Tile tile = tileString.ToTile();
-                Vector3Int pos = new Vector3Int(x, y, 0);
-                GameObject go = null;
-
-                switch (tile)
-                {
-                    case Tile.empty:
-                    case Tile.block:
-                    case Tile.crate:
-                        tilemap.SetTile(pos, tile.GetPrefab());
-                        break;
-                    case Tile.playerOneFinish:
-                        go = Resources.Load<GameObject>("Prefabs/EndGoal");
-                        break;
-                    case Tile.playerOneStart:
-                        go = Resources.Load<GameObject>("Prefabs/Character");
-                        break;
-                    case Tile.basicEnemyReverse:
-                    case Tile.basicEnemy:
-                        go = Resources.Load<GameObject>("Prefabs/BasicEnemy");
-                        break;
-                    case Tile.coin:
-                        go = Resources.Load<GameObject>("Prefabs/Coin");
-                        break;
-                    case Tile.acceleratingEnemyReverse:
-                    case Tile.acceleratingEnemy:
-                        go = Resources.Load<GameObject>("Prefabs/AcceleratingEnemy");
-                        break;
-                    case Tile.missileLauncherReverse:
-                    case Tile.missileLauncher:
-                        go = Resources.Load<GameObject>("Prefabs/MissileLauncher");
-                        break;
-                    default:
-                        Debug.LogWarning($"{tile} not found.");
-                        break;
-                }
-
-                if (go != null)
-                {
-                    go = Object.Instantiate(go);
-                    go.transform.position = tilemap.GetCellCenterWorld(pos);
-
-                    if (tile.IsReverseTile())
-                    {
-                        go.transform.eulerAngles = new Vector3(0, 180, 0);
-                    }
-
-                    if (tile == Tile.playerOneStart)
-                    {
-                        follow.target = go.transform;
-                        go.GetComponent<Player>().LowestY = CalculateLowestY(tilemap);
-                    }
-                    else if (tile.NeedsMap())
-                    {
-                        go.GetComponent<BaseBehavior>().Map = tilemap;
-                    }
-                }
-
+                BuildTile(tileString, x, y, tilemap, follow);
                 ++x;
             }
 
             --y;
+        }
+    }
+
+    private static void BuildTile(string tileString, int x, int y, Tilemap tilemap, Camera2DFollow follow)
+    {
+        Tile tile = tileString.ToTile();
+        Vector3Int pos = new Vector3Int(x, y, 0);
+        GameObject go = null;
+
+        switch (tile)
+        {
+            case Tile.empty:
+            case Tile.block:
+            case Tile.crate:
+                tilemap.SetTile(pos, tile.GetPrefab());
+                break;
+            case Tile.playerOneFinish:
+                go = Resources.Load<GameObject>("Prefabs/EndGoal");
+                break;
+            case Tile.playerOneStart:
+                go = Resources.Load<GameObject>("Prefabs/Character");
+                break;
+            case Tile.basicEnemyReverse:
+            case Tile.basicEnemy:
+                go = Resources.Load<GameObject>("Prefabs/BasicEnemy");
+                break;
+            case Tile.coin:
+                go = Resources.Load<GameObject>("Prefabs/Coin");
+                break;
+            case Tile.acceleratingEnemyReverse:
+            case Tile.acceleratingEnemy:
+                go = Resources.Load<GameObject>("Prefabs/AcceleratingEnemy");
+                break;
+            case Tile.missileLauncherReverse:
+            case Tile.missileLauncher:
+                go = Resources.Load<GameObject>("Prefabs/MissileLauncher");
+                break;
+            default:
+                Debug.LogWarning($"{tile} not found.");
+                break;
+        }
+
+        if (go != null)
+        {
+            go = Object.Instantiate(go);
+            go.transform.position = tilemap.GetCellCenterWorld(pos);
+
+            if (tile.IsReverseTile())
+            {
+                go.transform.eulerAngles = new Vector3(0, 180, 0);
+            }
+
+            if (tile == Tile.playerOneStart)
+            {
+                follow.target = go.transform;
+                go.GetComponent<Player>().LowestY = CalculateLowestY(tilemap);
+            }
+            else if (tile.NeedsMap())
+            {
+                go.GetComponent<BaseBehavior>().Map = tilemap;
+            }
         }
     }
 

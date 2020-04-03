@@ -68,13 +68,13 @@ public static class TileExtensions
             case Tile.playerOneFinish:
                 return "f";
             case Tile.basicEnemy:
-                return "B";
-            case Tile.basicEnemyReverse:
-                return "𐐒";
-            case Tile.acceleratingEnemy:
                 return "A";
+            case Tile.basicEnemyReverse:
+                return "B";
+            case Tile.acceleratingEnemy:
+                return "C";
             case Tile.acceleratingEnemyReverse:
-                return "∀";
+                return "";
             case Tile.coin:
                 return "$";
             case Tile.missileLauncher:
@@ -101,13 +101,13 @@ public static class TileExtensions
                 return Tile.playerOneStart;
             case "f":
                 return Tile.playerOneFinish;
-            case "B":
-                return Tile.basicEnemy;
-            case "𐐒":
-                return Tile.basicEnemyReverse;
             case "A":
+                return Tile.basicEnemy;
+            case "B":
+                return Tile.basicEnemyReverse;
+            case "C":
                 return Tile.acceleratingEnemy;
-            case "∀":
+            case "D":
                 return Tile.acceleratingEnemyReverse;
             case "$":
                 return Tile.coin;
@@ -116,7 +116,8 @@ public static class TileExtensions
             case "W":
                 return Tile.missileLauncherReverse;
             default:
-                throw new Exception($"|{id}| does not have valid to character entry");
+                Debug.Log($"|{id}| does not have valid to character entry");
+                return Tile.empty;
         }
     }
 

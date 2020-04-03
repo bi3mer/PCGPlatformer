@@ -56,6 +56,9 @@ public class GameManager : MonoBehaviour
     private void ConstructStateMachine()
     {
         BlackBoard blackBoard = new BlackBoard();
+        blackBoard.CameraFollow = cameraFollow;
+        blackBoard.Grid = grid;
+
         sm = new StateMachine<GameBool, GameTrigger>();
 
         PostGameSurveyState postGameSurveyState = new PostGameSurveyState(blackBoard);

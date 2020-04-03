@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Tools.AI.NGram.Utility;
 using Tools.AI.NGram;
 using UnityEngine;
+using PCG;
 
 public class PlayState : BaseState
 {
@@ -14,25 +16,42 @@ public class PlayState : BaseState
 
     protected override void OnStateEnter()
     {
-        PCG.LevelParser lp = new PCG.LevelParser();
-        List<string> levelTokens = lp.GetLevelTokens("level001"); // @TODO: change me
+        NGramIDContainer idContainer = new NGramIDContainer(idSize: 5);
+        List<string> columns = LevelParser.BreakMapIntoColumns("level001"); // @todo: remove hardcoded string
+        List<string> levelTokens = idContainer.GetIDs(columns);
 
         int size = 3;
         IGram gram = NGramFactory.InitializeGrammar(size);
         NGramTrainer.Train(gram, levelTokens);
         ICompiledGram cGram = gram.Compile();
-        List<string> level = NGramGenerator.Generate(
+        List<string> levelIDs = NGramGenerator.Generate(
             cGram, 
             levelTokens.GetRange(0, size + 1), 
             10, 
             20);
 
+        List<List<string>> level = new List<List<string>>();
+        foreach (string columnID in levelIDs)
+        {
+            List<string> column = new List<string>();
+            string col = idContainer.GetToken(columnID);
 
-        //blackBoard.CameraFollow.gameObject.SetActive(true);
+            foreach (char tileCharacter in col)
+            {
+                column.Add(tileCharacter.ToString());
+            }
+
+            level.Add(column);
+        }
+
+        blackBoard.Grid.SetActive(true);
+        LevelLoader.Build(level, playLevelData.Tilemap, blackBoard.CameraFollow);
+        blackBoard.CameraFollow.enabled = true;
     }
 
     protected override void OnStateExit()
     {
-        blackBoard.CameraFollow.gameObject.SetActive(false);
+        blackBoard.CameraFollow.enabled = false;
+        blackBoard.Grid.SetActive(false);
     }
 }
