@@ -593,8 +593,8 @@ GameObject:
   - component: {fileID: 918302433}
   - component: {fileID: 918302437}
   - component: {fileID: 918302436}
-  - component: {fileID: 918302435}
   - component: {fileID: 918302434}
+  - component: {fileID: 918302435}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -641,11 +641,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 918302432}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c15afb585554a74fad1023c56534934, type: 3}
+  m_Script: {fileID: 11500000, guid: 3de208c5b8979714ea1698fef83fa887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: level001
-  cameraFollow: {fileID: 1973733849}
 --- !u!483693784 &918302436
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -992,7 +990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &1361456133
 Grid:
   m_ObjectHideFlags: 0
@@ -1274,7 +1272,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b2e3dce1ed173545897453f9cab3801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 1361456132}
+  cameraFollow: {fileID: 1973733849}
   menuData: {fileID: 638345323}
+  playLevelData: {fileID: 918302435}
 --- !u!4 &2113973473
 Transform:
   m_ObjectHideFlags: 0

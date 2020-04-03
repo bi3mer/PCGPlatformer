@@ -8,6 +8,9 @@ public static class LevelLoader
 {
     public static void LoadAndBuild(string levelName, Tilemap tilemap, Camera2DFollow follow)
     {
+        PCG.LevelParser lp = new PCG.LevelParser();
+        lp.ParseLevel(levelName);
+
         tilemap.ClearAllTiles();
         JsonArray matrix = Load(levelName);
 

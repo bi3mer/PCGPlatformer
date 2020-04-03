@@ -1,15 +1,16 @@
 ﻿public class PlayState : BaseState
 {
     protected override string DefaultName => "Game State";
+    private PlayLevelData playLevelData = null;
 
-    public PlayState(BlackBoard blackBoard) : base(blackBoard)
-    { 
-    
+    public PlayState(BlackBoard blackBoard, PlayLevelData playLevelData) : base(blackBoard)
+    {
+        this.playLevelData = playLevelData;
     }
 
     protected override void OnStateEnter()
     {
-        throw new System.NotImplementedException();
+        blackBoard.CameraFollow.gameObject.SetActive(true);
     }
 
     protected override void OnStateExit()
