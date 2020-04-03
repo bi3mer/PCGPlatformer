@@ -1,0 +1,6 @@
+[submodule "Assets/Plugins/Tools"]
+	path = Assets/Plugins/Tools
+	url = https://github.com/bi3mer/Tools.git
+[submodule "Assets/Plugins/UnityWeb"]
+	path = Assets/Plugins/UnityWeb
+	url = https://github.com/bi3mer/UnityWeb.git
