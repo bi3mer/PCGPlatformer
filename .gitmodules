@@ -1,9 +1,0 @@
-[submodule "Assets/Plugins/UnityAITools"]
-	path = Assets/Plugins/UnityAITools
-	url = https://github.com/bi3mer/UnityAITools.git
-[submodule "Assets/Plugins/UnityWeb"]
-	path = Assets/Plugins/UnityWeb
-	url = https://github.com/bi3mer/UnityWeb.git
-[submodule "Assets/Plugins/UnityUtility"]
-	path = Assets/Plugins/UnityUtility
-	url = https://github.com/bi3mer/UnityUtility.git

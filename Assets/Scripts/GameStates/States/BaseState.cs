@@ -1,4 +1,4 @@
-﻿using AITools.StateMachine;
+﻿using Tools.AI.StateMachine;
 
 public abstract class BaseState : CoordinatingState<GameBool, GameTrigger>
 {

@@ -2,7 +2,7 @@
 using UnityEngine;
 using TMPro;
 
-using UnityUtility.Mono;
+using Tools.Mono;
 
 public class MessagePanel : Singleton<MessagePanel>
 {

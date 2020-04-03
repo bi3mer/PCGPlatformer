@@ -2,7 +2,7 @@
 using UnityEngine;
 
 using UnityStandardAssets._2D;
-using AITools.StateMachine;
+using Tools.AI.StateMachine;
 
 public enum GameTrigger
 { 
