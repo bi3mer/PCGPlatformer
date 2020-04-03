@@ -1,16 +1,23 @@
-﻿using UnityEngine.Tilemaps;
+﻿using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 using UnityEngine;
 
 using UnityStandardAssets._2D;
 using LightJson;
+
+using AITools.NGram;
 
 public static class LevelLoader
 {
     public static void LoadAndBuild(string levelName, Tilemap tilemap, Camera2DFollow follow)
     {
         PCG.LevelParser lp = new PCG.LevelParser();
-        lp.ParseLevel(levelName);
+        List<string> tokens = lp.GetLevelTokens(levelName);
 
+        IGram gram = NGramFactory.InitializeGrammar(3);
+        NGramTrainer.Train(gram, tokens);
+        
+        
         tilemap.ClearAllTiles();
         JsonArray matrix = Load(levelName);
 

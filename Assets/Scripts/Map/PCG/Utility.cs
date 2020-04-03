@@ -9,10 +9,9 @@ namespace PCG
         {
             TextAsset text = Resources.Load<TextAsset>($"Levels/{levelName}");
 
-            StringIDGeneratorStringIDGenerator        if (text == null)
+            if (text == null)
             {
-                Debug.LogWarning($"Level {leve  
-                    lName} was not found and cannot be loaded.");
+                Debug.LogWarning($"Level {levelName} was not found and cannot be loaded.");
                 return null;
             }   
 

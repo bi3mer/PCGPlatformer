@@ -2,6 +2,8 @@
 using UnityEngine;
 using TMPro;
 
+using UnityUtility.Mono;
+
 public class MessagePanel : Singleton<MessagePanel>
 {
     [SerializeField]

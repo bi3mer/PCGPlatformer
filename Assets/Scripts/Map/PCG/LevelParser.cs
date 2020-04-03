@@ -73,8 +73,8 @@ namespace PCG
                 }
                 else
                 {
-                    string id = idGenerator.Current;
                     idGenerator.MoveNext();
+                    string id = idGenerator.Current;
 
                     columnToId.Add(column, id);
                     idToColumn.Add(id, column);
