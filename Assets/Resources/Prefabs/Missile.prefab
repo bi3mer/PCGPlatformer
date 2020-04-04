@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7532327806180358739}
   - component: {fileID: 1094217235617745009}
   - component: {fileID: 2242296949476602165}
-  - component: {fileID: 9196082941061266010}
+  - component: {fileID: 1438841232776914862}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Untagged
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   onTriggerDamage: 1
---- !u!114 &9196082941061266010
+--- !u!114 &1438841232776914862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,7 +155,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8519595082650905271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f058679045660334cb7024cf9eaa2da1, type: 3}
+  m_Script: {fileID: 11500000, guid: c67c31a66fe07584595654d9cd544615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 8
+  lifeTime: 15
