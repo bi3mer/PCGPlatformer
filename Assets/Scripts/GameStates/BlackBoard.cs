@@ -12,6 +12,8 @@ public class BlackBoard : MonoBehaviour
     public Tilemap Tilemap = null;
     public int Level = 0;
 
+    public LevelInfo LevelInfo = null;
+
     private void Awake()
     {
         Assert.IsNotNull(StartGameButton);

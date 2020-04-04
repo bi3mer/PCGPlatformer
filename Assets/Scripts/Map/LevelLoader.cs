@@ -7,8 +7,9 @@ using LightJson;
 
 public static class LevelLoader
 {
-    public static void Build(List<List<string>> tiles, Tilemap tilemap, Camera2DFollow follow)
+    public static LevelInfo Build(List<List<string>> tiles, Tilemap tilemap, Camera2DFollow follow)
     {
+        LevelInfo li = new LevelInfo();
         tilemap.ClearAllTiles();
         
         int x = 0;
@@ -17,16 +18,19 @@ public static class LevelLoader
             int y = row.Count;
             foreach (string tile in row)
             {
-                BuildTile(tile, x, y, tilemap, follow);
+                BuildTile(tile, x, y, tilemap, follow, li);
                 --y;
             }
 
             ++x;
         }
+
+        return li;
     }
 
-    public static void LoadAndBuild(string levelName, Tilemap tilemap, Camera2DFollow follow)
+    public static LevelInfo LoadAndBuild(string levelName, Tilemap tilemap, Camera2DFollow follow)
     {
+        LevelInfo li = new LevelInfo();
         tilemap.ClearAllTiles();
         JsonArray matrix = Load(levelName);
 
@@ -36,15 +40,17 @@ public static class LevelLoader
             int x = 0;
             foreach (string tileString in row)
             {
-                BuildTile(tileString, x, y, tilemap, follow);
+                BuildTile(tileString, x, y, tilemap, follow, li);
                 ++x;
             }
 
             --y;
         }
+
+        return li;
     }
 
-    private static void BuildTile(string tileString, int x, int y, Tilemap tilemap, Camera2DFollow follow)
+    private static void BuildTile(string tileString, int x, int y, Tilemap tilemap, Camera2DFollow follow, LevelInfo li)
     {
         Tile tile = tileString.ToTile();
         Vector3Int pos = new Vector3Int(x, y, 0);
@@ -96,11 +102,25 @@ public static class LevelLoader
             if (tile == Tile.playerOneStart)
             {
                 follow.target = go.transform;
-                go.GetComponent<Player>().LowestY = CalculateLowestY(tilemap);
+                li.Player = go.GetComponent<Player>();
+                li.Player.LowestY = CalculateLowestY(tilemap);
             }
             else if (tile.NeedsMap())
             {
                 go.GetComponent<BaseBehavior>().Map = tilemap;
+                li.Enemies.Add(go);
+            }
+            else if (tile == Tile.playerOneFinish)
+            {
+                li.EndLevelTiles.Add(go.GetComponent<EndLevel>());
+            }
+            else if (tile == Tile.missileLauncher || tile == Tile.missileLauncherReverse)
+            {
+                li.Turrets.Add(go);
+            }
+            else if (tile == Tile.coin)
+            {
+                li.Coins.Add(go.GetComponent<CollectCoin>());
             }
         }
     }

@@ -14,8 +14,27 @@ public class GenerateLevelState : BaseState
 
     protected override void OnStateEnter()
     {
-        NGramIDContainer idContainer = new NGramIDContainer(idSize: 5);
-        List<string> columns = LevelParser.BreakMapIntoColumns("level001"); // @todo: remove hardcoded string
+        GenerateLevel();
+        SetUpEndLevelTiles();
+        SetUpPlayer();
+
+        ActivateTrigger(GameTrigger.NextState);
+    }
+
+    protected override void OnStateExit()
+    {
+
+    }
+
+    private void GenerateLevel()
+    {
+        UnityEngine.Debug.LogWarning("using hardcoded level string");
+        UnityEngine.Debug.LogWarning("using hardocded min size");
+        UnityEngine.Debug.LogWarning("using hardocded max size");
+        UnityEngine.Debug.LogWarning("using hardocded n");
+
+        NGramIDContainer idContainer = new NGramIDContainer(idSize: 2);
+        List<string> columns = LevelParser.BreakMapIntoColumns("level001");
         List<string> levelTokens = idContainer.GetIDs(columns);
 
         int size = 3;
@@ -43,13 +62,27 @@ public class GenerateLevelState : BaseState
         }
 
         blackBoard.Grid.SetActive(true);
-        LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
-
-        ActivateTrigger(GameTrigger.NextState);
+        blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
     }
 
-    protected override void OnStateExit()
+    private void SetUpPlayer()
     {
+        blackBoard.LevelInfo.Player.PlayerDiedCallback = () =>
+        {
+            SetBool(GameBool.PlayerDied, true);
+            ActivateTrigger(GameTrigger.NextState);
+        };
+    }
 
+    private void SetUpEndLevelTiles()
+    {
+        foreach (EndLevel el in blackBoard.LevelInfo.EndLevelTiles)
+        {
+            el.PlayerWonCallback = () =>
+            {
+                SetBool(GameBool.PlayerDied, false);
+                ActivateTrigger(GameTrigger.NextState);
+            };
+        }
     }
 }

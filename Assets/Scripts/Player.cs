@@ -1,5 +1,6 @@
 ﻿using UnityEngine.Assertions;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -8,6 +9,8 @@ public class Player : MonoBehaviour
     private Vector3 restartPosition;
 
     private Rigidbody2D rb = null;
+
+    public Action PlayerDiedCallback = null;
 
     private void Awake()
     {
@@ -24,9 +27,15 @@ public class Player : MonoBehaviour
     {
         if (transform.position.y < LowestY)
         {
-            Debug.LogWarning("Nothing else is done with death at the moment.");
-            rb.velocity = Vector2.zero;
-            transform.position = restartPosition;
+            if (PlayerDiedCallback == null)
+            {
+                rb.velocity = Vector2.zero;
+                transform.position = restartPosition;
+            }
+            else
+            {
+                PlayerDiedCallback.Invoke();
+            }
         }
     }
 }

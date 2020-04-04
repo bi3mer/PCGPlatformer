@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 public class PlayState : BaseState
 {
     protected override string DefaultName => "Game State";
@@ -13,6 +14,6 @@ public class PlayState : BaseState
     protected override void OnStateExit()
     {
         blackBoard.CameraFollow.enabled = false;
-        blackBoard.Grid.SetActive(false);
+        blackBoard.LevelInfo.DestroyGameObjects();
     }
 }
