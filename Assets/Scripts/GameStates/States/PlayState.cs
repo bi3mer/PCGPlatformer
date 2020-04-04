@@ -27,8 +27,8 @@ public class PlayState : BaseState
         List<string> levelIDs = NGramGenerator.Generate(
             cGram, 
             levelTokens.GetRange(0, size + 1), 
-            10, 
-            20);
+            50, 
+            100);
 
         List<List<string>> level = new List<List<string>>();
         foreach (string columnID in levelIDs)
