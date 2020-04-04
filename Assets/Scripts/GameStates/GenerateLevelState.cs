@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
 using Tools.AI.NGram.Utility;
 using Tools.AI.NGram;
-using UnityEngine;
 using PCG;
 
-public class PlayState : BaseState
+public class GenerateLevelState : BaseState
 {
-    protected override string DefaultName => "Game State";
-    private PlayLevelData playLevelData = null;
+    protected override string DefaultName => "Generate Level State";
 
-    public PlayState(BlackBoard blackBoard, PlayLevelData playLevelData) : base(blackBoard)
+    public GenerateLevelState(BlackBoard blackBoard) : base(blackBoard)
     {
-        this.playLevelData = playLevelData;
+
     }
 
     protected override void OnStateEnter()
@@ -25,9 +23,9 @@ public class PlayState : BaseState
         NGramTrainer.Train(gram, levelTokens);
         ICompiledGram cGram = gram.Compile();
         List<string> levelIDs = NGramGenerator.Generate(
-            cGram, 
-            levelTokens.GetRange(0, size + 1), 
-            50, 
+            cGram,
+            levelTokens.GetRange(0, size + 1),
+            50,
             100);
 
         List<List<string>> level = new List<List<string>>();
@@ -45,13 +43,13 @@ public class PlayState : BaseState
         }
 
         blackBoard.Grid.SetActive(true);
-        LevelLoader.Build(level, playLevelData.Tilemap, blackBoard.CameraFollow);
-        blackBoard.CameraFollow.enabled = true;
+        LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
+
+        ActivateTrigger(GameTrigger.NextState);
     }
 
     protected override void OnStateExit()
     {
-        blackBoard.CameraFollow.enabled = false;
-        blackBoard.Grid.SetActive(false);
+
     }
 }

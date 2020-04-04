@@ -11,34 +11,21 @@ public enum GameTrigger
 
 public enum GameBool
 { 
-
+    PlayerDied = 0
 }
 
+[RequireComponent(typeof(BlackBoard))]
 public class GameManager : MonoBehaviour
 {
     private StateMachine<GameBool, GameTrigger> sm = null;
-
-    [SerializeField]
-    private GameObject grid = null;
-
-    [SerializeField]
-    private Camera2DFollow cameraFollow = null;
-
-    [SerializeField]
-    private MenuData menuData = null;
-
-    [SerializeField]
-    private PlayLevelData playLevelData = null;
+    private BlackBoard blackBoard = null;
 
     private void Awake()
     {
-        Assert.IsNotNull(grid);
-        Assert.IsNotNull(menuData);
-        Assert.IsNotNull(cameraFollow);
-        Assert.IsNotNull(playLevelData);
+        blackBoard = GetComponent<BlackBoard>();
+        Assert.IsNotNull(blackBoard);
 
-        grid.SetActive(false);
-
+        blackBoard.Grid.SetActive(false);
         ConstructStateMachine();
     }
 
@@ -55,22 +42,22 @@ public class GameManager : MonoBehaviour
 
     private void ConstructStateMachine()
     {
-        BlackBoard blackBoard = new BlackBoard();
-        blackBoard.CameraFollow = cameraFollow;
-        blackBoard.Grid = grid;
-
-        sm = new StateMachine<GameBool, GameTrigger>();
+        sm = new StateMachine<GameBool, GameTrigger>(true);
 
         PostGameSurveyState postGameSurveyState = new PostGameSurveyState(blackBoard);
+        GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
+        LevelBeatenState levelBeatenState = new LevelBeatenState(blackBoard);
         EndGameState endGameState = new EndGameState(blackBoard);
         SurveyState surveyState = new SurveyState(blackBoard);
         DeathState deathState = new DeathState(blackBoard);
-        MenuState menuState = new MenuState(blackBoard, menuData);
-        PlayState playState = new PlayState(blackBoard, playLevelData);
+        MenuState menuState = new MenuState(blackBoard);
+        PlayState playState = new PlayState(blackBoard);
         EmptyState emptyState = new EmptyState();
 
         sm.AddEntryState(emptyState);
         sm.AddState(postGameSurveyState);
+        sm.AddState(generateLevelState);
+        sm.AddState(levelBeatenState);
         sm.AddState(endGameState);
         sm.AddState(surveyState);
         sm.AddState(deathState);
@@ -84,7 +71,24 @@ public class GameManager : MonoBehaviour
 
         sm.AddTransition(
             menuState,
+            generateLevelState,
+            sm.CreateTriggerCondition(GameTrigger.NextState));
+
+        sm.AddTransition(
+            generateLevelState,
             playState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
+
+        sm.AddTransition(
+            playState,
+            deathState,
+            sm.CreateTriggerCondition(GameTrigger.NextState),
+            sm.CreateBoolCondition(GameBool.PlayerDied, true));
+
+        sm.AddTransition(
+            playState,
+            levelBeatenState,
+            sm.CreateTriggerCondition(GameTrigger.NextState),
+            sm.CreateBoolCondition(GameBool.PlayerDied, false));
     }
 }
