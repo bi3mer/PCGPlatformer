@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Tools.AI.NGram.Utility;
+using Tools.Extensions;
 using Tools.AI.NGram;
+using LightJson;
 using PCG;
 
 public class GenerateLevelState : BaseState
@@ -28,24 +30,31 @@ public class GenerateLevelState : BaseState
 
     private void GenerateLevel()
     {
-        UnityEngine.Debug.LogWarning("using hardcoded level string");
-        UnityEngine.Debug.LogWarning("using hardocded min size");
-        UnityEngine.Debug.LogWarning("using hardocded max size");
-        UnityEngine.Debug.LogWarning("using hardocded n");
+        JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
+        JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
+        int minSize = info[FlowKeys.MinSize].AsInteger;
+        int maxSize = info[FlowKeys.MaxSize].AsInteger;
+        int n = info[FlowKeys.N].AsInteger;
 
         NGramIDContainer idContainer = new NGramIDContainer(idSize: 2);
-        List<string> columns = LevelParser.BreakMapIntoColumns("level001");
-        List<string> levelTokens = idContainer.GetIDs(columns);
+        List<List<string>> levelTokens = new List<List<string>>();
+        IGram gram = NGramFactory.InitializeGrammar(n);
 
-        int size = 3;
-        IGram gram = NGramFactory.InitializeGrammar(size);
-        NGramTrainer.Train(gram, levelTokens);
+        foreach (JsonValue levelName in levels)
+        { 
+            List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
+            List<string> tokens = idContainer.GetIDs(columns);
+
+            NGramTrainer.Train(gram, tokens);
+            levelTokens.Add(tokens);
+        }
+
         ICompiledGram cGram = gram.Compile();
         List<string> levelIDs = NGramGenerator.Generate(
             cGram,
-            levelTokens.GetRange(0, size + 1),
-            50,
-            100);
+            levelTokens.RandomValue().GetRange(0, n + 1),
+            minSize,
+            maxSize);
 
         List<List<string>> level = new List<List<string>>();
         foreach (string columnID in levelIDs)

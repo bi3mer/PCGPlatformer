@@ -19,6 +19,7 @@
 
             blackBoard.GotoNextLevelButton.onClick.AddListener(() => 
             {
+                blackBoard.ProgressIndex += 1;
                 ActivateTrigger(GameTrigger.GotoNextLevel);
             });
 

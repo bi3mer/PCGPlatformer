@@ -4,6 +4,8 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using UnityEngine;
 
+using LightJson;
+
 public class BlackBoard : MonoBehaviour
 {
     public Camera2DFollow CameraFollow = null;
@@ -15,7 +17,10 @@ public class BlackBoard : MonoBehaviour
 
     public GameObject Grid = null;
     public Tilemap Tilemap = null;
-    public int Level = 0;
+
+    public string GameFlowName = null;
+    public JsonArray GameFlow = null;
+    public int ProgressIndex = 0;
 
     public LevelInfo LevelInfo = null;
 
@@ -30,5 +35,9 @@ public class BlackBoard : MonoBehaviour
 
         Assert.IsNotNull(Tilemap);
         Assert.IsNotNull(Grid);
+
+        Assert.IsFalse(string.IsNullOrEmpty(GameFlowName));
+        TextAsset text = Resources.Load<TextAsset>($"GameFlow/{GameFlowName}");
+        GameFlow = JsonValue.Parse(text.text).AsJsonArray;
     }
 }

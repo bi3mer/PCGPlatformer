@@ -7,7 +7,9 @@ public enum GameTrigger
 { 
     NextState = 0,
     ReplayLevel,
-    GotoNextLevel
+    GotoNextLevel,
+    GotoSurvey,
+    GotoGame
 }
 
 public enum GameBool
@@ -47,6 +49,7 @@ public class GameManager : MonoBehaviour
 
         PostGameSurveyState postGameSurveyState = new PostGameSurveyState(blackBoard);
         GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
+        ReadGameFlowState readGameFlowState = new ReadGameFlowState(blackBoard);
         LevelBeatenState levelBeatenState = new LevelBeatenState(blackBoard);
         EndGameState endGameState = new EndGameState(blackBoard);
         SurveyState surveyState = new SurveyState(blackBoard);
@@ -58,6 +61,7 @@ public class GameManager : MonoBehaviour
         sm.AddEntryState(emptyState);
         sm.AddState(postGameSurveyState);
         sm.AddState(generateLevelState);
+        sm.AddState(readGameFlowState);
         sm.AddState(levelBeatenState);
         sm.AddState(endGameState);
         sm.AddState(surveyState);
@@ -72,8 +76,18 @@ public class GameManager : MonoBehaviour
 
         sm.AddTransition(
             menuState,
-            generateLevelState,
+            readGameFlowState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
+
+        sm.AddTransition(
+            readGameFlowState,
+            generateLevelState,
+            sm.CreateTriggerCondition(GameTrigger.GotoGame));
+
+        sm.AddTransition(
+            readGameFlowState,
+            surveyState,
+            sm.CreateTriggerCondition(GameTrigger.GotoSurvey));
 
         sm.AddTransition(
             generateLevelState,

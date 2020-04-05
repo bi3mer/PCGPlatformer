@@ -2485,4 +2485,5 @@ MonoBehaviour:
   GotoNextLevelButton: {fileID: 734573860}
   Grid: {fileID: 734573858}
   Tilemap: {fileID: 918302437}
-  Level: 0
+  GameFlowName: ngramdifficulty
+  ProgressIndex: 0
