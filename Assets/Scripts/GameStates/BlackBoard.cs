@@ -9,15 +9,23 @@ using LightJson;
 
 public class BlackBoard : MonoBehaviour
 {
-    public Camera2DFollow CameraFollow = null;
+    [Header("Play State")]
     public Button TryLevelAgainButton = null;
     public Button StartGameButton = null;
 
+    [Header("Beat Level State")]
     public Button PlayLevelAgainButton = null;
     public Button GotoNextLevelButton = null;
 
+    [Header("Count Down State")]
     public TextMeshProUGUI CountDownText = null;
 
+    [Header("Survey State")]
+    public GameObject Survey = null;
+    public GameObject SurveyContentSection = null;
+
+    [Header("General Game")]
+    public Camera2DFollow CameraFollow = null;
     public GameObject Grid = null;
     public Tilemap Tilemap = null;
 
@@ -37,6 +45,9 @@ public class BlackBoard : MonoBehaviour
         Assert.IsNotNull(GotoNextLevelButton);
 
         Assert.IsNotNull(CountDownText);
+
+        Assert.IsNotNull(Survey);
+        Assert.IsNotNull(SurveyContentSection);
 
         Assert.IsNotNull(Tilemap);
         Assert.IsNotNull(Grid);

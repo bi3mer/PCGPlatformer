@@ -1,4 +1,7 @@
-﻿public class SurveyState : BaseState
+﻿using UnityEngine.UI;
+using UnityEngine;
+
+public class SurveyState : BaseState
 {
     protected override string DefaultName => "Survey State";
 
@@ -9,7 +12,11 @@
 
     protected override void OnStateEnter()
     {
-        throw new System.NotImplementedException();
+        Debug.LogWarning("not using blackboard for building questions");
+        Debug.LogWarning("need to add checker to make sure all questions are answered.");
+        Debug.LogWarning("need to add button to move to the next state that calls checker first.");
+
+        blackBoard.Survey.SetActive(true);
     }
 
     protected override void OnStateExit()
