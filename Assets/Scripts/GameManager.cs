@@ -5,12 +5,14 @@ using Tools.AI.StateMachine;
 
 public enum GameTrigger
 { 
-    NextState = 0
+    NextState = 0,
+    ReplayLevel,
+    GotoNextLevel
 }
 
 public enum GameBool
 { 
-    PlayerDied = 0
+    PlayerDied = 0,
 }
 
 [RequireComponent(typeof(BlackBoard))]
@@ -94,5 +96,15 @@ public class GameManager : MonoBehaviour
             deathState,
             generateLevelState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
+
+        sm.AddTransition(
+            levelBeatenState,
+            generateLevelState,
+            sm.CreateTriggerCondition(GameTrigger.ReplayLevel));
+
+        //sm.AddTransition(
+        //    levelBeatenState,
+        //    null,
+        //    sm.CreateTriggerCondition(GameTrigger.GotoNextLevel));
     }
 }

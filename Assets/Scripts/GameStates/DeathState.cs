@@ -14,6 +14,8 @@
 
         if (addedCallback == false)
         {
+            addedCallback = true;
+
             blackBoard.TryLevelAgainButton.onClick.AddListener(() =>
             {
                 ActivateTrigger(GameTrigger.NextState);

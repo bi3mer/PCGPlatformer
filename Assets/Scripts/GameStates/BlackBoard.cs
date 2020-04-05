@@ -9,6 +9,10 @@ public class BlackBoard : MonoBehaviour
     public Camera2DFollow CameraFollow = null;
     public Button TryLevelAgainButton = null;
     public Button StartGameButton = null;
+
+    public Button PlayLevelAgainButton = null;
+    public Button GotoNextLevelButton = null;
+
     public GameObject Grid = null;
     public Tilemap Tilemap = null;
     public int Level = 0;
@@ -17,9 +21,13 @@ public class BlackBoard : MonoBehaviour
 
     private void Awake()
     {
+        Assert.IsNotNull(CameraFollow);
         Assert.IsNotNull(TryLevelAgainButton);
         Assert.IsNotNull(StartGameButton);
-        Assert.IsNotNull(CameraFollow);
+
+        Assert.IsNotNull(PlayLevelAgainButton);
+        Assert.IsNotNull(GotoNextLevelButton);
+
         Assert.IsNotNull(Tilemap);
         Assert.IsNotNull(Grid);
     }

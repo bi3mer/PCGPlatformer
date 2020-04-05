@@ -2,6 +2,8 @@
 {
     protected override string DefaultName => "Level Beaten State";
 
+    private bool addedCallbacks = false;
+
     public LevelBeatenState(BlackBoard blackBoard) : base(blackBoard)
     {
 
@@ -9,11 +11,26 @@
 
     protected override void OnStateEnter()
     {
-        throw new System.NotImplementedException();
+        blackBoard.GotoNextLevelButton.transform.parent.gameObject.SetActive(true);
+
+        if (addedCallbacks == false)
+        {
+            addedCallbacks = true;
+
+            blackBoard.GotoNextLevelButton.onClick.AddListener(() => 
+            {
+                ActivateTrigger(GameTrigger.GotoNextLevel);
+            });
+
+            blackBoard.PlayLevelAgainButton.onClick.AddListener(() => 
+            {
+                ActivateTrigger(GameTrigger.ReplayLevel);
+            });
+        }
     }
 
     protected override void OnStateExit()
     {
-        throw new System.NotImplementedException();
+        blackBoard.GotoNextLevelButton.transform.parent.gameObject.SetActive(false);
     }
 }
