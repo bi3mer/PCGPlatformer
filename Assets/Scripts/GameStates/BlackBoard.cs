@@ -3,6 +3,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 
 using LightJson;
 
@@ -14,6 +15,8 @@ public class BlackBoard : MonoBehaviour
 
     public Button PlayLevelAgainButton = null;
     public Button GotoNextLevelButton = null;
+
+    public TextMeshProUGUI CountDownText = null;
 
     public GameObject Grid = null;
     public Tilemap Tilemap = null;
@@ -32,6 +35,8 @@ public class BlackBoard : MonoBehaviour
 
         Assert.IsNotNull(PlayLevelAgainButton);
         Assert.IsNotNull(GotoNextLevelButton);
+
+        Assert.IsNotNull(CountDownText);
 
         Assert.IsNotNull(Tilemap);
         Assert.IsNotNull(Grid);

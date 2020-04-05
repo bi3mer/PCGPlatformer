@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityStandardAssets._2D;
 using UnityEngine;
 
 using Tools.AI.NGram.Utility;
@@ -22,6 +23,9 @@ public class GenerateLevelState : BaseState
         SetUpEndLevelTiles();
         SetUpPlayer();
         AttachPlayerDiedCallback();
+
+        blackBoard.LevelInfo.Player.gameObject.GetComponent<Platformer2DUserControl>().enabled = false;
+
 
         ActivateTrigger(GameTrigger.NextState);
     }
@@ -55,7 +59,7 @@ public class GenerateLevelState : BaseState
         ICompiledGram cGram = gram.Compile();
         List<string> levelIDs = NGramGenerator.Generate(
             cGram,
-            levelTokens.RandomValue().GetRange(0, n + 1),
+            levelTokens.RandomValue().GetRange(0, n + 4),
             minSize,
             maxSize);
 

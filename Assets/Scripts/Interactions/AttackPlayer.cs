@@ -50,7 +50,6 @@ public class AttackPlayer : MonoBehaviour
     {
         if (tag.Equals(Tags.Player))
         {
-            Debug.LogWarning("Cannot damage player yet!");
             hitPlayer?.Invoke();
         }
         else if (tag.Equals(Tags.Enemy))

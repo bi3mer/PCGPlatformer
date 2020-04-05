@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityStandardAssets._2D;
+using UnityEngine;
 
 public class PlayState : BaseState
 {
@@ -8,7 +9,7 @@ public class PlayState : BaseState
 
     protected override void OnStateEnter()
     {
-        blackBoard.CameraFollow.enabled = true;
+        blackBoard.LevelInfo.Player.gameObject.GetComponent<Platformer2DUserControl>().enabled = true;
     }
 
     protected override void OnStateExit()

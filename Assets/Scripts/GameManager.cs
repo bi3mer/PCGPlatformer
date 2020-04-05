@@ -7,7 +7,6 @@ public enum GameTrigger
 { 
     NextState = 0,
     ReplayLevel,
-    GotoNextLevel,
     GotoSurvey,
     GotoGame
 }
@@ -51,6 +50,7 @@ public class GameManager : MonoBehaviour
         GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
         ReadGameFlowState readGameFlowState = new ReadGameFlowState(blackBoard);
         LevelBeatenState levelBeatenState = new LevelBeatenState(blackBoard);
+        CountDownState countDownState = new CountDownState(blackBoard);
         EndGameState endGameState = new EndGameState(blackBoard);
         SurveyState surveyState = new SurveyState(blackBoard);
         DeathState deathState = new DeathState(blackBoard);
@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
         sm.AddState(generateLevelState);
         sm.AddState(readGameFlowState);
         sm.AddState(levelBeatenState);
+        sm.AddState(countDownState);
         sm.AddState(endGameState);
         sm.AddState(surveyState);
         sm.AddState(deathState);
@@ -91,6 +92,11 @@ public class GameManager : MonoBehaviour
 
         sm.AddTransition(
             generateLevelState,
+            countDownState,
+            sm.CreateTriggerCondition(GameTrigger.NextState));
+
+        sm.AddTransition(
+            countDownState,
             playState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
@@ -115,6 +121,11 @@ public class GameManager : MonoBehaviour
             levelBeatenState,
             generateLevelState,
             sm.CreateTriggerCondition(GameTrigger.ReplayLevel));
+
+        sm.AddTransition(
+            levelBeatenState,
+            readGameFlowState,
+            sm.CreateTriggerCondition(GameTrigger.NextState));
 
         //sm.AddTransition(
         //    levelBeatenState,
