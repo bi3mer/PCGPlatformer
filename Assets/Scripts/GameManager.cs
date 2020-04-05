@@ -1,7 +1,6 @@
 ﻿using UnityEngine.Assertions;
 using UnityEngine;
 
-using UnityStandardAssets._2D;
 using Tools.AI.StateMachine;
 
 public enum GameTrigger

@@ -1,0 +1,42 @@
+[
+    {
+        "type": "game",
+        "title": "Level 1",
+        "levels": ["level01_a.txt", "level01_b.txt", "level01_c.txt"]
+    },
+    {
+        "type": "survey"
+    },
+    {
+        "type": "game",
+        "title": "Level 2",
+        "levels": ["level02_a.txt", "level02_b.txt", "level02_c.txt"]
+    },
+    {
+        "type": "survey"
+    },
+    {
+        "type": "game",
+        "title": "Level 3",
+        "levels": ["level03_a.txt", "level03_b.txt", "level03_c.txt"]
+    },
+    {
+        "type": "survey"
+    },
+    {
+        "type": "game",
+        "title": "Level 4",
+        "levels": ["level04_a.txt", "level04_b.txt", "level04_c.txt"]
+    },
+    {
+        "type": "survey"
+    },
+    {
+        "type": "game",
+        "title": "Level 2",
+        "levels": ["level05_a.txt", "level05_b.txt", "level05_c.txt"]
+    },
+    {
+        "type": "survey"
+    }
+]

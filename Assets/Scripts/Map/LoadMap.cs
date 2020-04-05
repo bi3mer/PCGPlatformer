@@ -22,5 +22,6 @@ public class LoadMap : MonoBehaviour
         Assert.IsNotNull(tilemap);
 
         LevelLoader.LoadAndBuild(levelName, tilemap, cameraFollow);
+        cameraFollow.enabled = true;
     }
 }
