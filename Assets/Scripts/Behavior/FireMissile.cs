@@ -7,6 +7,9 @@ public class FireMissile : MonoBehaviour
     [Tooltip("in seconds")]
     public float fireRate = 3;
 
+    [Tooltip("in seconds")]
+    public float fireAfter = 3.5f;
+
     public Action HitPlayerCallback = null;
 
     private GameObject rocket = null;
@@ -20,7 +23,7 @@ public class FireMissile : MonoBehaviour
         // sprite is facing backwards so this is the only way.
         forward = transform.forward * -1;
 
-        InvokeRepeating("Fire", 0.05f, fireRate);
+        InvokeRepeating("Fire", fireAfter, fireRate);
     }
 
     private void Fire()
