@@ -90,5 +90,10 @@ public class GameManager : MonoBehaviour
             levelBeatenState,
             sm.CreateTriggerCondition(GameTrigger.NextState),
             sm.CreateBoolCondition(GameBool.PlayerDied, false));
+
+        sm.AddTransition(
+            deathState,
+            generateLevelState,
+            sm.CreateTriggerCondition(GameTrigger.NextState));
     }
 }

@@ -15,5 +15,11 @@ public class PlayState : BaseState
     {
         blackBoard.CameraFollow.enabled = false;
         blackBoard.LevelInfo.DestroyGameObjects();
+        blackBoard.Tilemap.ClearAllTiles();
+
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag(Tags.Missile))
+        {
+            MonoBehaviour.Destroy(go);
+        }
     }
 }

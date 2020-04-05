@@ -15,7 +15,10 @@ public class LevelInfo
 
         foreach (GameObject enemy in Enemies)
         {
-            MonoBehaviour.Destroy(enemy);
+            if (enemy != null)
+            { 
+                MonoBehaviour.Destroy(enemy);
+            }
         }
 
         foreach (GameObject turret in Turrets)
@@ -25,7 +28,10 @@ public class LevelInfo
 
         foreach (CollectCoin coin in Coins)
         {
-            MonoBehaviour.Destroy(coin.gameObject);
+            if (coin != null)
+            { 
+                MonoBehaviour.Destroy(coin.gameObject);
+            }
         }
 
         foreach (EndLevel tile in EndLevelTiles)
