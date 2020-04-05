@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
+
 using Tools.AI.NGram.Utility;
 using Tools.Extensions;
 using Tools.AI.NGram;
@@ -19,6 +21,7 @@ public class GenerateLevelState : BaseState
         GenerateLevel();
         SetUpEndLevelTiles();
         SetUpPlayer();
+        AttachPlayerDiedCallback();
 
         ActivateTrigger(GameTrigger.NextState);
     }
@@ -76,22 +79,37 @@ public class GenerateLevelState : BaseState
 
     private void SetUpPlayer()
     {
-        blackBoard.LevelInfo.Player.PlayerDiedCallback = () =>
-        {
-            SetBool(GameBool.PlayerDied, true);
-            ActivateTrigger(GameTrigger.NextState);
-        };
+        blackBoard.LevelInfo.Player.PlayerDiedCallback = PlayerDiedCallback;
     }
 
     private void SetUpEndLevelTiles()
     {
         foreach (EndLevel el in blackBoard.LevelInfo.EndLevelTiles)
         {
-            el.PlayerWonCallback = () =>
-            {
+            el.PlayerWonCallback = () => 
+            { 
                 SetBool(GameBool.PlayerDied, false);
                 ActivateTrigger(GameTrigger.NextState);
             };
         }
+    }
+
+    private void AttachPlayerDiedCallback()
+    {
+        foreach (GameObject turret in blackBoard.LevelInfo.Turrets)
+        {
+            turret.GetComponent<FireMissile>().HitPlayerCallback = PlayerDiedCallback;
+        }
+
+        foreach (GameObject enemy in blackBoard.LevelInfo.Enemies)
+        {
+            enemy.GetComponent<AttackPlayer>().AddHitPlayerCallback(PlayerDiedCallback);
+        }
+    }
+
+    private void PlayerDiedCallback()
+    {
+        SetBool(GameBool.PlayerDied, true);
+        ActivateTrigger(GameTrigger.NextState);
     }
 }

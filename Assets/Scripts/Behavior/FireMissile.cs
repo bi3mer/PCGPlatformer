@@ -1,10 +1,13 @@
 ﻿using UnityEngine.Assertions;
 using UnityEngine;
+using System;
 
 public class FireMissile : MonoBehaviour
 {
     [Tooltip("in seconds")]
     public float fireRate = 3;
+
+    public Action HitPlayerCallback = null;
 
     private GameObject rocket = null;
     private Vector3 forward;
@@ -23,6 +26,7 @@ public class FireMissile : MonoBehaviour
     private void Fire()
     {
         GameObject temp = Instantiate(rocket);
+        temp.GetComponent<AttackPlayer>().AddHitEnemyCallback(HitPlayerCallback);
         temp.transform.position = transform.position;
         temp.transform.forward = forward;
         temp.transform.localScale = new Vector3(-1, 1, 1);
