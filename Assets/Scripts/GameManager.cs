@@ -7,6 +7,7 @@ public enum GameTrigger
 { 
     NextState = 0,
     ReplayLevel,
+    SetUpConfig,
     GotoSurvey,
     GotoGame,
     PlayerDied,
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
         CountDownState countDownState = new CountDownState(blackBoard);
         EndGameState endGameState = new EndGameState(blackBoard);
         SurveyState surveyState = new SurveyState(blackBoard);
+        ConfigState configState = new ConfigState(blackBoard);
         DeathState deathState = new DeathState(blackBoard);
         MenuState menuState = new MenuState(blackBoard);
         PlayState playState = new PlayState(blackBoard);
@@ -67,6 +69,7 @@ public class GameManager : MonoBehaviour
         sm.AddState(countDownState);
         sm.AddState(endGameState);
         sm.AddState(surveyState);
+        sm.AddState(configState);
         sm.AddState(deathState);
         sm.AddState(menuState);
         sm.AddState(playState);
@@ -88,6 +91,18 @@ public class GameManager : MonoBehaviour
             readGameFlowState,
             surveyState,
             sm.CreateTriggerCondition(GameTrigger.GotoSurvey));
+
+        // reading game to config to set up variables
+        sm.AddTransition(
+            readGameFlowState,
+            configState,
+            sm.CreateTriggerCondition(GameTrigger.SetUpConfig));
+
+        // config back to read game flow
+        sm.AddTransition(
+            configState,
+            readGameFlowState,
+            sm.CreateTriggerCondition(GameTrigger.NextState));
 
         // reading game to generating a level
         sm.AddTransition(

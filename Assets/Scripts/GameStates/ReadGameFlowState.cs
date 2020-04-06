@@ -18,6 +18,10 @@ public class ReadGameFlowState : BaseState
         {
             ActivateTrigger(GameTrigger.GotoGame);
         }
+        else if (flow[index].AsJsonObject[FlowKeys.Type].AsString.Equals(FlowTypeValues.TypeConfig))
+        {
+            ActivateTrigger(GameTrigger.SetUpConfig);
+        }
         else
         {
             ActivateTrigger(GameTrigger.GotoSurvey);

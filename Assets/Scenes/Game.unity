@@ -3469,7 +3469,7 @@ MonoBehaviour:
   Grid: {fileID: 734573858}
   Tilemap: {fileID: 918302437}
   GameFlowName: ngram_game_ai
-  ProgressIndex: 4
+  ProgressIndex: 0
   TieredMemoryUpdate: 0.9
 --- !u!1 &2143030913
 GameObject:

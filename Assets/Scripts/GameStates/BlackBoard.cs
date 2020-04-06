@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
+using Tools.AI.NGram;
 using LightJson;
 
 public class BlackBoard : MonoBehaviour
@@ -37,6 +38,13 @@ public class BlackBoard : MonoBehaviour
     public float TieredMemoryUpdate = 0.8f;
 
     public LevelInfo LevelInfo = null;
+    public NGram DifficultyNGram;
+
+    [HideInInspector]
+    public bool Tiered = false;
+
+    [HideInInspector]
+    public int N = 3;
 
     private void Awake()
     {

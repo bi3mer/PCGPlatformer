@@ -40,14 +40,12 @@ public class GenerateLevelState : BaseState
         JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
         int minSize = info[FlowKeys.MinSize].AsInteger;
         int maxSize = info[FlowKeys.MaxSize].AsInteger;
-        bool tiered = info[FlowKeys.Tiered].AsBoolean;
-        int n = info[FlowKeys.N].AsInteger;
 
         NGramIDContainer idContainer = new NGramIDContainer(idSize: 2);
         List<List<string>> levelTokens = new List<List<string>>();
-        IGram gram = NGramFactory.InitializeGrammar(n);
+        IGram gram = NGramFactory.InitializeGrammar(blackBoard.N);
 
-        if (tiered)
+        if (blackBoard.Tiered)
         {
             for (int i = 0; i < blackBoard.ProgressIndex; ++i)
             {
@@ -84,7 +82,7 @@ public class GenerateLevelState : BaseState
         ICompiledGram cGram = gram.Compile();
         List<string> levelIDs = NGramGenerator.Generate(
             cGram,
-            levelTokens.RandomValue().GetRange(0, n + 4),
+            levelTokens.RandomValue().GetRange(0, blackBoard.N + 4),
             minSize,
             maxSize);
 
