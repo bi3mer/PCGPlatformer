@@ -7,6 +7,7 @@
     public const string MinSize = "min_size";
     public const string MaxSize = "max_size";
     public const string N = "n";
+    public const string Tiered = "tiered";
 }
 
 public static class FlowTypeValues

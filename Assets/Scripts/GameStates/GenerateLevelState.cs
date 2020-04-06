@@ -40,11 +40,37 @@ public class GenerateLevelState : BaseState
         JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
         int minSize = info[FlowKeys.MinSize].AsInteger;
         int maxSize = info[FlowKeys.MaxSize].AsInteger;
+        bool tiered = info[FlowKeys.Tiered].AsBoolean;
         int n = info[FlowKeys.N].AsInteger;
 
         NGramIDContainer idContainer = new NGramIDContainer(idSize: 2);
         List<List<string>> levelTokens = new List<List<string>>();
         IGram gram = NGramFactory.InitializeGrammar(n);
+
+        if (tiered)
+        {
+            for (int i = 0; i < blackBoard.ProgressIndex; ++i)
+            {
+                JsonObject tierInfo = blackBoard.GameFlow[i].AsJsonObject;
+
+                if (tierInfo[FlowKeys.Type].AsString.Equals(FlowTypeValues.TypeGame))
+                {
+                    JsonArray tierLevels = tierInfo[FlowKeys.LevelNames].AsJsonArray;
+                    foreach (string levelName in tierLevels)
+                    {
+                        List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
+                        List<string> tokens = idContainer.GetIDs(columns);
+
+                        NGramTrainer.Train(gram, tokens);
+                        levelTokens.Add(tokens);
+
+                        gram.UpdateMemory(blackBoard.TieredMemoryUpdate);
+                    }
+
+                    levelTokens.Clear();
+                }
+            }
+        }
 
         foreach (JsonValue levelName in levels)
         { 

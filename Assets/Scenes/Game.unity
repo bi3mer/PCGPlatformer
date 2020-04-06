@@ -3470,6 +3470,7 @@ MonoBehaviour:
   Tilemap: {fileID: 918302437}
   GameFlowName: ngram_game_ai
   ProgressIndex: 4
+  TieredMemoryUpdate: 0.9
 --- !u!1 &2143030913
 GameObject:
   m_ObjectHideFlags: 0

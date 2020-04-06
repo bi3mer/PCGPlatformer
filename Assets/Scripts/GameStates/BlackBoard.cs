@@ -33,6 +33,9 @@ public class BlackBoard : MonoBehaviour
     public JsonArray GameFlow = null;
     public int ProgressIndex = 0;
 
+    [Range(0f, 1f)]
+    public float TieredMemoryUpdate = 0.8f;
+
     public LevelInfo LevelInfo = null;
 
     private void Awake()

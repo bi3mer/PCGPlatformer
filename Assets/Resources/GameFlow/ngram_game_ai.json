@@ -5,7 +5,8 @@
         "resources": ["level01_a", "level01_b", "level01_c"],
         "min_size": 40,
         "max_size": 60,
-        "n": 3
+        "n": 3,
+        "tiered": false
     },
     {
         "type": "game",
@@ -13,7 +14,8 @@
         "resources": ["level02_a", "level02_b", "level02_c"],
         "min_size": 50,
         "max_size": 100,
-        "n": 3
+        "n": 3,
+        "tiered": true
     },
     {
         "type": "game",
@@ -21,7 +23,8 @@
         "resources": ["level03_a", "level03_b", "level03_c"],
         "min_size": 50,
         "max_size": 100,
-        "n": 4
+        "n": 4,
+        "tiered": true
     },
     {
         "type": "game",
@@ -29,14 +32,16 @@
         "resources": ["level04_a", "level04_b", "level04_c"],
         "min_size": 100,
         "max_size": 120,
-        "n": 3
+        "n": 3,
+        "tiered": true
     },
     {
         "type": "game",
         "title": "Level 5",
         "resources": ["level05_a", "level05_b", "level05_c"],
-        "min_size": 120,
-        "max_size": 150,
-        "n": 3
+        "min_size": 150,
+        "max_size": 200,
+        "n": 3,
+        "tiered": true
     }
 ]
