@@ -8,12 +8,13 @@ public enum GameTrigger
     NextState = 0,
     ReplayLevel,
     GotoSurvey,
-    GotoGame
+    GotoGame,
+    PlayerDied,
+    PlayerWon
 }
 
 public enum GameBool
 { 
-    PlayerDied = 0,
 }
 
 [RequireComponent(typeof(BlackBoard))]
@@ -70,58 +71,67 @@ public class GameManager : MonoBehaviour
         sm.AddState(menuState);
         sm.AddState(playState);
 
+        // start by going to the menu
         sm.AddTransition(
             emptyState,
             menuState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
+        // menu to start game state
         sm.AddTransition(
             menuState,
             readGameFlowState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
-        sm.AddTransition(
-            readGameFlowState,
-            generateLevelState,
-            sm.CreateTriggerCondition(GameTrigger.GotoGame));
-
+        // reading game to generating survey 
         sm.AddTransition(
             readGameFlowState,
             surveyState,
             sm.CreateTriggerCondition(GameTrigger.GotoSurvey));
 
+        // reading game to generating a level
+        sm.AddTransition(
+            readGameFlowState,
+            generateLevelState,
+            sm.CreateTriggerCondition(GameTrigger.GotoGame));
+
+        // generating game to countdown 
         sm.AddTransition(
             generateLevelState,
             countDownState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
+        // countdown to play state
         sm.AddTransition(
             countDownState,
             playState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
+        // play state to death
         sm.AddTransition(
             playState,
             deathState,
-            sm.CreateTriggerCondition(GameTrigger.NextState),
-            sm.CreateBoolCondition(GameBool.PlayerDied, true));
+            sm.CreateTriggerCondition(GameTrigger.PlayerDied));
 
+        // death back to generating level
+        sm.AddTransition(
+            deathState,
+            generateLevelState,
+            sm.CreateTriggerCondition(GameTrigger.NextState));
+
+        // play to level beaten
         sm.AddTransition(
             playState,
             levelBeatenState,
-            sm.CreateTriggerCondition(GameTrigger.NextState),
-            sm.CreateBoolCondition(GameBool.PlayerDied, false));
+            sm.CreateTriggerCondition(GameTrigger.PlayerWon));
 
-        sm.AddTransition(
-            deathState,
-            generateLevelState,
-            sm.CreateTriggerCondition(GameTrigger.NextState));
-
+        // level beating to replay
         sm.AddTransition(
             levelBeatenState,
             generateLevelState,
             sm.CreateTriggerCondition(GameTrigger.ReplayLevel));
 
+        // level beaten back to read game flow to figure out what is next
         sm.AddTransition(
             levelBeatenState,
             readGameFlowState,

@@ -1192,7 +1192,7 @@ TilemapCollider2D:
   m_GameObject: {fileID: 918302432}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 0cb77231a430b454fb792ff7ffcc3943, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -2243,7 +2243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1471716700
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3060,7 +3060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  damping: 0.4
+  damping: 0.35
   lookAheadFactor: 1
   lookAheadReturnSpeed: 0.5
   lookAheadMoveThreshold: 0.1
@@ -3099,7 +3099,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 9.01285
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3468,8 +3468,8 @@ MonoBehaviour:
   CameraFollow: {fileID: 1973733849}
   Grid: {fileID: 734573858}
   Tilemap: {fileID: 918302437}
-  GameFlowName: ngramdifficulty
-  ProgressIndex: 0
+  GameFlowName: ngram_game_ai
+  ProgressIndex: 4
 --- !u!1 &2143030913
 GameObject:
   m_ObjectHideFlags: 0
@@ -3614,17 +3614,17 @@ PrefabInstance:
     - target: {fileID: 4362266089914389049, guid: 14d323c792e34174da679ad57dd17839,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 452.87997
       objectReference: {fileID: 0}
     - target: {fileID: 4362266089914389049, guid: 14d323c792e34174da679ad57dd17839,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4362266089914389049, guid: 14d323c792e34174da679ad57dd17839,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 905.75995
       objectReference: {fileID: 0}
     - target: {fileID: 4362266089914389049, guid: 14d323c792e34174da679ad57dd17839,
         type: 3}
@@ -3639,7 +3639,7 @@ PrefabInstance:
     - target: {fileID: 4362266089914389049, guid: 14d323c792e34174da679ad57dd17839,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4362266089914389049, guid: 14d323c792e34174da679ad57dd17839,
         type: 3}
@@ -3649,7 +3649,7 @@ PrefabInstance:
     - target: {fileID: 4362266089914389049, guid: 14d323c792e34174da679ad57dd17839,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4362266089914389049, guid: 14d323c792e34174da679ad57dd17839,
         type: 3}

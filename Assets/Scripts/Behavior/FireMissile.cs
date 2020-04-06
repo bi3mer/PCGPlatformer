@@ -29,7 +29,7 @@ public class FireMissile : MonoBehaviour
     private void Fire()
     {
         GameObject temp = Instantiate(rocket);
-        temp.GetComponent<AttackPlayer>().AddHitEnemyCallback(HitPlayerCallback);
+        temp.GetComponent<AttackPlayer>().AddHitPlayerCallback(HitPlayerCallback);
         temp.transform.position = transform.position;
         temp.transform.forward = forward;
         temp.transform.localScale = new Vector3(-1, 1, 1);

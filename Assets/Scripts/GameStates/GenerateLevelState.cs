@@ -26,7 +26,6 @@ public class GenerateLevelState : BaseState
 
         blackBoard.LevelInfo.Player.gameObject.GetComponent<Platformer2DUserControl>().enabled = false;
 
-
         ActivateTrigger(GameTrigger.NextState);
     }
 
@@ -92,8 +91,7 @@ public class GenerateLevelState : BaseState
         {
             el.PlayerWonCallback = () => 
             { 
-                SetBool(GameBool.PlayerDied, false);
-                ActivateTrigger(GameTrigger.NextState);
+                ActivateTrigger(GameTrigger.PlayerWon);
             };
         }
     }
@@ -113,7 +111,6 @@ public class GenerateLevelState : BaseState
 
     private void PlayerDiedCallback()
     {
-        SetBool(GameBool.PlayerDied, true);
-        ActivateTrigger(GameTrigger.NextState);
+        ActivateTrigger(GameTrigger.PlayerDied);
     }
 }
