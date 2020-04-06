@@ -13,4 +13,5 @@ public static class FlowTypeValues
 {
     public const string TypeGame = "game";
     public const string TypeSurvey = "survey";
+    public const string TypeShowCode = "show code";
 }

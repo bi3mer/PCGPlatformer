@@ -1,0 +1,16 @@
+[
+    {
+        "type": "text",
+        "title": "Level Questionnaire"
+    },
+    {
+        "type": "multiple choice",
+        "question": "Was this level difficult?",
+        "answers": ["no", "yes"]
+    },
+    {
+        "type": "multiple choice",
+        "question": "Did you enjoy playing this level?",
+        "answers": ["no", "kind of", "yes"]
+    }
+]

@@ -96,15 +96,15 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 100000
-  m_LinearDrag: 100000
-  m_AngularDrag: 10000
+  m_Mass: 1
+  m_LinearDrag: 1
+  m_AngularDrag: 1
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 0cb77231a430b454fb792ff7ffcc3943, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!61 &596552415890795843
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -74,7 +74,7 @@ public static class TileExtensions
             case Tile.acceleratingEnemy:
                 return "C";
             case Tile.acceleratingEnemyReverse:
-                return "";
+                return "D";
             case Tile.coin:
                 return "$";
             case Tile.missileLauncher:
