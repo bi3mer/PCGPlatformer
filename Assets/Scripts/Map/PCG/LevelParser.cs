@@ -35,28 +35,5 @@ namespace PCG
 
             return columns;
         }
-
-        //private List<string> BuildTokens(List<string> columns)
-        //{
-        //    List<string> tokens = new List<string>();
-        //    foreach (string column in columns)
-        //    {
-        //        if (columnToId.ContainsKey(column))
-        //        {
-        //            tokens.Add(columnToId[column]);
-        //        }
-        //        else
-        //        {
-        //            idGenerator.MoveNext();
-        //            string id = idGenerator.Current;
-
-        //            columnToId.Add(column, id);
-        //            idToColumn.Add(id, column);
-        //            tokens.Add(id);
-        //        }
-        //    }
-            
-        //    return tokens;
-        //}
     }
 }

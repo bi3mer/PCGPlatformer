@@ -2,7 +2,12 @@
     {
         "type": "config",
         "tiered": true,
-        "n": 3
+        "n": 3,
+        "difficulty_n_gram_active": true,
+        "difficulty_right_range": 7,
+        "difficulty_left_range": 10,
+        "tiered_memory_update": 0.9,
+        "difficulty_memory_update": 0.9
     },
     {
         "type": "game",

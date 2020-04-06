@@ -41,7 +41,6 @@ public class GenerateLevelState : BaseState
         int minSize = info[FlowKeys.MinSize].AsInteger;
         int maxSize = info[FlowKeys.MaxSize].AsInteger;
 
-        NGramIDContainer idContainer = new NGramIDContainer(idSize: 2);
         List<List<string>> levelTokens = new List<List<string>>();
         IGram gram = NGramFactory.InitializeGrammar(blackBoard.N);
 
@@ -57,7 +56,7 @@ public class GenerateLevelState : BaseState
                     foreach (string levelName in tierLevels)
                     {
                         List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
-                        List<string> tokens = idContainer.GetIDs(columns);
+                        List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
 
                         NGramTrainer.Train(gram, tokens);
                         levelTokens.Add(tokens);
@@ -70,10 +69,15 @@ public class GenerateLevelState : BaseState
             }
         }
 
+        if (blackBoard.DifficultyNGramActive)
+        {
+            gram.AddGrammar(blackBoard.DifficultyNGram);
+        }
+
         foreach (JsonValue levelName in levels)
         { 
             List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
-            List<string> tokens = idContainer.GetIDs(columns);
+            List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
 
             NGramTrainer.Train(gram, tokens);
             levelTokens.Add(tokens);
@@ -90,7 +94,7 @@ public class GenerateLevelState : BaseState
         foreach (string columnID in levelIDs)
         {
             List<string> column = new List<string>();
-            string col = idContainer.GetToken(columnID);
+            string col = blackBoard.iDContainer.GetToken(columnID);
 
             foreach (char tileCharacter in col)
             {
@@ -100,6 +104,7 @@ public class GenerateLevelState : BaseState
             level.Add(column);
         }
 
+        blackBoard.LevelIds = levelIDs;
         blackBoard.Grid.SetActive(true);
         blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
     }

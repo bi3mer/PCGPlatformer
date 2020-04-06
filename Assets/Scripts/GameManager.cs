@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     private void ConstructStateMachine()
     {
-        sm = new StateMachine<GameBool, GameTrigger>(true);
+        sm = new StateMachine<GameBool, GameTrigger>();
 
         PostGameSurveyState postGameSurveyState = new PostGameSurveyState(blackBoard);
         GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
