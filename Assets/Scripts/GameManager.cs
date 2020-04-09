@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
         PostGameSurveyState postGameSurveyState = new PostGameSurveyState(blackBoard);
         GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
         ReadGameFlowState readGameFlowState = new ReadGameFlowState(blackBoard);
+        InstructionState instructionState = new InstructionState(blackBoard);
         LevelBeatenState levelBeatenState = new LevelBeatenState(blackBoard);
         CountDownState countDownState = new CountDownState(blackBoard);
         EndGameState endGameState = new EndGameState(blackBoard);
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
         sm.AddState(postGameSurveyState);
         sm.AddState(generateLevelState);
         sm.AddState(readGameFlowState);
+        sm.AddState(instructionState);
         sm.AddState(levelBeatenState);
         sm.AddState(countDownState);
         sm.AddState(endGameState);
@@ -80,9 +82,15 @@ public class GameManager : MonoBehaviour
             menuState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
-        // menu to start game state
+        // menu to instructions
         sm.AddTransition(
             menuState,
+            instructionState,
+            sm.CreateTriggerCondition(GameTrigger.NextState));
+
+        // instruction to start game state
+        sm.AddTransition(
+            instructionState,
             readGameFlowState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 

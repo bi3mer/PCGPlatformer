@@ -24,8 +24,9 @@ public class BlackBoard : MonoBehaviour
     public TextMeshProUGUI CountDownText = null;
 
     [Header("Survey State")]
-    public GameObject Survey = null;
-    public GameObject SurveyContentSection = null;
+    
+    [Header("Instruction State")]
+    public Button InstructionStartGame = null;
 
     [Header("General Game")]
     public Camera2DFollow CameraFollow = null;
@@ -76,8 +77,7 @@ public class BlackBoard : MonoBehaviour
 
         Assert.IsNotNull(CountDownText);
 
-        Assert.IsNotNull(Survey);
-        Assert.IsNotNull(SurveyContentSection);
+        Assert.IsNotNull(InstructionStartGame);
 
         Assert.IsNotNull(Tilemap);
         Assert.IsNotNull(Grid);

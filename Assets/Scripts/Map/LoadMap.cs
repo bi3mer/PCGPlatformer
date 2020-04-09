@@ -15,6 +15,9 @@ public class LoadMap : MonoBehaviour
 
     private void Awake()
     {
+        string a = "hi" + "∀";
+        Debug.Log(a);
+
         Tilemap tilemap = GetComponent<Tilemap>();
 
         Assert.IsNotNull(cameraFollow);

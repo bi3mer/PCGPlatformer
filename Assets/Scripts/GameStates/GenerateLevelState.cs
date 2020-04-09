@@ -11,6 +11,9 @@ using PCG;
 public class GenerateLevelState : BaseState
 {
     protected override string DefaultName => "Generate Level State";
+    List<List<string>> levelTokens = new List<List<string>>();
+    private IGram grammar = null;
+    private int previousIndex = -1;
 
     public GenerateLevelState(BlackBoard blackBoard) : base(blackBoard)
     {
@@ -19,6 +22,16 @@ public class GenerateLevelState : BaseState
 
     protected override void OnStateEnter()
     {
+        if (grammar == null || blackBoard.ProgressIndex != previousIndex)
+        {
+            GenerateNGram();
+        }
+
+        if (blackBoard.DifficultyNGramActive)
+        {
+            grammar.AddGrammar(blackBoard.DifficultyNGram);
+        }
+
         GenerateLevel();
         SetUpEndLevelTiles();
         SetUpPlayer();
@@ -34,15 +47,12 @@ public class GenerateLevelState : BaseState
 
     }
 
-    private void GenerateLevel()
+    private void GenerateNGram()
     {
         JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
         JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
-        int minSize = info[FlowKeys.MinSize].AsInteger;
-        int maxSize = info[FlowKeys.MaxSize].AsInteger;
-
-        List<List<string>> levelTokens = new List<List<string>>();
-        IGram gram = NGramFactory.InitializeGrammar(blackBoard.N);
+        
+        grammar = NGramFactory.InitializeGrammar(blackBoard.N);
 
         if (blackBoard.Tiered)
         {
@@ -58,10 +68,10 @@ public class GenerateLevelState : BaseState
                         List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
                         List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
 
-                        NGramTrainer.Train(gram, tokens);
+                        NGramTrainer.Train(grammar, tokens);
                         levelTokens.Add(tokens);
 
-                        gram.UpdateMemory(blackBoard.TieredMemoryUpdate);
+                        grammar.UpdateMemory(blackBoard.TieredMemoryUpdate);
                     }
 
                     levelTokens.Clear();
@@ -69,21 +79,23 @@ public class GenerateLevelState : BaseState
             }
         }
 
-        if (blackBoard.DifficultyNGramActive)
-        {
-            gram.AddGrammar(blackBoard.DifficultyNGram);
-        }
-
         foreach (JsonValue levelName in levels)
-        { 
+        {
             List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
             List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
 
-            NGramTrainer.Train(gram, tokens);
+            NGramTrainer.Train(grammar, tokens);
             levelTokens.Add(tokens);
         }
+    }
 
-        ICompiledGram cGram = gram.Compile();
+    private void GenerateLevel()
+    {
+        JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
+        int minSize = info[FlowKeys.MinSize].AsInteger;
+        int maxSize = info[FlowKeys.MaxSize].AsInteger;
+
+        ICompiledGram cGram = grammar.Compile();
         List<string> levelIDs = NGramGenerator.Generate(
             cGram,
             levelTokens.RandomValue().GetRange(0, blackBoard.N + 4),
