@@ -4,7 +4,7 @@ import os
 unique_columns = set()
 column_count = 0
 
-path = os.path.join('Assets', 'Resources', 'Levels')
+path = os.path.join('..', 'Assets', 'Resources', 'Levels')
 for file_name in os.listdir(path):
     if 'meta' in file_name:
         continue
