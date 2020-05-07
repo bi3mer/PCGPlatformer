@@ -1,0 +1,118 @@
+[
+    {
+        "type": "config",
+        "tiered": true,
+        "n": 3,
+        "difficulty_n_gram_active": true,
+        "difficulty_right_range": 7,
+        "difficulty_left_range": 10,
+        "tiered_memory_update": 0.9,
+        "difficulty_memory_update": 0.9
+    },
+    {
+        "type": "game",
+        "title": "Level 1-1",
+        "resources": [ "SuperMarioBros/mario-1-1" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 1-2",
+        "resources": [ "SuperMarioBros/mario-1-2" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 1-3",
+        "resources": [ "SuperMarioBros/mario-1-3" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 2-1",
+        "resources": [ "SuperMarioBros/mario-2-1" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 3-1",
+        "resources": [ "SuperMarioBros/mario-3-1" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 3-3",
+        "resources": [ "SuperMarioBros/mario-3-3" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 4-1",
+        "resources": [ "SuperMarioBros/mario-4-1" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 4-2",
+        "resources": [ "SuperMarioBros/mario-4-2" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 5-1",
+        "resources": [ "SuperMarioBros/mario-5-1" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 5-3",
+        "resources": [ "SuperMarioBros/mario-5-3" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 6-1",
+        "resources": [ "SuperMarioBros/mario-6-1" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 6-2",
+        "resources": [ "SuperMarioBros/mario-6-2" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 6-3",
+        "resources": [ "SuperMarioBros/mario-6-3" ],
+        "min_size": 50,
+        "max_size": 60
+    },
+    {
+        "type": "game",
+        "title": "Level 7-1",
+        "resources": [ "SuperMarioBros/mario-7-1" ],
+        "min_size": 100,
+        "max_size": 150
+    },
+    {
+        "type": "game",
+        "title": "Level 8-1",
+        "resources": [ "SuperMarioBros/mario-8-1" ],
+        "min_size": 150,
+        "max_size": 200
+    }
+
+]

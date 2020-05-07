@@ -68,11 +68,15 @@ def build_histogram():
     plt.xlabel("Outputs")
     plt.ylabel("Priors")
     plt.title("Priors with the Same Number of Outputs")
-    n, bins, patches = plt.hist(outputs, bins=range(1,max_count + 1), alpha=0.5, edgecolor='black', linewidth=1.2, color=colors, label=labels)
-    plt.xticks(range(1, max_count + 1))
+    n, bins, patches = plt.hist(outputs, bins=range(1,max_count +1), alpha=0.5, edgecolor='black', linewidth=1.2, color=colors, label=labels)
+    plt.xticks(range(1, max_count))
     plt.xlim(1)
     plt.legend()
     plt.show()
+
+    print(f'2: {len(n_grams[0])}')
+    print(f'3: {len(n_grams[1])}')
+    print(f'4: {len(n_grams[2])}')
 
     # show the number of priors
     # print(f'num priors: {len(ngram)}')

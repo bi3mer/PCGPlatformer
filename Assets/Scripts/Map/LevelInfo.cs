@@ -7,7 +7,7 @@ public class LevelInfo
     public List<GameObject> Enemies = new List<GameObject>();
     public List<GameObject> Turrets = new List<GameObject>();
     public List<CollectCoin> Coins = new List<CollectCoin>();
-    public Player Player;
+    public Player Player = null;
 
     public void DestroyGameObjects()
     {

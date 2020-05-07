@@ -67,7 +67,10 @@ public static class LevelLoader
                 go = Resources.Load<GameObject>("Prefabs/EndGoal");
                 break;
             case Tile.playerOneStart:
-                go = Resources.Load<GameObject>("Prefabs/Character");
+                if (li.Player == null)
+                {
+                    go = Resources.Load<GameObject>("Prefabs/Character");
+                }
                 break;
             case Tile.basicEnemyReverse:
             case Tile.basicEnemy:
