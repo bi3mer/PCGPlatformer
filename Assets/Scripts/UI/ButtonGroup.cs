@@ -1,18 +1,53 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.Assertions;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class ButtonGroup : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Button[] buttons = null;
+
+    private int activeIndex = 0;
+    private bool addedCallbacks = false;
+
+    private void Awake()
     {
-        
+        Assert.IsNotNull(buttons);
+        foreach (Button btn in buttons)
+        {
+            Assert.IsNotNull(btn);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        if (addedCallbacks == false)
+        {
+            for (int i = 0; i < buttons.Length; ++i)
+            {
+                int copy = i;
+                buttons[i].onClick.AddListener(() => UpdateButtonsValues(copy));
+
+                if (i > 0)
+                {
+                    UpdateButtonNormalColor(i, Color.gray);
+                }
+            }
+        }
+    }
+
+    private void UpdateButtonsValues(int index)
+    {
+        UpdateButtonNormalColor(activeIndex, Color.gray);
+        activeIndex = index;
+        UpdateButtonNormalColor(activeIndex, Color.white);
+    }
+
+    private void UpdateButtonNormalColor(int index, Color color)
+    {
+        Debug.Log(index);
+        ColorBlock colors = buttons[index].colors;
+        colors.normalColor = color;
+        buttons[index].colors = colors;
     }
 }
