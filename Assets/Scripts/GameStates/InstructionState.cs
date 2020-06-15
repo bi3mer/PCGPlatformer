@@ -6,10 +6,7 @@ public class InstructionState : BaseState
     private float time;
     private bool addedCallback = false;
 
-    public InstructionState(BlackBoard blackBoard) : base(blackBoard)
-    {
-
-    }
+    public InstructionState(BlackBoard blackBoard) : base(blackBoard) { }
 
     protected override void OnStateEnter()
     {
@@ -20,9 +17,11 @@ public class InstructionState : BaseState
         if (addedCallback == false)
         {
             blackBoard.InstructionStartGame.onClick.AddListener(() => 
-            { 
+            {
                 ActivateTrigger(GameTrigger.NextState);
             });
+
+            addedCallback = true;
         }
     }
 

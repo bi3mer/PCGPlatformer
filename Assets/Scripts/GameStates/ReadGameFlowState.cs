@@ -14,7 +14,11 @@ public class ReadGameFlowState : BaseState
         JsonArray flow = blackBoard.GameFlow;
         int index = blackBoard.ProgressIndex;
 
-        if (flow[index].AsJsonObject[FlowKeys.Type].AsString.Equals(FlowTypeValues.TypeGame))
+        if (index >= flow.Count) 
+        {
+            ActivateTrigger(GameTrigger.GotoGameOver);
+        }
+        else if (flow[index].AsJsonObject[FlowKeys.Type].AsString.Equals(FlowTypeValues.TypeGame))
         {
             ActivateTrigger(GameTrigger.GotoGame);
         }

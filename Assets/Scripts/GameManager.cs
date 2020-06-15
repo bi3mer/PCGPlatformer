@@ -2,6 +2,7 @@
 using UnityEngine;
 
 using Tools.AI.StateMachine;
+using System;
 
 public enum GameTrigger
 { 
@@ -11,7 +12,9 @@ public enum GameTrigger
     GotoSurvey,
     GotoGame,
     PlayerDied,
-    PlayerWon
+    PlayerWon,
+    GotoMainMenu,
+    GotoGameOver
 }
 
 public enum GameBool
@@ -51,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     private void ConstructStateMachine()
     {
-        sm = new StateMachine<GameBool, GameTrigger>();
+        sm = new StateMachine<GameBool, GameTrigger>(verbose: true);
 
         PostGameSurveyState postGameSurveyState = new PostGameSurveyState(blackBoard);
         GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
@@ -59,6 +62,7 @@ public class GameManager : MonoBehaviour
         InstructionState instructionState = new InstructionState(blackBoard);
         LevelBeatenState levelBeatenState = new LevelBeatenState(blackBoard);
         CountDownState countDownState = new CountDownState(blackBoard);
+        GameOverState gameOverState = new GameOverState(blackBoard);
         EndGameState endGameState = new EndGameState(blackBoard);
         SurveyState surveyState = new SurveyState(blackBoard);
         ConfigState configState = new ConfigState(blackBoard);
@@ -74,6 +78,7 @@ public class GameManager : MonoBehaviour
         sm.AddState(instructionState);
         sm.AddState(levelBeatenState);
         sm.AddState(countDownState);
+        sm.AddState(gameOverState);
         sm.AddState(endGameState);
         sm.AddState(surveyState);
         sm.AddState(configState);
@@ -173,9 +178,16 @@ public class GameManager : MonoBehaviour
             readGameFlowState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
-        //sm.AddTransition(
-        //    levelBeatenState,
-        //    null,
-        //    sm.CreateTriggerCondition(GameTrigger.GotoNextLevel));
+        // game is over since read game flow state can't find anything else
+        sm.AddTransition(
+            readGameFlowState,
+            gameOverState,
+            sm.CreateTriggerCondition(GameTrigger.GotoGameOver));
+
+        // in the game over state, the only option is to go back to the main menu
+        sm.AddTransition(
+            gameOverState,
+            menuState,
+            sm.CreateTriggerCondition(GameTrigger.GotoMainMenu));
     }
 }

@@ -28,6 +28,9 @@ public class BlackBoard : MonoBehaviour
     [Header("Instruction State")]
     public Button InstructionStartGame = null;
 
+    [Header("All Levels Beaten")]
+    public Button GotoMainMenu = null;
+
     [Header("General Game")]
     public Camera2DFollow CameraFollow = null;
     public GameObject Grid = null;
@@ -78,6 +81,8 @@ public class BlackBoard : MonoBehaviour
         Assert.IsNotNull(CountDownText);
 
         Assert.IsNotNull(InstructionStartGame);
+
+        Assert.IsNotNull(GotoMainMenu);
 
         Assert.IsNotNull(Tilemap);
         Assert.IsNotNull(Grid);

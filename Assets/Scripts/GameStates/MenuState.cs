@@ -11,8 +11,8 @@
 
         if (addedCallback == false)
         {
-            addedCallback = true;
             blackBoard.StartGameButton.onClick.AddListener(() => ActivateTrigger(GameTrigger.NextState));
+            addedCallback = true;
         }
     }
 
