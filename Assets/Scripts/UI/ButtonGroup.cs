@@ -45,7 +45,6 @@ public class ButtonGroup : MonoBehaviour
 
     private void UpdateButtonNormalColor(int index, Color color)
     {
-        Debug.Log(index);
         ColorBlock colors = buttons[index].colors;
         colors.normalColor = color;
         buttons[index].colors = colors;

@@ -12,9 +12,16 @@ using LightJson;
 
 public class BlackBoard : MonoBehaviour
 {
+    [Header("Main Menu")]
+    public Button StartGameButton = null;
+    public Button ConfigButton = null;
+
+    [Header("Config")]
+    public GameObject ConfigGameObject = null;
+    public Button ConfigBackButton = null;
+
     [Header("Play State")]
     public Button TryLevelAgainButton = null;
-    public Button StartGameButton = null;
 
     [Header("Beat Level State")]
     public Button PlayLevelAgainButton = null;
@@ -71,9 +78,14 @@ public class BlackBoard : MonoBehaviour
 
     private void Awake()
     {
+        Assert.IsNotNull(StartGameButton);
+        Assert.IsNotNull(ConfigButton);
+
+        Assert.IsNotNull(ConfigGameObject);
+        Assert.IsNotNull(ConfigBackButton);
+
         Assert.IsNotNull(CameraFollow);
         Assert.IsNotNull(TryLevelAgainButton);
-        Assert.IsNotNull(StartGameButton);
 
         Assert.IsNotNull(PlayLevelAgainButton);
         Assert.IsNotNull(GotoNextLevelButton);

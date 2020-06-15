@@ -2,19 +2,18 @@
 using UnityEngine;
 
 using Tools.AI.StateMachine;
-using System;
 
 public enum GameTrigger
 { 
     NextState = 0,
     ReplayLevel,
     SetUpConfig,
-    GotoSurvey,
     GotoGame,
     PlayerDied,
     PlayerWon,
     GotoMainMenu,
-    GotoGameOver
+    GotoGameOver,
+    GotoConfig
 }
 
 public enum GameBool
@@ -54,9 +53,8 @@ public class GameManager : MonoBehaviour
 
     private void ConstructStateMachine()
     {
-        sm = new StateMachine<GameBool, GameTrigger>(verbose: true);
+        sm = new StateMachine<GameBool, GameTrigger>(verbose: false);
 
-        PostGameSurveyState postGameSurveyState = new PostGameSurveyState(blackBoard);
         GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
         ReadGameFlowState readGameFlowState = new ReadGameFlowState(blackBoard);
         InstructionState instructionState = new InstructionState(blackBoard);
@@ -64,7 +62,6 @@ public class GameManager : MonoBehaviour
         CountDownState countDownState = new CountDownState(blackBoard);
         GameOverState gameOverState = new GameOverState(blackBoard);
         EndGameState endGameState = new EndGameState(blackBoard);
-        SurveyState surveyState = new SurveyState(blackBoard);
         ConfigState configState = new ConfigState(blackBoard);
         DeathState deathState = new DeathState(blackBoard);
         MenuState menuState = new MenuState(blackBoard);
@@ -72,7 +69,6 @@ public class GameManager : MonoBehaviour
         EmptyState emptyState = new EmptyState();
 
         sm.AddEntryState(emptyState);
-        sm.AddState(postGameSurveyState);
         sm.AddState(generateLevelState);
         sm.AddState(readGameFlowState);
         sm.AddState(instructionState);
@@ -80,7 +76,6 @@ public class GameManager : MonoBehaviour
         sm.AddState(countDownState);
         sm.AddState(gameOverState);
         sm.AddState(endGameState);
-        sm.AddState(surveyState);
         sm.AddState(configState);
         sm.AddState(deathState);
         sm.AddState(menuState);
@@ -92,18 +87,30 @@ public class GameManager : MonoBehaviour
             menuState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
+        // menu to config
+        sm.AddTransition(
+            menuState,
+            configState,
+            sm.CreateTriggerCondition(GameTrigger.GotoConfig));
+
+        // config back to menu
+        sm.AddTransition(
+            configState,
+            menuState,
+            sm.CreateTriggerCondition(GameTrigger.GotoMainMenu));
+
         // menu straight to game if the player has already seen the instructions
         sm.AddTransition(
             menuState,
             readGameFlowState,
-            sm.CreateTriggerCondition(GameTrigger.NextState),
+            sm.CreateTriggerCondition(GameTrigger.GotoGame),
             sm.CreateBoolCondition(GameBool.HasSeenInstructions, true));
 
         // menu to instructions
         sm.AddTransition(
             menuState,
             instructionState,
-            sm.CreateTriggerCondition(GameTrigger.NextState),
+            sm.CreateTriggerCondition(GameTrigger.GotoGame),
             sm.CreateBoolCondition(GameBool.HasSeenInstructions, false));
 
         // instruction to start game state
@@ -111,12 +118,6 @@ public class GameManager : MonoBehaviour
             instructionState,
             readGameFlowState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
-
-        // reading game to generating survey 
-        sm.AddTransition(
-            readGameFlowState,
-            surveyState,
-            sm.CreateTriggerCondition(GameTrigger.GotoSurvey));
 
         // reading game to config to set up variables
         sm.AddTransition(

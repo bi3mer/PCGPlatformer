@@ -4,10 +4,7 @@ public class ReadGameFlowState : BaseState
 {
     protected override string DefaultName => "Read Game Flow State";
 
-    public ReadGameFlowState(BlackBoard blackBoard) : base(blackBoard)
-    {
-
-    }
+    public ReadGameFlowState(BlackBoard blackBoard) : base(blackBoard) { }
 
     protected override void OnStateEnter()
     {
@@ -22,17 +19,10 @@ public class ReadGameFlowState : BaseState
         {
             ActivateTrigger(GameTrigger.GotoGame);
         }
-        else if (flow[index].AsJsonObject[FlowKeys.Type].AsString.Equals(FlowTypeValues.TypeConfig))
-        {
-            ActivateTrigger(GameTrigger.SetUpConfig);
-        }
         else
         {
-            ActivateTrigger(GameTrigger.GotoSurvey);
+            UnityEngine.Debug.Log($"{flow[index].AsJsonObject[FlowKeys.Type].AsString} is unhandled.");
+            ActivateTrigger(GameTrigger.GotoGameOver);
         }
-    }
-
-    protected override void OnStateExit()
-    {
     }
 }
