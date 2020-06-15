@@ -23,16 +23,19 @@ public class UpdateSliderText : MonoBehaviour
 
     private void Start()
     {
-        slider.onValueChanged.AddListener((float val) =>
+        UpdateValues(slider.value);
+        slider.onValueChanged.AddListener(UpdateValues);
+    }
+
+    private void UpdateValues(float val)
+    {
+        if (slider.wholeNumbers)
         {
-            if (slider.wholeNumbers)
-            {
-                text.text = $"{start}{(int) val}";
-            }
-            else
-            { 
-                text.text = $"{start}{val}";
-            }
-        });
+            text.text = $"{start}{(int)val}";
+        }
+        else
+        {
+            text.text = $"{start}{val}";
+        }
     }
 }
