@@ -37,6 +37,7 @@ public class InstructionState : BaseState
 
         if (time > 3.0)
         {
+            PlayerPrefs.SetInt(PlayerPrefKeys.HasSeenInstructions, 1);
             blackBoard.InstructionStartGame.gameObject.SetActive(true);
         }
     }

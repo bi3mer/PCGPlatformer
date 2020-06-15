@@ -16,6 +16,7 @@ public enum GameTrigger
 
 public enum GameBool
 { 
+    HasSeenInstructions = 0
 }
 
 [RequireComponent(typeof(BlackBoard))]
@@ -36,6 +37,10 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         sm.Start();
+        sm.SetBoolImmediate(
+            GameBool.HasSeenInstructions, 
+            PlayerPrefs.HasKey(PlayerPrefKeys.HasSeenInstructions));
+
         sm.ActivateTriggerDeferred(GameTrigger.NextState);
     }
 
@@ -82,11 +87,19 @@ public class GameManager : MonoBehaviour
             menuState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
+        // menu straight to game if the player has already seen the instructions
+        sm.AddTransition(
+            menuState,
+            readGameFlowState,
+            sm.CreateTriggerCondition(GameTrigger.NextState),
+            sm.CreateBoolCondition(GameBool.HasSeenInstructions, true));
+
         // menu to instructions
         sm.AddTransition(
             menuState,
             instructionState,
-            sm.CreateTriggerCondition(GameTrigger.NextState));
+            sm.CreateTriggerCondition(GameTrigger.NextState),
+            sm.CreateBoolCondition(GameBool.HasSeenInstructions, false));
 
         // instruction to start game state
         sm.AddTransition(
