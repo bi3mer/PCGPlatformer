@@ -12,6 +12,9 @@ using LightJson;
 
 public class BlackBoard : MonoBehaviour
 {
+    [Header("Loading Screen")]
+    public GameObject LoadingScreen = null;
+
     [Header("Main Menu")]
     public Button StartGameButton = null;
     public Button ConfigButton = null;
@@ -59,31 +62,114 @@ public class BlackBoard : MonoBehaviour
     public JsonArray ActiveGameFlow = null;
 
     [HideInInspector]
-    public float TieredMemoryUpdate = 0.9f;
-
-    [HideInInspector]
-    public float DifficultyMemoryUpdate = 0.9f;
-
-    [HideInInspector]
-    public bool Tiered = false;
-
-    [HideInInspector]
-    public int N = 3;
-
-    [HideInInspector]
-    public bool DifficultyNGramActive = false;
-
-    [HideInInspector]
-    public int DifficultyLeft = 0;
-
-    [HideInInspector]
-    public int DifficultyRight = 0;
-
-    [HideInInspector]
     public List<string> LevelIds;
+
+    private JsonArray pcgPlatfromerData = null;
+    private JsonArray PCGPlatformerData
+    {
+        get
+        {
+            if (pcgPlatfromerData == null)
+            {
+                pcgPlatfromerData = LightJson.Serialization.JsonReader.Parse(PCGPlatformer.text);
+            }
+
+            return pcgPlatfromerData;
+        }
+    }
+
+    private JsonArray superMarioBrosData = null;
+    private JsonArray SuperMarioBrosData
+    {
+        get
+        {
+            if (superMarioBrosData == null)
+            {
+                superMarioBrosData = LightJson.Serialization.JsonReader.Parse(SuperMarioBros.text);
+            }
+
+            return superMarioBrosData;
+        }
+    }
+
+    private JsonArray superMarioBros2Data = null;
+    private JsonArray SuperMarioBros2Data
+    {
+        get
+        {
+            if (superMarioBros2Data == null)
+            {
+                superMarioBros2Data = LightJson.Serialization.JsonReader.Parse(SuperMarioBros2.text);
+            }
+
+            return superMarioBros2Data;
+        }
+    }
+
+    private JsonArray superMarioBros2JapanData = null;
+    private JsonArray SuperMarioBros2JapanData
+    {
+        get
+        {
+            if (superMarioBros2JapanData == null)
+            {
+                superMarioBros2JapanData = LightJson.Serialization.JsonReader.Parse(SuperMarioBros2Japan.text);
+            }
+
+            return superMarioBros2JapanData;
+        }
+    }
+
+    private JsonArray superMarioLandData = null;
+    private JsonArray SuperMarioLandData
+    {
+        get
+        {
+            if (superMarioLandData == null)
+            {
+                superMarioLandData = LightJson.Serialization.JsonReader.Parse(SuperMarioLand.text);
+            }
+
+            return superMarioLandData;
+        }
+    }
+
+    public JsonArray GameFlow
+    {
+        get 
+        {
+            JsonArray gameFlow;
+            switch (ConfigUI.Config.Game)
+            {
+                case Games.Custom:
+                    gameFlow = PCGPlatformerData;
+                    break;
+                case Games.SuperMariosBros:
+                    gameFlow = SuperMarioBrosData;
+                    break;
+                case Games.SuperMarioBros2:
+                    gameFlow = SuperMarioBros2Data;
+                    break;
+                case Games.SuperMarioBros2Japan:
+                    gameFlow = SuperMarioBros2JapanData;
+                    break;
+                case Games.SuperMarioLand:
+                    gameFlow = SuperMarioLandData;
+                    break;
+                default:
+                    gameFlow = PCGPlatformerData;
+                    Debug.LogError($"\"{ConfigUI.Config.Game}\" unhandled game type");
+                    break;
+            }
+
+            return gameFlow;
+        }
+    }
 
     private void Awake()
     {
+        Assert.IsNotNull(LoadingScreen);
+
         Assert.IsNotNull(StartGameButton);
         Assert.IsNotNull(ConfigButton);
 

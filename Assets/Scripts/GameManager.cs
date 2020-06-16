@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     private void ConstructStateMachine()
     {
-        sm = new StateMachine<GameBool, GameTrigger>(verbose: false);
+        sm = new StateMachine<GameBool, GameTrigger>(verbose: true);
 
         GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
         ReadGameFlowState readGameFlowState = new ReadGameFlowState(blackBoard);
@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
         CountDownState countDownState = new CountDownState(blackBoard);
         GameOverState gameOverState = new GameOverState(blackBoard);
         EndGameState endGameState = new EndGameState(blackBoard);
+        LoadingState loadingState = new LoadingState(blackBoard);
         ConfigState configState = new ConfigState(blackBoard);
         DeathState deathState = new DeathState(blackBoard);
         MenuState menuState = new MenuState(blackBoard);
@@ -76,14 +77,21 @@ public class GameManager : MonoBehaviour
         sm.AddState(countDownState);
         sm.AddState(gameOverState);
         sm.AddState(endGameState);
+        sm.AddState(loadingState);
         sm.AddState(configState);
         sm.AddState(deathState);
         sm.AddState(menuState);
         sm.AddState(playState);
 
-        // start by going to the menu
+        // start by going to the loading
         sm.AddTransition(
             emptyState,
+            loadingState,
+            sm.CreateTriggerCondition(GameTrigger.NextState));
+
+        // loading state always goes to the menu state
+        sm.AddTransition(
+            loadingState,
             menuState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 

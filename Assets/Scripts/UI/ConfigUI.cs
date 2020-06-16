@@ -55,9 +55,12 @@ public class ConfigUI : MonoBehaviour
     private Slider RightColumns = null;
 
     public Config Config { get; private set; }
+    public bool StartCalled { get; private set; }
 
     private void Awake()
     {
+        StartCalled = false;
+
         Assert.IsNotNull(Custom);
         Assert.IsNotNull(SuperMarioBros);
         Assert.IsNotNull(SuperMarioBros2);
@@ -165,5 +168,7 @@ public class ConfigUI : MonoBehaviour
         { 
             Config.DifficultyNGramRightColumns = (int) val;
         });
+
+        StartCalled = true;
     }
 }

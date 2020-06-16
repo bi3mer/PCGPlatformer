@@ -18,6 +18,6 @@ public class Config
     public float TieredGenerationMemoryUpdate;
     public bool DifficultyNGramEnabled;
     public float DifficultyNGramMemoryUpdate;
-    public float DifficultyNGramLeftColumns;
-    public float DifficultyNGramRightColumns;
+    public int DifficultyNGramLeftColumns;
+    public int DifficultyNGramRightColumns;
 }

@@ -2,7 +2,6 @@
 using UnityStandardAssets._2D;
 using UnityEngine;
 
-using Tools.AI.NGram.Utility;
 using Tools.Extensions;
 using Tools.AI.NGram;
 using LightJson;
@@ -22,12 +21,17 @@ public class GenerateLevelState : BaseState
 
     protected override void OnStateEnter()
     {
+        if (blackBoard.DifficultyNGram == null)
+        { 
+            blackBoard.DifficultyNGram = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
+        }
+
         if (grammar == null || blackBoard.ProgressIndex != previousIndex)
         {
             GenerateNGram();
         }
 
-        if (blackBoard.DifficultyNGramActive)
+        if (blackBoard.ConfigUI.Config.DifficultyNGramEnabled)
         {
             grammar.AddGrammar(blackBoard.DifficultyNGram);
         }
@@ -42,85 +46,74 @@ public class GenerateLevelState : BaseState
         ActivateTrigger(GameTrigger.NextState);
     }
 
-    protected override void OnStateExit()
-    {
-
-    }
-
     private void GenerateNGram()
     {
-        Debug.LogWarning("Commented out for now.");
-        //JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
-        //JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
-        
-        //grammar = NGramFactory.InitializeGrammar(blackBoard.N);
+        JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
+        JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
 
-        //if (blackBoard.Tiered)
-        //{
-        //    for (int i = 0; i < blackBoard.ProgressIndex; ++i)
-        //    {
-        //        JsonObject tierInfo = blackBoard.GameFlow[i].AsJsonObject;
+        grammar = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
 
-        //        if (tierInfo[FlowKeys.Type].AsString.Equals(FlowTypeValues.TypeGame))
-        //        {
-        //            JsonArray tierLevels = tierInfo[FlowKeys.LevelNames].AsJsonArray;
-        //            foreach (string levelName in tierLevels)
-        //            {
-        //                List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
-        //                List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
+        if (blackBoard.ConfigUI.Config.UsingTieredGeneration)
+        {
+            for (int i = 0; i < blackBoard.ProgressIndex; ++i)
+            {
+                JsonObject tierInfo = blackBoard.GameFlow[i].AsJsonObject;
+                JsonArray tierLevels = tierInfo[FlowKeys.LevelNames].AsJsonArray;
+                foreach (string levelName in tierLevels)
+                {
+                    List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
+                    List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
 
-        //                NGramTrainer.Train(grammar, tokens);
-        //                levelTokens.Add(tokens);
+                    NGramTrainer.Train(grammar, tokens);
+                    levelTokens.Add(tokens);
 
-        //                grammar.UpdateMemory(blackBoard.TieredMemoryUpdate);
-        //            }
+                    grammar.UpdateMemory(blackBoard.ConfigUI.Config.TieredGenerationMemoryUpdate);
+                }
 
-        //            levelTokens.Clear();
-        //        }
-        //    }
-        //}
+                levelTokens.Clear();
+            }
+        }
 
-        //foreach (JsonValue levelName in levels)
-        //{
-        //    List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
-        //    List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
+        foreach (JsonValue levelName in levels)
+        {
+            List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
+            List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
 
-        //    NGramTrainer.Train(grammar, tokens);
-        //    levelTokens.Add(tokens);
-        //}
+            NGramTrainer.Train(grammar, tokens);
+            levelTokens.Add(tokens);
+        }
     }
 
     private void GenerateLevel()
     {
-        Debug.LogError("commented out for now.");
-        //JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
-        //int minSize = info[FlowKeys.MinSize].AsInteger;
-        //int maxSize = info[FlowKeys.MaxSize].AsInteger;
+        JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
+        int minSize = blackBoard.ConfigUI.Config.MinLevelSize;
+        int maxSize = blackBoard.ConfigUI.Config.MaxLevelSize;
 
-        //ICompiledGram cGram = grammar.Compile();
-        //List<string> levelIDs = NGramGenerator.Generate(
-        //    cGram,
-        //    levelTokens.RandomValue().GetRange(0, blackBoard.N + 4),
-        //    minSize,
-        //    maxSize);
+        ICompiledGram cGram = grammar.Compile();
+        List<string> levelIDs = NGramGenerator.Generate(
+            cGram,
+            levelTokens.RandomValue().GetRange(0, blackBoard.ConfigUI.Config.N + 4),
+            minSize,
+            maxSize);
 
-        //List<List<string>> level = new List<List<string>>();
-        //foreach (string columnID in levelIDs)
-        //{
-        //    List<string> column = new List<string>();
-        //    string col = blackBoard.iDContainer.GetToken(columnID);
+        List<List<string>> level = new List<List<string>>();
+        foreach (string columnID in levelIDs)
+        {
+            List<string> column = new List<string>();
+            string col = blackBoard.iDContainer.GetToken(columnID);
 
-        //    foreach (char tileCharacter in col)
-        //    {
-        //        column.Add(tileCharacter.ToString());
-        //    }
+            foreach (char tileCharacter in col)
+            {
+                column.Add(tileCharacter.ToString());
+            }
 
-        //    level.Add(column);
-        //}
+            level.Add(column);
+        }
 
-        //blackBoard.LevelIds = levelIDs;
-        //blackBoard.Grid.SetActive(true);
-        //blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
+        blackBoard.LevelIds = levelIDs;
+        blackBoard.Grid.SetActive(true);
+        blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
     }
 
     private void SetUpPlayer()

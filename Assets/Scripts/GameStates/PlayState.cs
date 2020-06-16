@@ -19,7 +19,7 @@ public class PlayState : BaseState
 
     protected override void OnStateExit()
     {
-        if (blackBoard.DifficultyNGramActive)
+        if (blackBoard.ConfigUI.Config.DifficultyNGramEnabled)
         { 
             UpdateDifficultyNGram();
         }
@@ -37,8 +37,8 @@ public class PlayState : BaseState
     private void UpdateDifficultyNGram()
     {
         Vector3 playerPosition = blackBoard.LevelInfo.Player.transform.position;
-        int toRight = blackBoard.DifficultyRight;
-        int toLeft = blackBoard.DifficultyLeft;
+        int toRight = blackBoard.ConfigUI.Config.DifficultyNGramRightColumns;
+        int toLeft = blackBoard.ConfigUI.Config.DifficultyNGramLeftColumns;
         Tilemap tilemap = blackBoard.Tilemap;
 
         Vector3Int tilePosition = tilemap.WorldToCell(playerPosition);
@@ -46,7 +46,7 @@ public class PlayState : BaseState
         int x = Math.Max(tilePosition.x - toLeft, tilemap.cellBounds.xMin);
         int xMax = Math.Min(tilePosition.x + toRight, tilemap.cellBounds.xMax - 1);
 
-        blackBoard.DifficultyNGram.UpdateMemory(blackBoard.DifficultyMemoryUpdate);
+        blackBoard.DifficultyNGram.UpdateMemory(blackBoard.ConfigUI.Config.DifficultyNGramMemoryUpdate);
         NGramTrainer.Train(blackBoard.DifficultyNGram, blackBoard.LevelIds.GetRange(x, xMax - x + 1));
     }
 }
