@@ -169,6 +169,12 @@ public class GameManager : MonoBehaviour
             generateLevelState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
+        // death state back to main menu
+        sm.AddTransition(
+            deathState,
+            menuState,
+            sm.CreateTriggerCondition(GameTrigger.GotoMainMenu));
+
         // play to level beaten
         sm.AddTransition(
             playState,

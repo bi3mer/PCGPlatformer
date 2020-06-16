@@ -7,11 +7,11 @@
 
     protected override void OnStateEnter()
     {
-        blackBoard.ConfigGameObject.SetActive(true);
+        blackBoard.ConfigUI.gameObject.SetActive(true);
 
         if (addedCallback == false)
         {
-            blackBoard.ConfigBackButton.onClick.AddListener(() =>
+            blackBoard.ConfigUI.BackButton.onClick.AddListener(() =>
             {
                 ActivateTrigger(GameTrigger.GotoMainMenu);
             });
@@ -20,6 +20,6 @@
 
     protected override void OnStateExit()
     {
-        blackBoard.ConfigGameObject.SetActive(false);
+        blackBoard.ConfigUI.gameObject.SetActive(false);
     }
 }

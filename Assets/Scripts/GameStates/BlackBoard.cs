@@ -20,23 +20,15 @@ public class BlackBoard : MonoBehaviour
     public Button ConfigButton = null;
 
     [Header("Config")]
-    public GameObject ConfigGameObject = null;
-    public Button ConfigBackButton = null;
     public ConfigUI ConfigUI = null;
 
-    [Header("Play State")]
-    public Button TryLevelAgainButton = null;
-
-    [Header("Beat Level State")]
-    public Button PlayLevelAgainButton = null;
-    public Button GotoNextLevelButton = null;
-    public Button GotoMainMenuButton = null;
+    [Header("Menu")]
+    public LevelBeatenMenu LevelBeatenMenu = null;
+    public DeathMenu DeathMenu = null;
 
     [Header("Count Down State")]
     public TextMeshProUGUI CountDownText = null;
 
-    [Header("Survey State")]
-    
     [Header("Instruction State")]
     public Button InstructionStartGame = null;
 
@@ -177,16 +169,12 @@ public class BlackBoard : MonoBehaviour
         Assert.IsNotNull(StartGameButton);
         Assert.IsNotNull(ConfigButton);
 
-        Assert.IsNotNull(ConfigGameObject);
-        Assert.IsNotNull(ConfigBackButton);
         Assert.IsNotNull(ConfigUI);
 
         Assert.IsNotNull(CameraFollow);
-        Assert.IsNotNull(TryLevelAgainButton);
 
-        Assert.IsNotNull(PlayLevelAgainButton);
-        Assert.IsNotNull(GotoNextLevelButton);
-        Assert.IsNotNull(GotoMainMenuButton);
+        Assert.IsNotNull(LevelBeatenMenu);
+        Assert.IsNotNull(DeathMenu);
 
         Assert.IsNotNull(CountDownText);
 

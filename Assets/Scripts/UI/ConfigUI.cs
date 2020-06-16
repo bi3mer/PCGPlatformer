@@ -4,82 +4,88 @@ using UnityEngine;
 
 public class ConfigUI : MonoBehaviour
 {
+    [SerializeField]
+    private Button backButton = null;
+
     [Header("Game Buttons")]
     [SerializeField]
-    private Button Custom = null;
+    private Button custom = null;
 
     [SerializeField]
-    private Button SuperMarioBros = null;
+    private Button superMarioBros = null;
 
     [SerializeField]
-    private Button SuperMarioBros2 = null;
+    private Button superMarioBros2 = null;
 
     [SerializeField]
-    private Button SuperMarioBros2Japan = null;
+    private Button superMarioBros2Japan = null;
 
     [SerializeField]
-    private Button SuperMarioLand = null;
+    private Button superMarioLand = null;
 
     [Header("Configuration Variables")]
     [SerializeField]
-    private Slider NLevel = null;
+    private Slider nLevel = null;
 
     [SerializeField]
-    private Toggle SimplifiedNGramEnabled = null;
+    private Toggle simplifiedNGramEnabled = null;
 
     [Header("Level Sizes")]
     [SerializeField]
-    private Slider MinLevelSize = null;
+    private Slider minLevelSize = null;
 
     [SerializeField]
-    private Slider MaxLevelSize = null;
+    private Slider maxLevelSize = null;
 
     [Header("Tiered Generation")]
     [SerializeField]
-    private Toggle TieredGenerationEnabled = null;
+    private Toggle tieredGenerationEnabled = null;
 
     [SerializeField]
-    private Slider TieredGenerationMemoryUpdate = null;
+    private Slider tieredGenerationMemoryUpdate = null;
 
     [Header("Difficulty N-Gram")]
     [SerializeField]
-    private Toggle DifficultyNGramEnabled = null;
+    private Toggle difficultyNGramEnabled = null;
 
     [SerializeField]
-    private Slider DifficultyNGramMemoryUpdate = null;
+    private Slider difficultyNGramMemoryUpdate = null;
 
     [SerializeField]
-    private Slider LeftColumns = null;
+    private Slider leftColumns = null;
 
     [SerializeField]
-    private Slider RightColumns = null;
+    private Slider rightColumns = null;
 
     public Config Config { get; private set; }
     public bool StartCalled { get; private set; }
+    public Button BackButton { get { return backButton; } }
 
     private void Awake()
     {
         StartCalled = false;
 
-        Assert.IsNotNull(Custom);
-        Assert.IsNotNull(SuperMarioBros);
-        Assert.IsNotNull(SuperMarioBros2);
-        Assert.IsNotNull(SuperMarioBros2Japan);
-        Assert.IsNotNull(SuperMarioLand);
+        Assert.IsNotNull(backButton);
 
-        Assert.IsNotNull(NLevel);
-        Assert.IsNotNull(SimplifiedNGramEnabled);
+        Assert.IsNotNull(custom);
+        Assert.IsNotNull(superMarioBros);
+        Assert.IsNotNull(superMarioBros2);
+        Assert.IsNotNull(superMarioBros2Japan);
+        Assert.IsNotNull(superMarioLand);
 
-        Assert.IsNotNull(MinLevelSize);
-        Assert.IsNotNull(MaxLevelSize);
+        Assert.IsNotNull(nLevel);
+        Assert.IsNotNull(simplifiedNGramEnabled);
 
-        Assert.IsNotNull(TieredGenerationEnabled);
-        Assert.IsNotNull(TieredGenerationMemoryUpdate);
+        Assert.IsNotNull(minLevelSize);
+        Assert.IsNotNull(maxLevelSize);
 
-        Assert.IsNotNull(DifficultyNGramEnabled);
-        Assert.IsNotNull(DifficultyNGramMemoryUpdate);
-        Assert.IsNotNull(LeftColumns);
-        Assert.IsNotNull(RightColumns);
+        Assert.IsNotNull(tieredGenerationEnabled);
+        Assert.IsNotNull(tieredGenerationMemoryUpdate);
+
+        Assert.IsNotNull(difficultyNGramEnabled);
+        Assert.IsNotNull(difficultyNGramMemoryUpdate);
+        Assert.IsNotNull(leftColumns);
+        Assert.IsNotNull(rightColumns);
     }
 
     private void Start()
@@ -87,84 +93,84 @@ public class ConfigUI : MonoBehaviour
         Config = new Config
         {
             Game = Games.Custom,
-            N = (int)NLevel.value,
-            UsingSimplifiedNGram = SimplifiedNGramEnabled.isOn,
-            MinLevelSize = (int)MinLevelSize.value,
-            MaxLevelSize = (int)MaxLevelSize.value,
-            UsingTieredGeneration = TieredGenerationEnabled.isOn,
-            TieredGenerationMemoryUpdate = (int)TieredGenerationMemoryUpdate.value,
-            DifficultyNGramEnabled = DifficultyNGramEnabled.isOn,
-            DifficultyNGramMemoryUpdate = DifficultyNGramMemoryUpdate.value,
-            DifficultyNGramLeftColumns = (int)LeftColumns.value,
-            DifficultyNGramRightColumns = (int)RightColumns.value
+            N = (int)nLevel.value,
+            UsingSimplifiedNGram = simplifiedNGramEnabled.isOn,
+            MinLevelSize = (int)minLevelSize.value,
+            MaxLevelSize = (int)maxLevelSize.value,
+            UsingTieredGeneration = tieredGenerationEnabled.isOn,
+            TieredGenerationMemoryUpdate = (int)tieredGenerationMemoryUpdate.value,
+            DifficultyNGramEnabled = difficultyNGramEnabled.isOn,
+            DifficultyNGramMemoryUpdate = difficultyNGramMemoryUpdate.value,
+            DifficultyNGramLeftColumns = (int)leftColumns.value,
+            DifficultyNGramRightColumns = (int)rightColumns.value
         };
 
-        Custom.onClick.AddListener(() =>
+        custom.onClick.AddListener(() =>
         {
             Config.Game = Games.Custom;
         });
 
-        SuperMarioBros.onClick.AddListener(() => 
+        superMarioBros.onClick.AddListener(() => 
         {
             Config.Game = Games.SuperMariosBros;
         });
 
-        SuperMarioBros2.onClick.AddListener(() => 
+        superMarioBros2.onClick.AddListener(() => 
         {
             Config.Game = Games.SuperMarioBros2;
         });
 
-        SuperMarioBros2Japan.onClick.AddListener(() => 
+        superMarioBros2Japan.onClick.AddListener(() => 
         {
             Config.Game = Games.SuperMarioBros2Japan;
         });
 
-        SuperMarioLand.onClick.AddListener(() => 
+        superMarioLand.onClick.AddListener(() => 
         {
             Config.Game = Games.SuperMarioLand;
         });
 
-        NLevel.onValueChanged.AddListener((float val) =>
+        nLevel.onValueChanged.AddListener((float val) =>
         {
             Config.N = (int)val;
         });
 
-        MinLevelSize.onValueChanged.AddListener((float val) =>
+        minLevelSize.onValueChanged.AddListener((float val) =>
         {
             Config.MinLevelSize = (int)val;
         });
 
-        MaxLevelSize.onValueChanged.AddListener((float val) =>
+        maxLevelSize.onValueChanged.AddListener((float val) =>
         {
             Config.MaxLevelSize = (int)val;
         });
 
-        TieredGenerationEnabled.onValueChanged.AddListener((bool val) =>
+        tieredGenerationEnabled.onValueChanged.AddListener((bool val) =>
         {
             Config.UsingTieredGeneration = val;
         });
 
-        TieredGenerationMemoryUpdate.onValueChanged.AddListener((float val) => 
+        tieredGenerationMemoryUpdate.onValueChanged.AddListener((float val) => 
         {
             Config.TieredGenerationMemoryUpdate = val;
         });
 
-        DifficultyNGramEnabled.onValueChanged.AddListener((bool val) => 
+        difficultyNGramEnabled.onValueChanged.AddListener((bool val) => 
         {
             Config.DifficultyNGramEnabled = val;
         });
 
-        DifficultyNGramMemoryUpdate.onValueChanged.AddListener((float val) => 
+        difficultyNGramMemoryUpdate.onValueChanged.AddListener((float val) => 
         {
             Config.DifficultyNGramMemoryUpdate = val;
         });
 
-        LeftColumns.onValueChanged.AddListener((float val) => 
+        leftColumns.onValueChanged.AddListener((float val) => 
         { 
             Config.DifficultyNGramLeftColumns = (int) val;
         });
 
-        RightColumns.onValueChanged.AddListener((float val) => 
+        rightColumns.onValueChanged.AddListener((float val) => 
         { 
             Config.DifficultyNGramRightColumns = (int) val;
         });

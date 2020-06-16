@@ -10,21 +10,28 @@
 
     protected override void OnStateEnter()
     {
-        blackBoard.TryLevelAgainButton.transform.parent.gameObject.SetActive(true);
+        blackBoard.DeathMenu.gameObject.SetActive(true);
 
         if (addedCallback == false)
         {
             addedCallback = true;
 
-            blackBoard.TryLevelAgainButton.onClick.AddListener(() =>
+            blackBoard.DeathMenu.ReplayLevelButton.onClick.AddListener(() =>
             {
                 ActivateTrigger(GameTrigger.NextState);
+            });
+
+            blackBoard.DeathMenu.GotoMainMenuButton.onClick.AddListener(() => 
+            {
+                blackBoard.ProgressIndex = 0;
+                blackBoard.Reset = true;
+                ActivateTrigger(GameTrigger.GotoMainMenu);
             });
         }
     }
 
     protected override void OnStateExit()
     {
-        blackBoard.TryLevelAgainButton.transform.parent.gameObject.SetActive(false);
+        blackBoard.DeathMenu.gameObject.SetActive(false);
     }
 }
