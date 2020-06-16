@@ -1,4 +1,5 @@
 ﻿using LightJson;
+using System.Diagnostics;
 
 public class ReadGameFlowState : BaseState
 {
@@ -8,21 +9,22 @@ public class ReadGameFlowState : BaseState
 
     protected override void OnStateEnter()
     {
-        JsonArray flow = blackBoard.GameFlow;
-        int index = blackBoard.ProgressIndex;
+        UnityEngine.Debug.LogWarning("commented out for now.");
+        //JsonArray flow = blackBoard.GameFlow;
+        //int index = blackBoard.ProgressIndex;
 
-        if (index >= flow.Count) 
-        {
-            ActivateTrigger(GameTrigger.GotoGameOver);
-        }
-        else if (flow[index].AsJsonObject[FlowKeys.Type].AsString.Equals(FlowTypeValues.TypeGame))
-        {
-            ActivateTrigger(GameTrigger.GotoGame);
-        }
-        else
-        {
-            UnityEngine.Debug.Log($"{flow[index].AsJsonObject[FlowKeys.Type].AsString} is unhandled.");
-            ActivateTrigger(GameTrigger.GotoGameOver);
-        }
+        //if (index >= flow.Count) 
+        //{
+        //    ActivateTrigger(GameTrigger.GotoGameOver);
+        //}
+        //else if (flow[index].AsJsonObject[FlowKeys.Type].AsString.Equals(FlowTypeValues.TypeGame))
+        //{
+        //    ActivateTrigger(GameTrigger.GotoGame);
+        //}
+        //else
+        //{
+        //    UnityEngine.Debug.Log($"{flow[index].AsJsonObject[FlowKeys.Type].AsString} is unhandled.");
+        //    ActivateTrigger(GameTrigger.GotoGameOver);
+        //}
     }
 }

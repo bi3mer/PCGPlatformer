@@ -19,6 +19,7 @@ public class BlackBoard : MonoBehaviour
     [Header("Config")]
     public GameObject ConfigGameObject = null;
     public Button ConfigBackButton = null;
+    public ConfigUI ConfigUI = null;
 
     [Header("Play State")]
     public Button TryLevelAgainButton = null;
@@ -43,14 +44,19 @@ public class BlackBoard : MonoBehaviour
     public GameObject Grid = null;
     public Tilemap Tilemap = null;
 
-    public string GameFlowName = null;
-    public JsonArray GameFlow = null;
     public int ProgressIndex = 0;
 
+    [Header("Game Flows")]
+    public TextAsset PCGPlatformer = null;
+    public TextAsset SuperMarioLand = null;
+    public TextAsset SuperMarioBros = null;
+    public TextAsset SuperMarioBros2 = null;
+    public TextAsset SuperMarioBros2Japan = null;
 
-    public NGramIDContainer iDContainer = new NGramIDContainer(idSize: 2);
+    public NGramIDContainer iDContainer = new NGramIDContainer(idSize: 5);
     public LevelInfo LevelInfo = null;
     public IGram DifficultyNGram;
+    public JsonArray ActiveGameFlow = null;
 
     [HideInInspector]
     public float TieredMemoryUpdate = 0.9f;
@@ -83,6 +89,7 @@ public class BlackBoard : MonoBehaviour
 
         Assert.IsNotNull(ConfigGameObject);
         Assert.IsNotNull(ConfigBackButton);
+        Assert.IsNotNull(ConfigUI);
 
         Assert.IsNotNull(CameraFollow);
         Assert.IsNotNull(TryLevelAgainButton);
@@ -99,8 +106,10 @@ public class BlackBoard : MonoBehaviour
         Assert.IsNotNull(Tilemap);
         Assert.IsNotNull(Grid);
 
-        Assert.IsFalse(string.IsNullOrEmpty(GameFlowName));
-        TextAsset text = Resources.Load<TextAsset>($"GameFlow/{GameFlowName}");
-        GameFlow = JsonValue.Parse(text.text).AsJsonArray;
+        Assert.IsNotNull(PCGPlatformer);
+        Assert.IsNotNull(SuperMarioLand);
+        Assert.IsNotNull(SuperMarioBros);
+        Assert.IsNotNull(SuperMarioBros2);
+        Assert.IsNotNull(SuperMarioBros2Japan);
     }
 }
