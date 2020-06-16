@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Level 1-1",
+    "resources": [ "super_mario_land_11" ]
+  },
+  {
+    "title": "Level 1-2",
+    "resources": [ "super_mario_land_12" ]
+  },
+  {
+    "title": "Level 1-3",
+    "resources": [ "super_mario_land_13" ]
+  },
+  {
+    "title": "Level 2-1",
+    "resources": [ "super_mario_land_21" ]
+  },
+  {
+    "title": "Level 2-2",
+    "resources": [ "super_mario_land_22" ]
+  },
+  {
+    "title": "Level 3-1",
+    "resources": [ "super_mario_land_31" ]
+  },
+  {
+    "title": "Level 3-2",
+    "resources": [ "super_mario_land_32" ]
+  },
+  {
+    "title": "Level 3-3",
+    "resources": [ "super_mario_land_33" ]
+  },
+  {
+    "title": "Level 4-2",
+    "resources": [ "super_mario_land_42" ]
+  }
+]

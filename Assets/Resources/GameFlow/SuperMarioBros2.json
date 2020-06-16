@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Level 1",
+    "resources": [ "mario_1" ]
+  },
+  {
+    "title": "Level 2",
+    "resources": [ "mario_2" ]
+  },
+  {
+    "title": "Level 3",
+    "resources": [ "mario_3" ]
+  },
+  {
+    "title": "Level 4",
+    "resources": [ "mario_4" ]
+  },
+  {
+    "title": "Level 5",
+    "resources": [ "mario_5" ]
+  },
+  {
+    "title": "Level 6",
+    "resources": [ "mario_6" ]
+  },
+  {
+    "title": "Level 7",
+    "resources": [ "mario_7" ]
+  },
+  {
+    "title": "Level 8",
+    "resources": [ "mario_8" ]
+  },
+  {
+    "title": "Level 9",
+    "resources": [ "mario_9" ]
+  },
+  {
+    "title": "Level 10",
+    "resources": [ "mario_10" ]
+  },
+  {
+    "title": "Level 11",
+    "resources": [ "mario_11" ]
+  },
+  {
+    "title": "Level 12",
+    "resources": [ "mario_12" ]
+  },
+  {
+    "title": "Level 13",
+    "resources": [ "mario_13" ]
+  },
+  {
+    "title": "Level 14",
+    "resources": [ "mario_14" ]
+  },
+  {
+    "title": "Level 15",
+    "resources": [ "mario_15" ]
+  },
+  {
+    "title": "Level 16",
+    "resources": [ "mario_16" ]
+  }
+]
