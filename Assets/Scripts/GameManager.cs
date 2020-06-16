@@ -187,6 +187,12 @@ public class GameManager : MonoBehaviour
             readGameFlowState,
             sm.CreateTriggerCondition(GameTrigger.NextState));
 
+        // level beaten back to the main menu
+        sm.AddTransition(
+            levelBeatenState,
+            menuState,
+            sm.CreateTriggerCondition(GameTrigger.GotoMainMenu));
+
         // game is over since read game flow state can't find anything else
         sm.AddTransition(
             readGameFlowState,

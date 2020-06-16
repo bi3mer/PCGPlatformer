@@ -30,6 +30,7 @@ public class BlackBoard : MonoBehaviour
     [Header("Beat Level State")]
     public Button PlayLevelAgainButton = null;
     public Button GotoNextLevelButton = null;
+    public Button GotoMainMenuButton = null;
 
     [Header("Count Down State")]
     public TextMeshProUGUI CountDownText = null;
@@ -63,6 +64,9 @@ public class BlackBoard : MonoBehaviour
 
     [HideInInspector]
     public List<string> LevelIds;
+
+    [HideInInspector]
+    public bool Reset = true;
 
     private JsonArray pcgPlatfromerData = null;
     private JsonArray PCGPlatformerData
@@ -182,6 +186,7 @@ public class BlackBoard : MonoBehaviour
 
         Assert.IsNotNull(PlayLevelAgainButton);
         Assert.IsNotNull(GotoNextLevelButton);
+        Assert.IsNotNull(GotoMainMenuButton);
 
         Assert.IsNotNull(CountDownText);
 

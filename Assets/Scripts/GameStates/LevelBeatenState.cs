@@ -27,6 +27,12 @@
             {
                 ActivateTrigger(GameTrigger.ReplayLevel);
             });
+
+            blackBoard.GotoMainMenuButton.onClick.AddListener(() => 
+            {
+                ActivateTrigger(GameTrigger.GotoMainMenu);
+                blackBoard.Reset = true;
+            });
         }
     }
 

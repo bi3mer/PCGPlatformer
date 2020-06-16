@@ -21,15 +21,26 @@ public class GenerateLevelState : BaseState
 
     protected override void OnStateEnter()
     {
-        if (blackBoard.DifficultyNGram == null)
-        { 
-            blackBoard.DifficultyNGram = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
-        }
-
-        if (grammar == null || blackBoard.ProgressIndex != previousIndex)
+        if (blackBoard.Reset)
         {
+            blackBoard.DifficultyNGram = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
             GenerateNGram();
+
+            blackBoard.Reset = false;
         }
+        else
+        {
+            if (blackBoard.DifficultyNGram == null)
+            {
+                blackBoard.DifficultyNGram = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
+            }
+
+            if (grammar == null || blackBoard.ProgressIndex != previousIndex)
+            {
+                GenerateNGram();
+            }
+        }
+        
 
         if (blackBoard.ConfigUI.Config.DifficultyNGramEnabled)
         {
@@ -86,7 +97,6 @@ public class GenerateLevelState : BaseState
 
     private void GenerateLevel()
     {
-        JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
         int minSize = blackBoard.ConfigUI.Config.MinLevelSize;
         int maxSize = blackBoard.ConfigUI.Config.MaxLevelSize;
 

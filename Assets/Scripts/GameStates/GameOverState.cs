@@ -9,6 +9,7 @@
     {
         blackBoard.GotoMainMenu.transform.parent.gameObject.SetActive(true);
         blackBoard.ProgressIndex = 0;
+        blackBoard.Reset = true;
 
         if (addedCallback == false)
         {
