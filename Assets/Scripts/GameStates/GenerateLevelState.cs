@@ -14,10 +14,7 @@ public class GenerateLevelState : BaseState
     private IGram grammar = null;
     private int previousIndex = -1;
 
-    public GenerateLevelState(BlackBoard blackBoard) : base(blackBoard)
-    {
-
-    }
+    public GenerateLevelState(BlackBoard blackBoard) : base(blackBoard) { }
 
     protected override void OnStateEnter()
     {

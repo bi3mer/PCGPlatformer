@@ -11,7 +11,7 @@ namespace PCG
 
             if (text == null)
             {
-                Debug.LogWarning($"Level {levelName} was not found and cannot be loaded.");
+                Debug.LogError($"Level {levelName} was not found and cannot be loaded.");
                 return null;
             }   
 
