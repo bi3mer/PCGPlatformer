@@ -8,6 +8,7 @@ using UnityEngine;
 using System.IO;
 
 using LightJson;
+using Boo.Lang;
 
 public class LevelBuilder : MonoBehaviour
 {
@@ -71,11 +72,11 @@ public class LevelBuilder : MonoBehaviour
         int yMin = tilemap.cellBounds.yMin;
         int yMax = tilemap.cellBounds.yMax;
 
-        JsonArray map = new JsonArray();
+        List<string> rows = new List<string>();
 
         for (int y = yMax; y >= yMin; --y)
         {
-            JsonArray row = new JsonArray();
+            string row = "";
             for (int x = xMin; x < xMax; ++x)
             {
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
@@ -83,7 +84,7 @@ public class LevelBuilder : MonoBehaviour
                 string name;
                 if (tile == null)
                 {
-                    name = "";
+                    name = "-";
                 }
                 else
                 {
@@ -99,27 +100,27 @@ public class LevelBuilder : MonoBehaviour
                     t = t.GetReverse();
                 }
 
-                row.Add(t.ToMapString());
+                row = $"{row}{t.ToMapString()}";
             }
 
-            map.Add(row);
+            rows.Add(row);
         }
 
-        RemoveRows(map);
-        return map.ToString();
+        RemoveRows(rows);
+        return rows.Join("\n");
     }
 
-    private void RemoveRows(JsonArray map)
+    private void RemoveRows(List<string> rows)
     {
         // remove all empty rows starting from 0
         int rowsToRemove = 0;
-        for (int y = 0; y < map.Count; ++y)
+        for (int y = 0; y < rows.Count; ++y)
         {
-            JsonArray row = map[y].AsJsonArray;
+            string row = rows[y];
             bool removeRow = true;
-            for (int x = 0; x < row.Count; ++x)
+            for (int x = 0; x < row.Length; ++x)
             {
-                if (row[x] != " ")
+                if (row[x] != '-')
                 {
                     removeRow = false;
                     break;
@@ -138,18 +139,18 @@ public class LevelBuilder : MonoBehaviour
 
         for (int i = 0; i < rowsToRemove; ++i)
         {
-            map.Remove(0);
+            rows.RemoveAt(0);
         }
 
         // remove all empty rows starting length - 1
         rowsToRemove = 0;
-        for (int y = map.Count - 1; y >= 0; --y)
+        for (int y = rows.Count - 1; y >= 0; --y)
         {
-            JsonArray row = map[y].AsJsonArray;
+            string row = rows[y];
             bool removeRow = true;
-            for (int x = 0; x < row.Count; ++x)
+            for (int x = 0; x < row.Length; ++x)
             {
-                if (row[x] != " ")
+                if (row[x] != '-')
                 {
                     removeRow = false;
                     break;
@@ -168,9 +169,8 @@ public class LevelBuilder : MonoBehaviour
         
         for (int i = 0; i < rowsToRemove; ++i)
         {
-            map.Remove(map.Count - 1);
+            rows.RemoveAt(rows.Count - 1);
         }
     }
 }
-
 #endif

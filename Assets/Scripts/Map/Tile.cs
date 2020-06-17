@@ -24,7 +24,7 @@ public static class TileExtensions
     {
         switch (tileName)
         {
-            case "":
+            case "-":
                 return Tile.empty;
             case "Crate":
                 return Tile.crate;
@@ -58,7 +58,7 @@ public static class TileExtensions
         switch (tile)
         {
             case Tile.empty:
-                return " ";
+                return "-";
             case Tile.block:
                 return "b";
             case Tile.crate:
@@ -90,8 +90,7 @@ public static class TileExtensions
     {
         switch (id)
         {
-            case " ":
-            case "":
+            case "-":
                 return Tile.empty;
             case "b":
                 return Tile.block;
@@ -126,7 +125,7 @@ public static class TileExtensions
         switch (tile)
         {
             case Tile.empty:
-                return "";
+                return "-";
             case Tile.block:
                 return "Blocks_0";
             case Tile.crate:
