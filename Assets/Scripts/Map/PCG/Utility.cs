@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using LightJson;
 
 namespace PCG
 {
     public static class Utility
     {
-        public static JsonArray Load(string levelName)
+        public static string[] Load(string levelName)
         {
             TextAsset text = Resources.Load<TextAsset>($"Levels/{levelName}");
 
@@ -16,7 +15,7 @@ namespace PCG
             }   
 
 
-            return JsonValue.Parse(text.text).AsJsonArray;
+            return text.text.Split('\n');
           }
     }
 }

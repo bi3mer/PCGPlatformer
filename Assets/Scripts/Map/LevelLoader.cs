@@ -3,20 +3,19 @@ using UnityEngine.Tilemaps;
 using UnityEngine;
 
 using UnityStandardAssets._2D;
-using LightJson;
 
 public static class LevelLoader
 {
-    public static LevelInfo Build(List<List<string>> tiles, Tilemap tilemap, Camera2DFollow follow)
+    public static LevelInfo Build(List<List<char>> tiles, Tilemap tilemap, Camera2DFollow follow)
     {
         LevelInfo li = new LevelInfo();
         tilemap.ClearAllTiles();
         
         int x = 0;
-        foreach (List<string> row in tiles)
+        foreach (List<char> row in tiles)
         {
             int y = row.Count;
-            foreach (string tile in row)
+            foreach (char tile in row)
             {
                 BuildTile(tile, x, y, tilemap, follow, li);
                 --y;
@@ -32,13 +31,13 @@ public static class LevelLoader
     {
         LevelInfo li = new LevelInfo();
         tilemap.ClearAllTiles();
-        JsonArray matrix = Load(levelName);
+        string[] rows = Load(levelName);
 
-        int y = matrix.Count;
-        foreach (JsonArray row in matrix)
+        int y = rows.Length;
+        foreach (string row in rows)
         {
             int x = 0;
-            foreach (string tileString in row)
+            foreach (char tileString in row)
             {
                 BuildTile(tileString, x, y, tilemap, follow, li);
                 ++x;
@@ -50,9 +49,9 @@ public static class LevelLoader
         return li;
     }
 
-    private static void BuildTile(string tileString, int x, int y, Tilemap tilemap, Camera2DFollow follow, LevelInfo li)
+    private static void BuildTile(char tileChar, int x, int y, Tilemap tilemap, Camera2DFollow follow, LevelInfo li)
     {
-        Tile tile = tileString.ToTile();
+        Tile tile = tileChar.ToTile();
         Vector3Int pos = new Vector3Int(x, y, 0);
         GameObject go = null;
 
@@ -139,13 +138,13 @@ public static class LevelLoader
     public static void LoadAndBuildEditorOnly(string levelName, Tilemap tilemap)
     {
         tilemap.ClearAllTiles();
-        JsonArray matrix = Load(levelName);
+        string[] matrix = Load(levelName);
 
-        int y = matrix.Count;
-        foreach (JsonArray row in matrix)
+        int y = matrix.Length;
+        foreach (string row in matrix)
         {
             int x = 0;
-            foreach (string tile in row)
+            foreach (char tile in row)
             {
                 Tile t = tile.ToTile();
 
@@ -168,7 +167,7 @@ public static class LevelLoader
     }
 #endif
 
-    public static JsonArray Load(string levelName)
+    public static string[] Load(string levelName)
     {
         TextAsset text = Resources.Load<TextAsset>($"Levels/{levelName}");
 
@@ -178,7 +177,8 @@ public static class LevelLoader
             return null;
         }
 
-        return JsonValue.Parse(text.text).AsJsonArray;
+
+        return text.text.Split('\n');
     }
 
     private static float CalculateLowestY(Tilemap tilemap)

@@ -86,33 +86,33 @@ public static class TileExtensions
         }
     }
 
-    public static Tile ToTile(this string id)
+    public static Tile ToTile(this char id)
     {
         switch (id)
         {
-            case "-":
+            case '-':
                 return Tile.empty;
-            case "b":
+            case 'b':
                 return Tile.block;
-            case "c":
+            case 'c':
                 return Tile.crate;
-            case "s":
+            case 's':
                 return Tile.playerOneStart;
-            case "f":
+            case 'f':
                 return Tile.playerOneFinish;
-            case "A":
+            case 'A':
                 return Tile.basicEnemy;
-            case "B":
+            case 'B':
                 return Tile.basicEnemyReverse;
-            case "C":
+            case 'C':
                 return Tile.acceleratingEnemy;
-            case "D":
+            case 'D':
                 return Tile.acceleratingEnemyReverse;
-            case "$":
+            case '$':
                 return Tile.coin;
-            case "M":
+            case 'M':
                 return Tile.missileLauncher;
-            case "W":
+            case 'W':
                 return Tile.missileLauncherReverse;
             default:
                 Debug.Log($"|{id}| does not have valid to character entry");

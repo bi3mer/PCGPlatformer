@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using LightJson;
 
 namespace PCG
 {
@@ -7,23 +6,24 @@ namespace PCG
     {
         public static List<string> BreakMapIntoColumns(string levelName)
         {
-            JsonArray map = Utility.Load(levelName);
+            string[] map = Utility.Load(levelName);
             List<string> columns = new List<string>();
 
-            for (int y = 0; y < map.Count; ++y)
+            for (int y = 0; y < map.Length; ++y)
             {
-                JsonArray row = map[y].AsJsonArray;
+                string row = map[y];
                 if (y == 0)
-                {                   for (int x = 0; x < row.Count; ++x)
+                {                   
+                    for (int x = 0; x < row.Length; ++x)
                     {
-                        columns.Add(row[x].AsString);
+                        columns.Add(row[x].ToString());
                     }
                 }
                 else
                 {
-                    for (int x = 0; x < row.Count; ++x)
+                    for (int x = 0; x < row.Length; ++x)
                     {
-                        columns[x] += row[x].AsString;
+                        columns[x] += row[x];
                     }
                 }
             }

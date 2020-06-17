@@ -100,19 +100,19 @@ public class GenerateLevelState : BaseState
         ICompiledGram cGram = grammar.Compile();
         List<string> levelIDs = NGramGenerator.Generate(
             cGram,
-            levelTokens.RandomValue().GetRange(0, blackBoard.ConfigUI.Config.N + 4),
+            levelTokens.RandomValue().GetRange(0, blackBoard.ConfigUI.Config.N + 7),
             minSize,
             maxSize);
 
-        List<List<string>> level = new List<List<string>>();
+        List<List<char>> level = new List<List<char>>();
         foreach (string columnID in levelIDs)
         {
-            List<string> column = new List<string>();
+            List<char> column = new List<char>();
             string col = blackBoard.iDContainer.GetToken(columnID);
 
             foreach (char tileCharacter in col)
             {
-                column.Add(tileCharacter.ToString());
+                column.Add(tileCharacter);
             }
 
             level.Add(column);
