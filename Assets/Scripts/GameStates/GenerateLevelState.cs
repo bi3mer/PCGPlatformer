@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Tools.Extensions;
 using Tools.AI.NGram;
+using Tools.Utility;
 using LightJson;
 using PCG;
 
@@ -17,6 +18,34 @@ public class GenerateLevelState : BaseState
     public GenerateLevelState(BlackBoard blackBoard) : base(blackBoard) { }
 
     protected override void OnStateEnter()
+    {
+        if (blackBoard.ConfigUI.Config.ProcedurallyGenerateLevels)
+        {
+            RunProceduralGeneration();
+        }
+        else
+        {
+            GenerateInputLevel();
+        }
+        
+        SetUpEndLevelTiles();
+        SetUpPlayer();
+        AttachPlayerDiedCallback();
+
+        blackBoard.LevelInfo.Player.gameObject.GetComponent<Platformer2DUserControl>().enabled = false;
+        ActivateTrigger(GameTrigger.NextState);
+    }
+
+    private void GenerateInputLevel()
+    {
+        JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
+        JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
+        string levelName = levels[UtilityRandom.Random.Next(levels.Count)];
+        
+        blackBoard.LevelInfo = LevelLoader.LoadAndBuild(levelName, blackBoard.Tilemap, blackBoard.CameraFollow);
+    }
+
+    private void RunProceduralGeneration()
     {
         if (blackBoard.Reset)
         {
@@ -37,7 +66,7 @@ public class GenerateLevelState : BaseState
                 GenerateNGram();
             }
         }
-        
+
 
         if (blackBoard.ConfigUI.Config.DifficultyNGramEnabled)
         {
@@ -45,13 +74,6 @@ public class GenerateLevelState : BaseState
         }
 
         GenerateLevel();
-        SetUpEndLevelTiles();
-        SetUpPlayer();
-        AttachPlayerDiedCallback();
-
-        blackBoard.LevelInfo.Player.gameObject.GetComponent<Platformer2DUserControl>().enabled = false;
-
-        ActivateTrigger(GameTrigger.NextState);
     }
 
     private void GenerateNGram()
@@ -130,9 +152,9 @@ public class GenerateLevelState : BaseState
 
     private void SetUpEndLevelTiles()
     {
-        foreach (EndLevel el in blackBoard.LevelInfo.EndLevelTiles)
+        foreach (EndLevel endLevelTile in blackBoard.LevelInfo.EndLevelTiles)
         {
-            el.PlayerWonCallback = () => 
+            endLevelTile.PlayerWonCallback = () => 
             { 
                 ActivateTrigger(GameTrigger.PlayerWon);
             };
