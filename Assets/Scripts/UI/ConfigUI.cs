@@ -5,6 +5,9 @@ using UnityEngine;
 public class ConfigUI : MonoBehaviour
 {
     [SerializeField]
+    private Toggle procedurallyGenerateLevels = null;
+
+    [SerializeField]
     private Button backButton = null;
 
     [Header("Game Buttons")]
@@ -29,6 +32,12 @@ public class ConfigUI : MonoBehaviour
 
     [SerializeField]
     private Toggle simplifiedNGramEnabled = null;
+
+    [SerializeField]
+    private Toggle heiarchalNGramEanbled = null;
+
+    [SerializeField]
+    private Slider heiarchalMemory = null;
 
     [Header("Level Sizes")]
     [SerializeField]
@@ -75,6 +84,7 @@ public class ConfigUI : MonoBehaviour
 
         Assert.IsNotNull(nLevel);
         Assert.IsNotNull(simplifiedNGramEnabled);
+        Assert.IsNotNull(heiarchalNGramEanbled);
 
         Assert.IsNotNull(minLevelSize);
         Assert.IsNotNull(maxLevelSize);
@@ -93,8 +103,11 @@ public class ConfigUI : MonoBehaviour
         Config = new Config
         {
             Game = Games.Custom,
+            ProcedurallyGenerateLevels = procedurallyGenerateLevels.isOn,
             N = (int)nLevel.value,
             UsingSimplifiedNGram = simplifiedNGramEnabled.isOn,
+            HeiarchalEnabled = heiarchalNGramEanbled.isOn,
+            HeiarchalMemory = heiarchalMemory.value,
             MinLevelSize = (int)minLevelSize.value,
             MaxLevelSize = (int)maxLevelSize.value,
             UsingTieredGeneration = tieredGenerationEnabled.isOn,
@@ -104,6 +117,11 @@ public class ConfigUI : MonoBehaviour
             DifficultyNGramLeftColumns = (int)leftColumns.value,
             DifficultyNGramRightColumns = (int)rightColumns.value
         };
+
+        procedurallyGenerateLevels.onValueChanged.AddListener((bool val) => 
+        {
+            Config.ProcedurallyGenerateLevels = false;
+        });
 
         custom.onClick.AddListener(() =>
         {
@@ -133,6 +151,21 @@ public class ConfigUI : MonoBehaviour
         nLevel.onValueChanged.AddListener((float val) =>
         {
             Config.N = (int)val;
+        });
+
+        simplifiedNGramEnabled.onValueChanged.AddListener((bool val) =>
+        {
+            Config.UsingSimplifiedNGram = val;
+        });
+
+        heiarchalNGramEanbled.onValueChanged.AddListener((bool val) =>
+        {
+            Config.HeiarchalEnabled = val;
+        });
+
+        heiarchalMemory.onValueChanged.AddListener((float val) =>
+        {
+            Config.HeiarchalMemory = val;
         });
 
         minLevelSize.onValueChanged.AddListener((float val) =>

@@ -19,7 +19,8 @@ public class PlayState : BaseState
 
     protected override void OnStateExit()
     {
-        if (blackBoard.ConfigUI.Config.DifficultyNGramEnabled)
+        if (blackBoard.ConfigUI.Config.ProcedurallyGenerateLevels && 
+            blackBoard.ConfigUI.Config.DifficultyNGramEnabled)
         { 
             UpdateDifficultyNGram();
         }

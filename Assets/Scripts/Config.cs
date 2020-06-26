@@ -10,8 +10,11 @@
 public class Config
 {
     public Games Game;
+    public bool ProcedurallyGenerateLevels;
     public int N;
     public bool UsingSimplifiedNGram;
+    public bool HeiarchalEnabled;
+    public float HeiarchalMemory;
     public int MinLevelSize;
     public int MaxLevelSize;
     public bool UsingTieredGeneration;
