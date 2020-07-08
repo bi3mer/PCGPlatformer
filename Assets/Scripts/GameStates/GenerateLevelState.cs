@@ -81,7 +81,21 @@ public class GenerateLevelState : BaseState
         JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
         JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
 
-        grammar = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
+        if (blackBoard.ConfigUI.Config.HeiarchalEnabled)
+        {
+            if (blackBoard.ConfigUI.Config.N == 1)
+            {
+                grammar = new UniGram();
+            }
+            else
+            { 
+                grammar = new HierarchicalNGram(blackBoard.ConfigUI.Config.N);
+            }
+        }
+        else 
+        {
+            grammar = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
+        }
 
         if (blackBoard.ConfigUI.Config.UsingTieredGeneration)
         {

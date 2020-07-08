@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     private void ConstructStateMachine()
     {
-        sm = new StateMachine<GameBool, GameTrigger>(verbose: true);
+        sm = new StateMachine<GameBool, GameTrigger>(verbose: false);
 
         GenerateLevelState generateLevelState = new GenerateLevelState(blackBoard);
         ReadGameFlowState readGameFlowState = new ReadGameFlowState(blackBoard);
