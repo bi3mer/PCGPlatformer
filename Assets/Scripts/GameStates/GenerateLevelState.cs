@@ -49,16 +49,30 @@ public class GenerateLevelState : BaseState
     {
         if (blackBoard.Reset)
         {
-            blackBoard.DifficultyNGram = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
-            GenerateNGram();
+            if (blackBoard.ConfigUI.Config.HeiarchalEnabled)
+            {
+                blackBoard.DifficultyNGram = NGramFactory.InitHierarchicalNGram(blackBoard.ConfigUI.Config.N);
+            }
+            else
+            {
+                blackBoard.DifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
+            }
 
+            GenerateNGram();
             blackBoard.Reset = false;
         }
         else
         {
             if (blackBoard.DifficultyNGram == null)
             {
-                blackBoard.DifficultyNGram = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
+                if (blackBoard.ConfigUI.Config.HeiarchalEnabled)
+                {
+                    blackBoard.DifficultyNGram = NGramFactory.InitHierarchicalNGram(blackBoard.ConfigUI.Config.N);
+                }
+                else 
+                { 
+                    blackBoard.DifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
+                }
             }
 
             if (grammar == null || blackBoard.ProgressIndex != previousIndex)
@@ -83,18 +97,11 @@ public class GenerateLevelState : BaseState
 
         if (blackBoard.ConfigUI.Config.HeiarchalEnabled)
         {
-            if (blackBoard.ConfigUI.Config.N == 1)
-            {
-                grammar = new UniGram();
-            }
-            else
-            { 
-                grammar = new HierarchicalNGram(blackBoard.ConfigUI.Config.N);
-            }
+            grammar = NGramFactory.InitHierarchicalNGram(blackBoard.ConfigUI.Config.N);
         }
         else 
         {
-            grammar = NGramFactory.InitializeGrammar(blackBoard.ConfigUI.Config.N);
+            grammar = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
         }
 
         if (blackBoard.ConfigUI.Config.UsingTieredGeneration)

@@ -5,7 +5,7 @@ using UnityEditor;
 namespace CustomInspector
 {
     [CustomEditor(typeof(LevelBuilder))]
-    public class EditorLevelBuilder : Editor
+    public class EditorLevelBuilder : UnityEditor.Editor
     {
         private LevelBuilder levelBuilder = null;
 
