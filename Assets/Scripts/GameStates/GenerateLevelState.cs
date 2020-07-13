@@ -81,7 +81,6 @@ public class GenerateLevelState : BaseState
             }
         }
 
-
         if (blackBoard.ConfigUI.Config.DifficultyNGramEnabled)
         {
             grammar.AddGrammar(blackBoard.DifficultyNGram);
@@ -92,9 +91,6 @@ public class GenerateLevelState : BaseState
 
     private void GenerateNGram()
     {
-        JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
-        JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
-
         if (blackBoard.ConfigUI.Config.HeiarchalEnabled)
         {
             grammar = NGramFactory.InitHierarchicalNGram(blackBoard.ConfigUI.Config.N);
@@ -104,9 +100,9 @@ public class GenerateLevelState : BaseState
             grammar = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
         }
 
-        if (blackBoard.ConfigUI.Config.UsingTieredGeneration)
+        for (int i = 0; i <= blackBoard.ProgressIndex; ++i)
         {
-            for (int i = 0; i < blackBoard.ProgressIndex; ++i)
+            if (blackBoard.ConfigUI.Config.UsingTieredGeneration || blackBoard.ProgressIndex == i)
             {
                 JsonObject tierInfo = blackBoard.GameFlow[i].AsJsonObject;
                 JsonArray tierLevels = tierInfo[FlowKeys.LevelNames].AsJsonArray;
@@ -114,38 +110,28 @@ public class GenerateLevelState : BaseState
                 {
                     List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
                     List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
+                    tokens.RemoveAt(tokens.Count - 1); // remove flag
 
                     NGramTrainer.Train(grammar, tokens);
                     levelTokens.Add(tokens);
 
-                    grammar.UpdateMemory(blackBoard.ConfigUI.Config.TieredGenerationMemoryUpdate);
+                    if (blackBoard.ProgressIndex != i)
+                    {
+                        grammar.UpdateMemory(blackBoard.ConfigUI.Config.TieredGenerationMemoryUpdate);
+                        levelTokens.Clear();
+                    }
                 }
-
-                levelTokens.Clear();
             }
-        }
-
-        foreach (JsonValue levelName in levels)
-        {
-            List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
-            List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
-
-            NGramTrainer.Train(grammar, tokens);
-            levelTokens.Add(tokens);
         }
     }
 
     private void GenerateLevel()
     {
-        int minSize = blackBoard.ConfigUI.Config.MinLevelSize;
-        int maxSize = blackBoard.ConfigUI.Config.MaxLevelSize;
-
-        ICompiledGram cGram = grammar.Compile();
+        ICompiledGram compiledGram = grammar.Compile();
         List<string> levelIDs = NGramGenerator.Generate(
-            cGram,
+            compiledGram,
             levelTokens.RandomValue().GetRange(0, blackBoard.ConfigUI.Config.N + 7),
-            minSize,
-            maxSize);
+            blackBoard.ConfigUI.Config.LevelSize);
 
         List<List<char>> level = new List<List<char>>();
         foreach (string columnID in levelIDs)

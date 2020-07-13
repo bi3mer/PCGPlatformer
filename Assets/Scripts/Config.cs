@@ -15,7 +15,7 @@ public class Config
     public bool UsingSimplifiedNGram;
     public bool HeiarchalEnabled;
     public float HeiarchalMemory;
-    public int MinLevelSize;
+    public int LevelSize;
     public int MaxLevelSize;
     public bool UsingTieredGeneration;
     public float TieredGenerationMemoryUpdate;

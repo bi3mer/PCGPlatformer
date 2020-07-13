@@ -41,10 +41,7 @@ public class ConfigUI : MonoBehaviour
 
     [Header("Level Sizes")]
     [SerializeField]
-    private Slider minLevelSize = null;
-
-    [SerializeField]
-    private Slider maxLevelSize = null;
+    private Slider levelSize = null;
 
     [Header("Tiered Generation")]
     [SerializeField]
@@ -86,8 +83,7 @@ public class ConfigUI : MonoBehaviour
         Assert.IsNotNull(simplifiedNGramEnabled);
         Assert.IsNotNull(heiarchalNGramEanbled);
 
-        Assert.IsNotNull(minLevelSize);
-        Assert.IsNotNull(maxLevelSize);
+        Assert.IsNotNull(levelSize);
 
         Assert.IsNotNull(tieredGenerationEnabled);
         Assert.IsNotNull(tieredGenerationMemoryUpdate);
@@ -108,8 +104,7 @@ public class ConfigUI : MonoBehaviour
             UsingSimplifiedNGram = simplifiedNGramEnabled.isOn,
             HeiarchalEnabled = heiarchalNGramEanbled.isOn,
             HeiarchalMemory = heiarchalMemory.value,
-            MinLevelSize = (int)minLevelSize.value,
-            MaxLevelSize = (int)maxLevelSize.value,
+            LevelSize = (int)levelSize.value,
             UsingTieredGeneration = tieredGenerationEnabled.isOn,
             TieredGenerationMemoryUpdate = (int)tieredGenerationMemoryUpdate.value,
             DifficultyNGramEnabled = difficultyNGramEnabled.isOn,
@@ -168,14 +163,9 @@ public class ConfigUI : MonoBehaviour
             Config.HeiarchalMemory = val;
         });
 
-        minLevelSize.onValueChanged.AddListener((float val) =>
+        levelSize.onValueChanged.AddListener((float val) =>
         {
-            Config.MinLevelSize = (int)val;
-        });
-
-        maxLevelSize.onValueChanged.AddListener((float val) =>
-        {
-            Config.MaxLevelSize = (int)val;
+            Config.LevelSize = (int)val;
         });
 
         tieredGenerationEnabled.onValueChanged.AddListener((bool val) =>
