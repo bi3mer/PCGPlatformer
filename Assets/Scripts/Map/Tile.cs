@@ -120,6 +120,40 @@ public static class TileExtensions
         }
     }
 
+    public static char ToChar(this Tile tile)
+    {
+        switch (tile)
+        {
+            case Tile.empty:
+                return '=';
+            case Tile.block:
+                return 'b';
+            case Tile.crate:
+                return 'c';
+            case Tile.playerOneStart:
+                return 's';
+            case Tile.playerOneFinish:
+                return 'f';
+            case Tile.basicEnemy:
+                return 'A';
+            case Tile.basicEnemyReverse:
+                return 'B';
+            case Tile.acceleratingEnemy:
+                return 'C';
+            case Tile.acceleratingEnemyReverse:
+                return 'D';
+            case Tile.missileLauncher:
+                return 'M';
+            case Tile.missileLauncherReverse:
+                return 'W';
+            case Tile.coin:
+                return '$';
+            default:
+                Debug.Log($"|{tile}| does not have valid to character entry");
+                return '-';
+        }
+    }
+
     public static string GetName(this Tile tile)
     {
         switch (tile)

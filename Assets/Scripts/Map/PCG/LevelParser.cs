@@ -30,5 +30,17 @@ namespace PCG
 
             return columns;
         }
+
+        public static List<string> BreakColumnsIntoSimplifiedTokens(List<string> columns)
+        {
+            List<string> simplifiedTokens = new List<string>();
+
+            foreach (string col in columns)
+            {
+                UnityEngine.Debug.Log(col);
+            }
+
+            return simplifiedTokens;
+        }
     }
 }

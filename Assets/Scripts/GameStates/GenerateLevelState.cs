@@ -115,8 +115,8 @@ public class GenerateLevelState : BaseState
                 foreach (string levelName in tierLevels)
                 {
                     List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
+                    columns.RemoveAt(columns.Count - 1); // remove flag at the end
                     List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
-                    tokens.RemoveAt(tokens.Count - 1); // remove flag
 
                     NGramTrainer.Train(grammar, tokens);
                     levelTokens.Add(tokens);
@@ -152,6 +152,15 @@ public class GenerateLevelState : BaseState
 
             level.Add(column);
         }
+
+        char flagChar = Tile.playerOneFinish.ToChar();
+        List<char> endingColumn = new List<char>();
+        for (int i = 0; i < level[0].Count; ++i)
+        {
+            endingColumn.Add(flagChar);
+        }
+
+        level.Add(endingColumn);
 
         blackBoard.LevelIds = levelIDs;
         blackBoard.Grid.SetActive(true);
