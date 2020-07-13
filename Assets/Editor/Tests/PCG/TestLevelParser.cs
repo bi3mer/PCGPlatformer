@@ -107,31 +107,79 @@ namespace Editor.Tests.PCG
         [Test]
         public void TestParseVGLCLevelPlatform()
         {
-            Assert.Fail();
+            List<string> columns = new List<string>() { "bb---------" };
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
+
+            columns.Add("--------");
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
+            Assert.AreEqual(SimplifiedColumns.PlatformForced, result[1]);
+
+            columns.Add("bbbb----");
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
+            Assert.AreEqual(SimplifiedColumns.PlatformForced, result[1]);
+            Assert.AreEqual(SimplifiedColumns.PlatformForced, result[2]);
         }
 
         [Test]
         public void TestParseVGLCLevelPlatformEnemy()
         {
-            Assert.Fail();
+            List<string> columns = new List<string>() { "bbA--------" };
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[0]);
+
+            columns.Add("---C-----");
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[0]);
+            Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[1]);
         }
 
         [Test]
         public void TestParseVGLCLevelPlatformOptional()
         {
-            Assert.Fail();
+            List<string> columns = new List<string>() { "b---b----" };
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(SimplifiedColumns.PlatformOptional, result[0]);
         }
 
         [Test]
         public void TestParseVGLCLevelPlatformOptionalEnemy()
         {
-            Assert.Fail();
+            List<string> columns = new List<string>() { "b---bA----" };
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(SimplifiedColumns.PlatformOptionalEnemy, result[0]);
         }
 
         [Test]
         public void TestParseVGLCLevelTogether()
         {
-            Assert.Fail();
+            List<string> columns = new List<string>() 
+            { 
+               "b---------",
+               "b---A-----",
+               "----------",
+               "---B------",
+               "b----b----",
+               "b----b---D"
+            };
+
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            Assert.AreEqual(6, result.Count);
+            Assert.AreEqual(SimplifiedColumns.Linear, result[0]);
+            Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
+            Assert.AreEqual(SimplifiedColumns.PlatformForced, result[2]);
+            Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[3]);
+            Assert.AreEqual(SimplifiedColumns.PlatformOptional, result[4]);
+            Assert.AreEqual(SimplifiedColumns.PlatformOptionalEnemy, result[5]);
         }
     }
 }
