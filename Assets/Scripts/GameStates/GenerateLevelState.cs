@@ -51,7 +51,9 @@ public class GenerateLevelState : BaseState
         {
             if (blackBoard.ConfigUI.Config.HeiarchalEnabled)
             {
-                blackBoard.DifficultyNGram = NGramFactory.InitHierarchicalNGram(blackBoard.ConfigUI.Config.N);
+                blackBoard.DifficultyNGram = NGramFactory.InitHierarchicalNGram(
+                    blackBoard.ConfigUI.Config.N,
+                    blackBoard.ConfigUI.Config.HeiarchalMemory);
             }
             else
             {
@@ -67,7 +69,9 @@ public class GenerateLevelState : BaseState
             {
                 if (blackBoard.ConfigUI.Config.HeiarchalEnabled)
                 {
-                    blackBoard.DifficultyNGram = NGramFactory.InitHierarchicalNGram(blackBoard.ConfigUI.Config.N);
+                    blackBoard.DifficultyNGram = NGramFactory.InitHierarchicalNGram(
+                        blackBoard.ConfigUI.Config.N,
+                        blackBoard.ConfigUI.Config.HeiarchalMemory);
                 }
                 else 
                 { 
@@ -93,7 +97,9 @@ public class GenerateLevelState : BaseState
     {
         if (blackBoard.ConfigUI.Config.HeiarchalEnabled)
         {
-            grammar = NGramFactory.InitHierarchicalNGram(blackBoard.ConfigUI.Config.N);
+            grammar = NGramFactory.InitHierarchicalNGram(
+                blackBoard.ConfigUI.Config.N,
+                blackBoard.ConfigUI.Config.HeiarchalMemory);
         }
         else 
         {
