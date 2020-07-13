@@ -86,6 +86,40 @@ public static class TileExtensions
         }
     }
 
+    public static Tile ToTile(this string id)
+    {
+        switch (id)
+        {
+            case "-":
+                return Tile.empty;
+            case "b":
+                return Tile.block;
+            case "c":
+                return Tile.crate;
+            case "s":
+                return Tile.playerOneStart;
+            case "f":
+                return Tile.playerOneFinish;
+            case "A":
+                return Tile.basicEnemy;
+            case "B":
+                return Tile.basicEnemyReverse;
+            case "C":
+                return Tile.acceleratingEnemy;
+            case "D":
+                return Tile.acceleratingEnemyReverse;
+            case "$":
+                return Tile.coin;
+            case "M":
+                return Tile.missileLauncher;
+            case "W":
+                return Tile.missileLauncherReverse;
+            default:
+                Debug.Log($"|{id}| does not have valid to character entry");
+                return Tile.empty;
+        }
+    }
+
     public static Tile ToTile(this char id)
     {
         switch (id)
@@ -125,7 +159,7 @@ public static class TileExtensions
         switch (tile)
         {
             case Tile.empty:
-                return '=';
+                return '-';
             case Tile.block:
                 return 'b';
             case Tile.crate:
@@ -273,6 +307,28 @@ public static class TileExtensions
             case Tile.basicEnemy:
             case Tile.acceleratingEnemy:
             case Tile.missileLauncher:
+            case Tile.coin:
+            default:
+                return false;
+        }
+    }
+
+    public static bool IsEnemy(this Tile tile)
+    {
+        switch (tile)
+        {
+            case Tile.acceleratingEnemyReverse:
+            case Tile.missileLauncherReverse:
+            case Tile.basicEnemyReverse:
+            case Tile.acceleratingEnemy:
+            case Tile.missileLauncher:
+            case Tile.basicEnemy:
+                return true;
+            case Tile.playerOneFinish:
+            case Tile.playerOneStart:
+            case Tile.empty:
+            case Tile.crate:
+            case Tile.block:
             case Tile.coin:
             default:
                 return false;

@@ -13,6 +13,7 @@ public class GenerateLevelState : BaseState
     protected override string DefaultName => "Generate Level State";
     List<List<string>> levelTokens = new List<List<string>>();
     private IGram grammar = null;
+    private IGram simpleGrammar = null;
     private int previousIndex = -1;
 
     public GenerateLevelState(BlackBoard blackBoard) : base(blackBoard) { }
@@ -117,6 +118,9 @@ public class GenerateLevelState : BaseState
                     List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
                     columns.RemoveAt(columns.Count - 1); // remove flag at the end
                     List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
+
+                    Debug.LogWarning("simplified tokens here");
+                    //List<string> simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(columns);
 
                     NGramTrainer.Train(grammar, tokens);
                     levelTokens.Add(tokens);

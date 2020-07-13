@@ -52,6 +52,7 @@ public class BlackBoard : MonoBehaviour
     public NGramIDContainer iDContainer = new NGramIDContainer(idSize: 5);
     public LevelInfo LevelInfo = null;
     public IGram DifficultyNGram;
+    public IGram SimpleDifficultyNGram;
     public JsonArray ActiveGameFlow = null;
 
     [HideInInspector]
