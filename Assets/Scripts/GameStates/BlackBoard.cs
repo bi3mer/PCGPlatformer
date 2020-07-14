@@ -49,7 +49,6 @@ public class BlackBoard : MonoBehaviour
     public TextAsset SuperMarioBros2 = null;
     public TextAsset SuperMarioBros2Japan = null;
 
-    public NGramIDContainer iDContainer = new NGramIDContainer(idSize: 5);
     public LevelInfo LevelInfo = null;
     public IGram DifficultyNGram;
     public IGram SimpleDifficultyNGram;

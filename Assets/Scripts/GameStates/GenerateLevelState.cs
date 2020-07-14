@@ -7,6 +7,7 @@ using Tools.AI.NGram;
 using Tools.Utility;
 using LightJson;
 using PCG;
+using System.Linq;
 
 public class GenerateLevelState : BaseState
 {
@@ -76,10 +77,15 @@ public class GenerateLevelState : BaseState
                     blackBoard.DifficultyNGram = NGramFactory.InitHierarchicalNGram(
                         blackBoard.ConfigUI.Config.N,
                         blackBoard.ConfigUI.Config.HeiarchalMemory);
+
+                    blackBoard.SimpleDifficultyNGram = NGramFactory.InitHierarchicalNGram(
+                        blackBoard.ConfigUI.Config.N,
+                        blackBoard.ConfigUI.Config.HeiarchalMemory);
                 }
                 else 
                 { 
                     blackBoard.DifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
+                    blackBoard.SimpleDifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
                 }
             }
 
@@ -104,10 +110,15 @@ public class GenerateLevelState : BaseState
             grammar = NGramFactory.InitHierarchicalNGram(
                 blackBoard.ConfigUI.Config.N,
                 blackBoard.ConfigUI.Config.HeiarchalMemory);
+
+            simpleGrammar = NGramFactory.InitHierarchicalNGram(
+                blackBoard.ConfigUI.Config.N,
+                blackBoard.ConfigUI.Config.HeiarchalMemory);
         }
         else 
         {
             grammar = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
+            simpleGrammar = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
         }
 
         for (int i = 0; i <= blackBoard.ProgressIndex; ++i)
@@ -120,13 +131,17 @@ public class GenerateLevelState : BaseState
                 {
                     List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
                     columns.RemoveAt(columns.Count - 1); // remove flag at the end
-                    List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
+                    levelTokens.Add(columns);
 
                     //Debug.LogWarning("simplified tokens here");
                     //List<string> simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(columns);
 
-                    NGramTrainer.Train(grammar, tokens);
-                    levelTokens.Add(tokens);
+                    NGramTrainer.Train(grammar, columns);
+                    NGramTrainer.Train(
+                        simpleGrammar,
+                        LevelParser.BreakColumnsIntoSimplifiedTokens(
+                            columns,
+                            blackBoard.ConfigUI.Config.Game == Games.Custom));
 
                     if (blackBoard.ProgressIndex != i)
                     {
@@ -141,23 +156,15 @@ public class GenerateLevelState : BaseState
     private void GenerateLevel()
     {
         ICompiledGram compiledGram = grammar.Compile();
-        List<string> levelIDs = NGramGenerator.Generate(
+        List<string> levelColumns = NGramGenerator.Generate(
             compiledGram,
             levelTokens.RandomValue().GetRange(0, blackBoard.ConfigUI.Config.N + 7),
             blackBoard.ConfigUI.Config.LevelSize);
 
         List<List<char>> level = new List<List<char>>();
-        foreach (string columnID in levelIDs)
+        foreach (string column in levelColumns)
         {
-            List<char> column = new List<char>();
-            string col = blackBoard.iDContainer.GetToken(columnID);
-
-            foreach (char tileCharacter in col)
-            {
-                column.Add(tileCharacter);
-            }
-
-            level.Add(column);
+            level.Add(new List<char>(column));
         }
 
         // add ending column to the level
@@ -171,7 +178,7 @@ public class GenerateLevelState : BaseState
         level.Add(endingColumn);
 
         // set blackboard for level generation
-        blackBoard.LevelIds = levelIDs;
+        blackBoard.LevelIds = levelColumns;
         blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
     }
 

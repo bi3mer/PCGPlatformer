@@ -3,8 +3,9 @@ using UnityStandardAssets._2D;
 using UnityEngine.Tilemaps;
 using UnityEngine;
 
-using Tools.Utility;
 using Tools.AI.NGram;
+using Tools.Utility;
+using PCG;
 
 public class PlayState : BaseState
 {
@@ -48,6 +49,13 @@ public class PlayState : BaseState
         int xMax = Math.Min(tilePosition.x + toRight, tilemap.cellBounds.xMax - 1);
 
         blackBoard.DifficultyNGram.UpdateMemory(blackBoard.ConfigUI.Config.DifficultyNGramMemoryUpdate);
-        NGramTrainer.Train(blackBoard.DifficultyNGram, blackBoard.LevelIds.GetRange(x, xMax - x + 1));
+
+        List<string> difficultPart = blackBoard.LevelIds.GetRange(x, xMax - x + 1);
+        NGramTrainer.Train(blackBoard.DifficultyNGram, difficultPart);
+        NGramTrainer.Train(
+            blackBoard.SimpleDifficultyNGram,
+            LevelParser.BreakColumnsIntoSimplifiedTokens(
+                difficultPart, 
+                blackBoard.ConfigUI.Config.Game == Games.Custom));
     }
 }
