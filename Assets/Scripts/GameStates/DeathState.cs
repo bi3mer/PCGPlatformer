@@ -23,6 +23,8 @@
 
             blackBoard.DeathMenu.GotoMainMenuButton.onClick.AddListener(() => 
             {
+                blackBoard.SimpleDifficultyNGram = null;
+                blackBoard.DifficultyNGram = null;
                 blackBoard.ProgressIndex = 0;
                 blackBoard.Reset = true;
                 ActivateTrigger(GameTrigger.GotoMainMenu);

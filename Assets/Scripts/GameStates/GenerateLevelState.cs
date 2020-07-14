@@ -20,6 +20,7 @@ public class GenerateLevelState : BaseState
 
     protected override void OnStateEnter()
     {
+        levelTokens.Clear();
         blackBoard.Grid.SetActive(true);
 
         if (blackBoard.ConfigUI.Config.ProcedurallyGenerateLevels)
