@@ -180,17 +180,22 @@ public class GenerateLevelState : BaseState
             string active = blackBoard.SimpleLevelColumns[0];
             int startIndex = 0;
 
-            Debug.Log(string.Join(",", blackBoard.SimpleLevelColumns));
-            
             for (int i = 1; i < blackBoard.SimpleLevelColumns.Count; ++i)
             {
                 string newColumn = blackBoard.SimpleLevelColumns[i];
                 if (!active.Equals(newColumn))
                 {
-                    blackBoard.LevelColumns = NGramGenerator.Generate(
+                    blackBoard.LevelColumns = NGramGenerator.GenerateRestricted(
                         compiledGram,
                         blackBoard.LevelColumns,
-                        i - startIndex);
+                        i - startIndex,
+                        active,
+                        (inColumn) =>
+                        {
+                            return LevelParser.ClassifyColumn(
+                                inColumn,
+                                blackBoard.ConfigUI.Config.Game);
+                        });
 
                     startIndex = i;
                     active = newColumn;

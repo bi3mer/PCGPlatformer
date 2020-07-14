@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PCG
 {
@@ -82,13 +84,17 @@ namespace PCG
 
         private static string ClassifyColumn(string column, int startIndex)
         {
+            char[] toReverse = column.ToCharArray();
+            Array.Reverse(toReverse);
+            string col = new string(toReverse);
+
             string result;
             bool hasEnemies = false;
             bool hasPlatforms = false;
 
-            for (int i = 0; i < column.Length; ++i)
+            for (int i = 0; i < col.Length; ++i)
             {
-                char token = column[i];
+                char token = col[i];
                 if (token == acrEnemy || token == acEnemy || token == brEnemy || token == bnemy)
                 {
                     hasEnemies = true;
@@ -104,10 +110,10 @@ namespace PCG
             // also tests for the alternative situation where there is a block
             // in the rwo directly above the bottom. In this case the player 
             // will also have to jump.
-            if (column[startIndex] != block ||
-                (column[startIndex] == block &&
-                 column[startIndex + 1] != empty &&
-                 column[startIndex + 1].ToTile().IsEnemy() == false))
+            if (col[startIndex] != block ||
+                (col[startIndex] == block &&
+                 col[startIndex + 1] != empty &&
+                 col[startIndex + 1].ToTile().IsEnemy() == false))
             {
                 if (hasEnemies)
                 {
