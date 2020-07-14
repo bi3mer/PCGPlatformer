@@ -7,12 +7,13 @@ using Tools.AI.NGram;
 using Tools.Utility;
 using LightJson;
 using PCG;
-using System.Linq;
 
 public class GenerateLevelState : BaseState
 {
     protected override string DefaultName => "Generate Level State";
-    List<List<string>> levelTokens = new List<List<string>>();
+    private List<List<string>> levelColumns = new List<List<string>>();
+    private List<List<string>> simplifiedLevelColumns = new List<List<string>>();
+
     private IGram grammar = null;
     private IGram simpleGrammar = null;
     private int previousIndex = -1;
@@ -21,7 +22,8 @@ public class GenerateLevelState : BaseState
 
     protected override void OnStateEnter()
     {
-        levelTokens.Clear();
+        simplifiedLevelColumns.Clear();
+        levelColumns.Clear();
         blackBoard.Grid.SetActive(true);
 
         if (blackBoard.ConfigUI.Config.ProcedurallyGenerateLevels)
@@ -131,22 +133,21 @@ public class GenerateLevelState : BaseState
                 {
                     List<string> columns = LevelParser.BreakMapIntoColumns(levelName);
                     columns.RemoveAt(columns.Count - 1); // remove flag at the end
-                    levelTokens.Add(columns);
+                    List<string> simpleColumns = LevelParser.BreakColumnsIntoSimplifiedTokens(
+                        columns,
+                        blackBoard.ConfigUI.Config.Game == Games.Custom);
 
-                    //Debug.LogWarning("simplified tokens here");
-                    //List<string> simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(columns);
+                    levelColumns.Add(columns);
+                    simplifiedLevelColumns.Add(simpleColumns);
 
                     NGramTrainer.Train(grammar, columns);
-                    NGramTrainer.Train(
-                        simpleGrammar,
-                        LevelParser.BreakColumnsIntoSimplifiedTokens(
-                            columns,
-                            blackBoard.ConfigUI.Config.Game == Games.Custom));
+                    NGramTrainer.Train(simpleGrammar, simpleColumns);
 
                     if (blackBoard.ProgressIndex != i)
                     {
                         grammar.UpdateMemory(blackBoard.ConfigUI.Config.TieredGenerationMemoryUpdate);
-                        levelTokens.Clear();
+                        levelColumns.Clear();
+                        simplifiedLevelColumns.Clear();
                     }
                 }
             }
@@ -155,14 +156,57 @@ public class GenerateLevelState : BaseState
 
     private void GenerateLevel()
     {
-        ICompiledGram compiledGram = grammar.Compile();
-        List<string> levelColumns = NGramGenerator.Generate(
-            compiledGram,
-            levelTokens.RandomValue().GetRange(0, blackBoard.ConfigUI.Config.N + 7),
-            blackBoard.ConfigUI.Config.LevelSize);
-
         List<List<char>> level = new List<List<char>>();
-        foreach (string column in levelColumns)
+
+        if (blackBoard.ConfigUI.Config.UsingSimplifiedNGram)
+        {
+            ICompiledGram compiledGram = simpleGrammar.Compile();
+            int levelIndex = levelColumns.RandomIndex();
+
+            List<string> simpleInput = simplifiedLevelColumns[levelIndex].GetRange
+                (0, 
+                blackBoard.ConfigUI.Config.N + 7);
+
+            blackBoard.LevelColumns = levelColumns[levelIndex].GetRange(
+                0, 
+                blackBoard.ConfigUI.Config.N + 7);
+
+            blackBoard.SimpleLevelColumns = NGramGenerator.Generate(
+                compiledGram,
+                simpleInput,
+                blackBoard.ConfigUI.Config.LevelSize);
+
+            compiledGram = grammar.Compile();
+            string active = blackBoard.SimpleLevelColumns[0];
+            int startIndex = 0;
+
+            Debug.Log(string.Join(",", blackBoard.SimpleLevelColumns));
+            
+            for (int i = 1; i < blackBoard.SimpleLevelColumns.Count; ++i)
+            {
+                string newColumn = blackBoard.SimpleLevelColumns[i];
+                if (!active.Equals(newColumn))
+                {
+                    blackBoard.LevelColumns = NGramGenerator.Generate(
+                        compiledGram,
+                        blackBoard.LevelColumns,
+                        i - startIndex);
+
+                    startIndex = i;
+                    active = newColumn;
+                }
+            }
+        }
+        else 
+        {
+            ICompiledGram compiledGram = grammar.Compile();
+            blackBoard.LevelColumns = NGramGenerator.Generate(
+                compiledGram,
+                levelColumns.RandomValue().GetRange(0, blackBoard.ConfigUI.Config.N + 7),
+                blackBoard.ConfigUI.Config.LevelSize);
+        }
+
+        foreach (string column in blackBoard.LevelColumns)
         {
             level.Add(new List<char>(column));
         }
@@ -176,9 +220,6 @@ public class GenerateLevelState : BaseState
         }
 
         level.Add(endingColumn);
-
-        // set blackboard for level generation
-        blackBoard.LevelIds = levelColumns;
         blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
     }
 

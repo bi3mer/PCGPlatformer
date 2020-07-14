@@ -55,7 +55,10 @@ public class BlackBoard : MonoBehaviour
     public JsonArray ActiveGameFlow = null;
 
     [HideInInspector]
-    public List<string> LevelIds;
+    public List<string> LevelColumns;
+
+    [HideInInspector]
+    public List<string> SimpleLevelColumns;
 
     [HideInInspector]
     public bool Reset = true;

@@ -50,7 +50,7 @@ public class PlayState : BaseState
 
         blackBoard.DifficultyNGram.UpdateMemory(blackBoard.ConfigUI.Config.DifficultyNGramMemoryUpdate);
 
-        List<string> difficultPart = blackBoard.LevelIds.GetRange(x, xMax - x + 1);
+        List<string> difficultPart = blackBoard.LevelColumns.GetRange(x, xMax - x + 1);
         NGramTrainer.Train(blackBoard.DifficultyNGram, difficultPart);
         NGramTrainer.Train(
             blackBoard.SimpleDifficultyNGram,
