@@ -44,29 +44,17 @@ namespace PCG
             List<string> returnColumns;
             if (isCustom)
             {
-                returnColumns = BreakCustomLevelIntoSimplified(columns);
+                returnColumns = BreakIntoSimplified(columns, 17);
             }
             else
             {
-                returnColumns = BreakVGLCLevelIntoSimplified(columns);            
+                returnColumns = BreakIntoSimplified(columns, 0);            
             }
 
             return returnColumns;
         }
 
-        private static List<string> BreakCustomLevelIntoSimplified(List<string> columns)
-        {
-            List<string> simplifiedTokens = new List<string>();
-
-            foreach (string col in columns)
-            {
-                UnityEngine.Debug.Log(col);
-            }
-
-            return simplifiedTokens;
-        }
-
-        private static List<string> BreakVGLCLevelIntoSimplified(List<string> columns)
+        private static List<string> BreakIntoSimplified(List<string> columns, int startIndex)
         {
             List<string> simplifiedTokens = new List<string>();
 
@@ -82,7 +70,7 @@ namespace PCG
                     {
                         hasEnemies = true;
                     }
-                    else if (i > 0 && token == block)
+                    else if (i != startIndex && token == block)
                     {
                         hasPlatforms = true;
                     }
@@ -93,10 +81,10 @@ namespace PCG
                 // also tests for the alternative situation where there is a block
                 // in the rwo directly above the bottom. In this case the player 
                 // will also have to jump.
-                if (col[0] == empty ||
-                    (col[0] == block &&
-                     col[1] != empty &&
-                     col[1].ToTile().IsEnemy() == false))
+                if (col[startIndex] != block ||
+                    (col[startIndex] == block &&
+                     col[startIndex + 1] != empty &&
+                     col[startIndex + 1].ToTile().IsEnemy() == false))
                 {
                     if (hasEnemies)
                     {
