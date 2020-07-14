@@ -20,6 +20,8 @@ public class GenerateLevelState : BaseState
 
     protected override void OnStateEnter()
     {
+        blackBoard.Grid.SetActive(true);
+
         if (blackBoard.ConfigUI.Config.ProcedurallyGenerateLevels)
         {
             RunProceduralGeneration();
@@ -28,7 +30,7 @@ public class GenerateLevelState : BaseState
         {
             GenerateInputLevel();
         }
-        
+
         SetUpEndLevelTiles();
         SetUpPlayer();
         AttachPlayerDiedCallback();
@@ -42,7 +44,7 @@ public class GenerateLevelState : BaseState
         JsonObject info = blackBoard.GameFlow[blackBoard.ProgressIndex].AsJsonObject;
         JsonArray levels = info[FlowKeys.LevelNames].AsJsonArray;
         string levelName = levels[UtilityRandom.Random.Next(levels.Count)];
-        
+
         blackBoard.LevelInfo = LevelLoader.LoadAndBuild(levelName, blackBoard.Tilemap, blackBoard.CameraFollow);
     }
 
@@ -119,7 +121,7 @@ public class GenerateLevelState : BaseState
                     columns.RemoveAt(columns.Count - 1); // remove flag at the end
                     List<string> tokens = blackBoard.iDContainer.GetIDs(columns);
 
-                    Debug.LogWarning("simplified tokens here");
+                    //Debug.LogWarning("simplified tokens here");
                     //List<string> simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(columns);
 
                     NGramTrainer.Train(grammar, tokens);
@@ -157,6 +159,7 @@ public class GenerateLevelState : BaseState
             level.Add(column);
         }
 
+        // add ending column to the level
         char flagChar = Tile.playerOneFinish.ToChar();
         List<char> endingColumn = new List<char>();
         for (int i = 0; i < level[0].Count; ++i)
@@ -166,8 +169,8 @@ public class GenerateLevelState : BaseState
 
         level.Add(endingColumn);
 
+        // set blackboard for level generation
         blackBoard.LevelIds = levelIDs;
-        blackBoard.Grid.SetActive(true);
         blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
     }
 
