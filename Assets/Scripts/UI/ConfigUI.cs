@@ -151,11 +151,34 @@ public class ConfigUI : MonoBehaviour
         simplifiedNGramEnabled.onValueChanged.AddListener((bool val) =>
         {
             Config.UsingSimplifiedNGram = val;
+
+            if (val == true && heiarchalNGramEanbled.isOn == false)
+            {
+                MessagePanel.Instance.Title = "Config Error";
+                MessagePanel.Instance.Body = "For simplified to be on, hiearchicial n-gram must be on.";
+                MessagePanel.Instance.Active = true;
+                simplifiedNGramEnabled.isOn = false;
+            }
+            else
+            {
+                Config.UsingSimplifiedNGram = val;
+            }
         });
 
         heiarchalNGramEanbled.onValueChanged.AddListener((bool val) =>
         {
-            Config.HeiarchalEnabled = val;
+            if (val == false && simplifiedNGramEnabled.isOn == true)
+            {
+                Debug.Log("here!");
+                MessagePanel.Instance.Title = "Config Error";
+                MessagePanel.Instance.Body = "Hierarchical n-gram must be on if simplified is on.";
+                MessagePanel.Instance.Active = true;
+                heiarchalNGramEanbled.isOn = true;
+            }
+            else
+            { 
+                Config.HeiarchalEnabled = val;
+            }
         });
 
         heiarchalMemory.onValueChanged.AddListener((float val) =>

@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 
 using Tools.Mono;
+using UnityEngine.UI;
 
 public class MessagePanel : Singleton<MessagePanel>
 {
@@ -11,6 +12,9 @@ public class MessagePanel : Singleton<MessagePanel>
 
     [SerializeField]
     private TextMeshProUGUI body = null;
+
+    [SerializeField]
+    private Button button = null;
 
     public string Title
     {
@@ -30,13 +34,17 @@ public class MessagePanel : Singleton<MessagePanel>
         set { gameObject.SetActive(value); }
     }
 
-#if UNITY_EDITOR
     private void Awake()
     {
         Assert.IsNotNull(title);
         Assert.IsNotNull(body);
+        Assert.IsNotNull(button);
+
+        button.onClick.AddListener(() =>
+        {
+            Active = false;
+        });
     }
-#endif
 
     private void Start()
     {
