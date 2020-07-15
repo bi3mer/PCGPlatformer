@@ -145,6 +145,12 @@ public class GameManager : MonoBehaviour
             generateLevelState,
             sm.CreateTriggerCondition(GameTrigger.GotoGame));
 
+        // on generation fail, go back to main menu
+        sm.AddTransition(
+            generateLevelState,
+            menuState,
+            sm.CreateTriggerCondition(GameTrigger.GotoMainMenu));
+
         // generating game to countdown 
         sm.AddTransition(
             generateLevelState,

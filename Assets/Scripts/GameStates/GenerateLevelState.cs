@@ -25,22 +25,41 @@ public class GenerateLevelState : BaseState
         simplifiedLevelColumns.Clear();
         levelColumns.Clear();
         blackBoard.Grid.SetActive(true);
+        bool generationWorked = true;
 
         if (blackBoard.ConfigUI.Config.ProcedurallyGenerateLevels)
         {
-            RunProceduralGeneration();
+            generationWorked = RunProceduralGeneration();
         }
         else
         {
             GenerateInputLevel();
         }
 
-        SetUpEndLevelTiles();
-        SetUpPlayer();
-        AttachPlayerDiedCallback();
+        if (generationWorked)
+        {
+            SetUpEndLevelTiles();
+            SetUpPlayer();
+            AttachPlayerDiedCallback();
 
-        blackBoard.LevelInfo.Player.gameObject.GetComponent<Platformer2DUserControl>().enabled = false;
-        ActivateTrigger(GameTrigger.NextState);
+            blackBoard.LevelInfo.Player.gameObject.GetComponent<Platformer2DUserControl>().enabled = false;
+            ActivateTrigger(GameTrigger.NextState);
+        }
+        else
+        {
+            blackBoard.SimpleDifficultyNGram = null;
+            blackBoard.DifficultyNGram = null;
+            blackBoard.ProgressIndex = 0;
+            blackBoard.Reset = true;
+
+            MessagePanel.Instance.Title = "Failed Generation";
+            MessagePanel.Instance.Body = "Try to reduce the required level size or make sure to use hierarchical or backoff n-grams.";
+            MessagePanel.Instance.Callback = () =>
+            {
+                ActivateTrigger(GameTrigger.GotoMainMenu);
+            };
+            MessagePanel.Instance.Active = true;
+        }
     }
 
     private void GenerateInputLevel()
@@ -52,7 +71,7 @@ public class GenerateLevelState : BaseState
         blackBoard.LevelInfo = LevelLoader.LoadAndBuild(levelName, blackBoard.Tilemap, blackBoard.CameraFollow);
     }
 
-    private void RunProceduralGeneration()
+    private bool RunProceduralGeneration()
     {
         if (blackBoard.Reset)
         {
@@ -61,10 +80,15 @@ public class GenerateLevelState : BaseState
                 blackBoard.DifficultyNGram = NGramFactory.InitHierarchicalNGram(
                     blackBoard.ConfigUI.Config.N,
                     blackBoard.ConfigUI.Config.HeiarchalMemory);
+
+                blackBoard.SimpleDifficultyNGram = NGramFactory.InitHierarchicalNGram(
+                    blackBoard.ConfigUI.Config.N,
+                    blackBoard.ConfigUI.Config.HeiarchalMemory);
             }
             else
             {
                 blackBoard.DifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
+                blackBoard.SimpleDifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
             }
 
             GenerateNGram();
@@ -102,7 +126,7 @@ public class GenerateLevelState : BaseState
             grammar.AddGrammar(blackBoard.DifficultyNGram);
         }
 
-        GenerateLevel();
+        return GenerateLevel();
     }
 
     private void GenerateNGram()
@@ -154,7 +178,7 @@ public class GenerateLevelState : BaseState
         }
     }
 
-    private void GenerateLevel()
+    private bool GenerateLevel()
     {
         List<List<char>> level = new List<List<char>>();
 
@@ -177,30 +201,16 @@ public class GenerateLevelState : BaseState
                 blackBoard.ConfigUI.Config.LevelSize);
 
             compiledGram = grammar.Compile();
-            string active = blackBoard.SimpleLevelColumns[0];
-            int startIndex = 0;
-
-            for (int i = 1; i < blackBoard.SimpleLevelColumns.Count; ++i)
-            {
-                string newColumn = blackBoard.SimpleLevelColumns[i];
-                if (!active.Equals(newColumn))
+            blackBoard.LevelColumns = NGramGenerator.GenerateRestricted(
+                compiledGram,
+                blackBoard.LevelColumns,
+                blackBoard.SimpleLevelColumns,
+                (inColumn) =>
                 {
-                    blackBoard.LevelColumns = NGramGenerator.GenerateRestricted(
-                        compiledGram,
-                        blackBoard.LevelColumns,
-                        i - startIndex,
-                        active,
-                        (inColumn) =>
-                        {
-                            return LevelParser.ClassifyColumn(
-                                inColumn,
-                                blackBoard.ConfigUI.Config.Game);
-                        });
-
-                    startIndex = i;
-                    active = newColumn;
-                }
-            }
+                    return LevelParser.ClassifyColumn(
+                        inColumn,
+                        blackBoard.ConfigUI.Config.Game);
+                });
         }
         else 
         {
@@ -211,21 +221,27 @@ public class GenerateLevelState : BaseState
                 blackBoard.ConfigUI.Config.LevelSize);
         }
 
-        foreach (string column in blackBoard.LevelColumns)
+        bool generationWorked = blackBoard.LevelColumns != null;
+        if (generationWorked)
         {
-            level.Add(new List<char>(column));
+            foreach (string column in blackBoard.LevelColumns)
+            {
+                level.Add(new List<char>(column));
+            }
+
+            // add ending column to the level
+            char flagChar = Tile.playerOneFinish.ToChar();
+            List<char> endingColumn = new List<char>();
+            for (int i = 0; i < level[0].Count; ++i)
+            {
+                endingColumn.Add(flagChar);
+            }
+
+            level.Add(endingColumn);
+            blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
         }
 
-        // add ending column to the level
-        char flagChar = Tile.playerOneFinish.ToChar();
-        List<char> endingColumn = new List<char>();
-        for (int i = 0; i < level[0].Count; ++i)
-        {
-            endingColumn.Add(flagChar);
-        }
-
-        level.Add(endingColumn);
-        blackBoard.LevelInfo = LevelLoader.Build(level, blackBoard.Tilemap, blackBoard.CameraFollow);
+        return generationWorked;
     }
 
     private void SetUpPlayer()

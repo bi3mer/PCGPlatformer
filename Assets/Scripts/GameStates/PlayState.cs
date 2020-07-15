@@ -52,10 +52,15 @@ public class PlayState : BaseState
 
         List<string> difficultPart = blackBoard.LevelColumns.GetRange(x, xMax - x + 1);
         NGramTrainer.Train(blackBoard.DifficultyNGram, difficultPart);
-        NGramTrainer.Train(
-            blackBoard.SimpleDifficultyNGram,
-            LevelParser.BreakColumnsIntoSimplifiedTokens(
-                difficultPart, 
-                blackBoard.ConfigUI.Config.Game == Games.Custom));
+
+        if (blackBoard.ConfigUI.Config.UsingSimplifiedNGram)
+        { 
+            blackBoard.SimpleDifficultyNGram.UpdateMemory(blackBoard.ConfigUI.Config.DifficultyNGramMemoryUpdate);
+            NGramTrainer.Train(
+                blackBoard.SimpleDifficultyNGram,
+                LevelParser.BreakColumnsIntoSimplifiedTokens(
+                    difficultPart, 
+                    blackBoard.ConfigUI.Config.Game == Games.Custom));
+        }
     }
 }

@@ -4,7 +4,9 @@ using TMPro;
 
 using Tools.Mono;
 using UnityEngine.UI;
+using System;
 
+[RequireComponent(typeof(RectTransform))]
 public class MessagePanel : Singleton<MessagePanel>
 {
     [SerializeField]
@@ -34,6 +36,8 @@ public class MessagePanel : Singleton<MessagePanel>
         set { gameObject.SetActive(value); }
     }
 
+    public Action Callback;
+
     private void Awake()
     {
         Assert.IsNotNull(title);
@@ -42,8 +46,13 @@ public class MessagePanel : Singleton<MessagePanel>
 
         button.onClick.AddListener(() =>
         {
+            Callback?.Invoke();
             Active = false;
         });
+
+        RectTransform rt = GetComponent<RectTransform>();
+        rt.offsetMax = Vector2.zero;
+        rt.offsetMin = Vector2.zero;
     }
 
     private void Start()
