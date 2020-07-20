@@ -1,7 +1,7 @@
 ﻿public enum Games
 { 
     Custom = 0,
-    SuperMariosBros,
+    SuperMarioBros,
     SuperMarioBros2,
     SuperMarioBros2Japan,
     SuperMarioLand

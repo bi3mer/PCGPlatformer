@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
-using Tools.AI.NGram.Utility;
 using Tools.AI.NGram;
 using LightJson;
 
@@ -143,7 +142,7 @@ public class BlackBoard : MonoBehaviour
                 case Games.Custom:
                     gameFlow = PCGPlatformerData;
                     break;
-                case Games.SuperMariosBros:
+                case Games.SuperMarioBros:
                     gameFlow = SuperMarioBrosData;
                     break;
                 case Games.SuperMarioBros2:

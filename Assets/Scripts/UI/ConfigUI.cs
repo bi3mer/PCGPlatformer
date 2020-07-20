@@ -125,7 +125,7 @@ public class ConfigUI : MonoBehaviour
 
         superMarioBros.onClick.AddListener(() => 
         {
-            Config.Game = Games.SuperMariosBros;
+            Config.Game = Games.SuperMarioBros;
         });
 
         superMarioBros2.onClick.AddListener(() => 
