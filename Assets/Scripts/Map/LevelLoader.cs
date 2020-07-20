@@ -3,6 +3,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine;
 
 using UnityStandardAssets._2D;
+using System.Linq;
 
 public static class LevelLoader
 {
@@ -179,6 +180,29 @@ public static class LevelLoader
 
 
         return text.text.Split('\n');
+    }
+
+    public static List<string> LoadIntoColumns(string levelName)
+    {
+        string[] rows = Load(levelName);
+        List<string> columns = new List<string>(rows[0].Length);
+
+        for (int i = 0; i < rows.Length; ++i)
+        {
+
+            string row = rows[i];
+            for (int j = 0; j < row.Length; ++j)
+            {
+                if (i == 0)
+                {
+                    columns.Add("");
+                }
+
+                columns[j] += row[j];
+            }
+        }
+
+        return columns;
     }
 
     private static float CalculateLowestY(Tilemap tilemap)

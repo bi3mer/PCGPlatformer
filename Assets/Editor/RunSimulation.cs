@@ -105,31 +105,13 @@ namespace CustomUnityWindow
         }
     }
 
-    public class TestThread
-    {
-        private string text;
-
-        public TestThread(string text)
-        {
-            this.text = text;
-        }
-
-        public void Execute()
-        {
-            StreamWriter writer = File.CreateText(Path.Combine("data", "test.txt"));
-            writer.WriteLine(text);
-            writer.Flush();
-            writer.Close();
-        }
-    }
-
     [InitializeOnLoad]
     public static class RunSimulation
     {
         private static readonly string basePath = "data";
 
         private const float hiearchicalWeight = 0.9f;
-        private const int numSimulations = 4;
+        private const int numSimulations = 1;
         private const int size = 50;
 
         [MenuItem("Sim/Run")]
@@ -140,21 +122,13 @@ namespace CustomUnityWindow
                 Directory.CreateDirectory(basePath);
             }
 
-            Debug.Log("running custom levels");
+            Debug.Log("starting threads");
             Run("GameFlow/PCGPlatformer", "custom", Games.Custom);
-            Debug.Log("done");
-
-            //Debug.Log("running super mario bros");
-            //Run("GameFlow/SuperMarioBros", "smb", Games.SuperMarioBros);
-            
-            //Debug.Log("running super mario bros 2");
-            //Run("GameFlow/SuperMarioBros2", "smb2", Games.SuperMarioBros2);
-            
-            //Debug.Log("running super mario bros 2 japan");
-            //Run("GameFlow/SuperMarioBros2Japan", "smb2j", Games.SuperMarioBros2Japan);
-            
-            //Debug.Log("running super mario land");
-            //Run("GameFlow/SuperMarioLand", "sml", Games.SuperMarioLand);
+            Run("GameFlow/SuperMarioBros", "smb", Games.SuperMarioBros);
+            Run("GameFlow/SuperMarioBros2", "smb2", Games.SuperMarioBros2);
+            Run("GameFlow/SuperMarioBros2Japan", "smb2j", Games.SuperMarioBros2Japan);
+            Run("GameFlow/SuperMarioLand", "sml", Games.SuperMarioLand);
+            Debug.Log("All threads have started.");
         }
 
         // 1,2,3,4,5,6 gram
@@ -223,7 +197,7 @@ namespace CustomUnityWindow
             {
                 foreach (string path in jo["resources"].AsJsonArray)
                 {
-                    levels.Add(LevelLoader.Load(path).ToList());
+                    levels.Add(LevelLoader.LoadIntoColumns(path));
                 }
             }
 
