@@ -86,22 +86,12 @@ namespace CustomUnityWindow
                 string[] array = columns.ToArray();
                 writer.Write($"{compiled.SequenceProbability(array)},");
                 writer.Write($"{compiled.Perplexity(array)},");
-                writer.Write($"{Linearity(array)},");
-                writer.Write($"{Leniency(simplified.ToArray())}\n");
+                writer.Write($"{LevelAnalyzer.Linearity(array)},");
+                writer.Write($"{LevelAnalyzer.Leniency(simplified.ToArray())}\n");
                 writer.Flush();
             }
 
             writer.Close();
-        }
-
-        private static double Linearity(string[] columns)
-        {
-            return 0;
-        }
-
-        private static double Leniency(string[] simplified)
-        {
-            return 0;
         }
     }
 

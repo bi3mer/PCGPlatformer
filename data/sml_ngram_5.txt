@@ -1,2 +1,2 @@
 Sequence_Probability,Perplexity,Linearity,Leniency
-0,0,0,0
+0,0,0,32.5
