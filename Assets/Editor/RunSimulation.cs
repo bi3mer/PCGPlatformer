@@ -4,13 +4,12 @@ using UnityEngine.Assertions;
 using UnityEngine;
 using UnityEditor;
 
-using System.Linq;
+using System.Threading;
 using System.IO;
 
 using Tools.AI.NGram;
 using LightJson;
 using PCG;
-using System.Threading;
 
 namespace CustomUnityWindow
 {
@@ -83,12 +82,14 @@ namespace CustomUnityWindow
                         });
                 }
 
-                string[] array = columns.ToArray();
-                writer.Write($"{compiled.SequenceProbability(array)},");
-                writer.Write($"{compiled.Perplexity(array)},");
-                writer.Write($"{LevelAnalyzer.Linearity(array)},");
-                writer.Write($"{LevelAnalyzer.Leniency(simplified.ToArray())}\n");
-                writer.Flush();
+                // TODO: there is a problem here
+                writer.WriteLine("RunSimulation::86 -> commented out.");
+                //string[] array = columns.ToArray();
+                //writer.Write($"{compiled.SequenceProbability(array)},");
+                //writer.Write($"{compiled.Perplexity(array)},");
+                //writer.Write($"{LevelAnalyzer.Linearity(array)},");
+                //writer.Write($"{LevelAnalyzer.Leniency(simplified.ToArray())}\n");
+                //writer.Flush();
             }
 
             writer.Close();

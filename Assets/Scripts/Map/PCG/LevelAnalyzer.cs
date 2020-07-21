@@ -1,10 +1,37 @@
-﻿namespace PCG
+﻿using System.Collections.Generic;
+
+namespace PCG
 { 
     public static class LevelAnalyzer
     {
-        public static double Linearity(string[] columns)
+        // @NOTE: this could be improved by using linear regression on the result
+        // but implementing is more pain than it's worth. Instead, it's done on 
+        // python/analysis side.
+        public static List<int> Positions(string[] columns)
         {
-            return 0;
+            List<int> positions = new List<int>();
+
+            foreach (string col in columns)
+            {
+                int position = -1;
+                for (int i = 1; i < col.Length; ++i)
+                {
+                    Tile neighbor = col[i - 1].ToTile();
+                    if (col[i].Equals(TileChar.Block) &&
+                       (neighbor == Tile.empty || neighbor.IsEnemy()))
+                    {
+                        position = col.Length - i;
+                        break;
+                    }
+                }
+
+                if (position != -1)
+                {
+                    positions.Add(position);
+                }
+            }
+            
+            return positions;
         }
 
         public static double Leniency(string[] simplified)

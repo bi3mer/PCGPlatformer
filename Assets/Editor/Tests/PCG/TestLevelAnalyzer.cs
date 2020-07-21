@@ -38,7 +38,54 @@ namespace Editor.Tests.PCG
         [Test]
         public void TestLinearity()
         {
-            Assert.Fail();
+            List<string> columns = new List<string>
+            {
+                "----b",
+                "----b",
+                "----b",
+                "----b"
+            };
+            List<int> result = LevelAnalyzer.Positions(columns.ToArray());
+            Assert.AreEqual(4, result.Count);
+            Assert.AreEqual(1, result[0]);
+            Assert.AreEqual(1, result[1]);
+            Assert.AreEqual(1, result[2]);
+            Assert.AreEqual(1, result[3]);
+
+            columns = new List<string>()
+            {
+                "----b",
+                "-----",
+                "---b-",
+                "-----",
+                "--b--",
+                "-----",
+                "-b---",
+                "b----"
+            };
+
+            result = LevelAnalyzer.Positions(columns.ToArray());
+            Assert.AreEqual(4, result.Count);
+            Assert.AreEqual(1, result[0]);
+            Assert.AreEqual(2, result[1]);
+            Assert.AreEqual(3, result[2]);
+            Assert.AreEqual(4, result[3]);
+
+            columns = new List<string>()
+            {
+                "----b",
+                "-b--b",
+                "-----",
+                "----b",
+                "--b--",
+            };
+
+            result = LevelAnalyzer.Positions(columns.ToArray());
+            Assert.AreEqual(4, result.Count);
+            Assert.AreEqual(1, result[0]);
+            Assert.AreEqual(4, result[1]);
+            Assert.AreEqual(1, result[2]);
+            Assert.AreEqual(3, result[3]);
         }
     }
 }

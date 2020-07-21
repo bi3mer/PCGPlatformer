@@ -18,6 +18,38 @@ public enum Tile
     coin
 }
 
+public static class TileString
+{
+    public const string Empty = "-";
+    public const string Block = "b";
+    public const string Crate = "c";
+    public const string PlayerOneStart = "s";
+    public const string PlayerOneFinish = "f";
+    public const string BasicEnemy = "A";
+    public const string BasicEnemyReverse = "B";
+    public const string AcceleratingEnemy = "C";
+    public const string AcceleratingEnemyReverse = "D";
+    public const string MissileLauncher = "M";
+    public const string MissileLauncherReverse = "W";
+    public const string Coin = "$";
+}
+
+public static class TileChar
+{
+    public const char Empty = '-';
+    public const char Block = 'b';
+    public const char Crate = 'c';
+    public const char PlayerOneStart = 's';
+    public const char PlayerOneFinish = 'f';
+    public const char BasicEnemy = 'A';
+    public const char BasicEnemyReverse = 'B';
+    public const char AcceleratingEnemy = 'C';
+    public const char AcceleratingEnemyReverse = 'D';
+    public const char MissileLauncher = 'M';
+    public const char MissileLauncherReverse = 'W';
+    public const char Coin = '$';
+}
+
 public static class TileExtensions
 {
     public static Tile NameToTile(this string tileName)
