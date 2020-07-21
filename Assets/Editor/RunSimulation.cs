@@ -48,7 +48,7 @@ namespace CustomUnityWindow
         {
             string path = Path.Combine(basePath, $"{extension}_{gram.GetN()}.txt");
             StreamWriter writer = File.CreateText(path);
-            writer.WriteLine("Sequence_Probability,Perplexity,Linearity,Leniency");
+            writer.WriteLine("Sequence_Probability,Perplexity,Linearity_JSON_Positions,Leniency");
 
             ICompiledGram compiled = gram.Compile();
             for (int i = 0; i < numSimulations; ++i)
@@ -58,7 +58,7 @@ namespace CustomUnityWindow
 
                 if (simplifiedGram == null)
                 {
-                    columns = NGramGenerator.Generate(compiled, startInput, size);
+                    columns = NGramGenerator.Generate(compiled, startInput, size, includeStart:false);
                     simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
                         columns,
                         game == Games.Custom);
@@ -79,17 +79,23 @@ namespace CustomUnityWindow
                         (inColumn) =>
                         {
                             return LevelParser.ClassifyColumn(inColumn, localGame);
-                        });
+                        },
+                        includeStart: false);
                 }
 
-                // TODO: there is a problem here
-                writer.WriteLine("RunSimulation::86 -> commented out.");
-                //string[] array = columns.ToArray();
-                //writer.Write($"{compiled.SequenceProbability(array)},");
-                //writer.Write($"{compiled.Perplexity(array)},");
-                //writer.Write($"{LevelAnalyzer.Linearity(array)},");
-                //writer.Write($"{LevelAnalyzer.Leniency(simplified.ToArray())}\n");
-                //writer.Flush();
+                string[] array = columns.ToArray();
+                List<int> positions = LevelAnalyzer.Positions(array);
+                JsonArray jsonPositions = new JsonArray();
+                foreach (int pos in positions)
+                {
+                    jsonPositions.Add(pos);
+                }
+
+                writer.Write($"{compiled.SequenceProbability(array)},");
+                writer.Write($"{compiled.Perplexity(array)},");
+                writer.Write($"{jsonPositions},");
+                writer.Write($"{LevelAnalyzer.Leniency(simplified.ToArray())}\n");
+                writer.Flush();
             }
 
             writer.Close();
