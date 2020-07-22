@@ -6,6 +6,7 @@ using UnityEditor;
 
 using System.Threading;
 using System.IO;
+using System;
 
 using Tools.AI.NGram;
 using LightJson;
@@ -102,6 +103,47 @@ namespace CustomUnityWindow
         }
     }
 
+    public class ThreadManager
+    {
+        private Stack<Thread> threads;
+        public ThreadManager(Stack<Thread> threads)
+        {
+            this.threads = threads;
+        }
+
+        public void Execute()
+        {
+            int numProcessors = Environment.ProcessorCount;
+            List<Thread> runningThreads = new List<Thread>();
+
+            int totalThreads = threads.Count;
+            int threadsRun = 0;
+
+            while (threads.Count > 0)
+            {
+                if (runningThreads.Count - 1 != numProcessors)
+                {
+                    ++threadsRun;
+                    Debug.Log($"Starting thread {threadsRun} of {totalThreads}");
+                    Thread t = threads.Pop();
+                    t.Start();
+                    runningThreads.Add(t);
+                }
+                else
+                {
+                    for (int i = 0; i < runningThreads.Count; ++i)
+                    {
+                        if (runningThreads[i].IsAlive == false)
+                        {
+                            runningThreads.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     [InitializeOnLoad]
     public static class RunSimulation
     {
@@ -119,13 +161,17 @@ namespace CustomUnityWindow
                 Directory.CreateDirectory(basePath);
             }
 
-            Debug.Log("starting threads");
-            Run("GameFlow/PCGPlatformer", "custom", Games.Custom);
-            Run("GameFlow/SuperMarioBros", "smb", Games.SuperMarioBros);
-            Run("GameFlow/SuperMarioBros2", "smb2", Games.SuperMarioBros2);
-            Run("GameFlow/SuperMarioBros2Japan", "smb2j", Games.SuperMarioBros2Japan);
-            Run("GameFlow/SuperMarioLand", "sml", Games.SuperMarioLand);
-            Debug.Log("All threads have started.");
+            Debug.Log("building threads");
+            List<Thread> threads = new List<Thread>();
+            threads.AddRange(Run("GameFlow/PCGPlatformer", "custom", Games.Custom));
+            threads.AddRange(Run("GameFlow/SuperMarioBros", "smb", Games.SuperMarioBros));
+            threads.AddRange(Run("GameFlow/SuperMarioBros2", "smb2", Games.SuperMarioBros2));
+            threads.AddRange(Run("GameFlow/SuperMarioBros2Japan", "smb2j", Games.SuperMarioBros2Japan));
+            threads.AddRange(Run("GameFlow/SuperMarioLand", "sml", Games.SuperMarioLand));
+            
+            ThreadManager tm = new ThreadManager(new Stack<Thread>(threads));
+            Thread thread = new Thread(new ThreadStart(tm.Execute));
+            thread.Start();
         }
 
         // 1,2,3,4,5,6 gram
@@ -133,7 +179,7 @@ namespace CustomUnityWindow
         // 2,3,4,5,6 hiearchical
         // 2,3,4,5,6 simple backoff
         // 2,3,4,5,6 simple hierarchical
-        private static void Run(string levelFlowPath, string name, Games game)
+        private static List<Thread> Run(string levelFlowPath, string name, Games game)
         {
             // We first get all the levels from the flow and then get the start
             // input from the first level in the sequence. Note that the first
@@ -142,6 +188,7 @@ namespace CustomUnityWindow
             // which will not include the start output in the end result. 
             List<List<string>> levels = GetLevels(levelFlowPath);
             List<string> startInput = levels[0].GetRange(0, 10);
+            List<Thread> threads = new List<Thread>();
 
             for (int i = 1; i <= 6; ++i)
             {
@@ -151,15 +198,18 @@ namespace CustomUnityWindow
                     NGramTrainer.Train(gram, level);
                 }
 
-                RunSimulations(gram, null, startInput, game, $"{name}_ngram");
+                threads.Add(BuildThread(gram, null, startInput, game, $"{name}_ngram"));
 
                 if (i != 1)
                 { 
                     gram = NGramFactory.InitHierarchicalNGram(i, hiearchicalWeight);
                     IGram simpleGram = NGramFactory.InitHierarchicalNGram(i, hiearchicalWeight);
+
+                    IGram bgram = NGramFactory.InitBackOffNGram(i, hiearchicalWeight);
                     foreach (List<string> level in levels)
                     {
                         NGramTrainer.Train(gram, level);
+                        NGramTrainer.Train(bgram, level);
                         NGramTrainer.Train(
                             simpleGram,
                             LevelParser.BreakColumnsIntoSimplifiedTokens(
@@ -167,19 +217,15 @@ namespace CustomUnityWindow
                                 game == Games.Custom));
                     }
 
-                    RunSimulations(gram, null, startInput, game, $"{name}_heirarchical");
-                    RunSimulations(gram, simpleGram, startInput, game, $"{name}_simple_heirarchical");
+                    threads.Add(BuildThread(gram, null, startInput, game, $"{name}_heirarchical"));
+                    threads.Add(BuildThread(gram, simpleGram, startInput, game, $"{name}_simple_heirarchical"));
 
-                    //Debug.LogWarning("backoff n-gram not yet implemented.");
-                    //IGram gram = NGramFactory.InitGrammar(i);
-                    //foreach (List<string> level in levels)
-                    //{
-                    //    NGramTrainer.Train(gram, level);
-                    //}
-
-                    //RunSimulations(gram, startInput, game, $"{name}_backoff");
+                    threads.Add(BuildThread(bgram, null, startInput, game, $"{name}_backoff"));
+                    threads.Add(BuildThread(bgram, simpleGram, startInput, game, $"{name}_simple_backoff"));
                 }
             }
+
+            return threads;
         }
 
         private static List<List<string>> GetLevels(string gameFlowAssetName)
@@ -201,7 +247,7 @@ namespace CustomUnityWindow
             return levels;
         }
 
-        private static void RunSimulations(
+        private static Thread BuildThread(
             IGram gram,
             IGram simplifiedGram,
             List<string> startInput,
@@ -218,62 +264,8 @@ namespace CustomUnityWindow
                 simplifiedGram,
                 startInput);
 
-            Thread thread = new Thread(new ThreadStart(simulation.Execute));
-            thread.Start();
+            return new Thread(new ThreadStart(simulation.Execute));
         }
-
-            //private static void RunSimulations(
-            //    IGram gram,
-            //    IGram simplifiedGram,
-            //    List<string> startInput, 
-            //    Games game,
-            //    string extension)
-            //{
-            //    string path = Path.Combine(basePath, $"{extension}_{gram.GetN()}.txt");
-            //    StreamWriter writer = File.CreateText(path);
-            //    writer.WriteLine("Sequence_Probability,Perplexity,Linearity,Leniency");
-
-            //    ICompiledGram compiled = gram.Compile();
-            //    for (int i = 0; i < numSimulations; ++i)
-            //    {
-            //        List<string> columns;
-            //        List<string> simplified;
-
-            //        if (simplifiedGram == null)
-            //        {
-            //            columns = NGramGenerator.Generate(compiled, startInput, size);
-            //            simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
-            //                columns, 
-            //                game == Games.Custom);
-            //        }
-            //        else
-            //        {
-            //            ICompiledGram simpleCompiled = simplifiedGram.Compile();
-            //            simplified = NGramGenerator.Generate(
-            //                simpleCompiled,
-            //                LevelParser.BreakColumnsIntoSimplifiedTokens(startInput, game == Games.Custom),
-            //                size);
-
-            //            columns = NGramGenerator.GenerateRestricted(
-            //                compiled,
-            //                startInput,
-            //                simplified,
-            //                (inColumn) =>
-            //                {
-            //                    return LevelParser.ClassifyColumn(inColumn, game);
-            //                });
-            //        }
-
-            //        string[] array = columns.ToArray();
-            //        writer.Write($"{compiled.SequenceProbability(array)},");
-            //        writer.Write($"{compiled.Perplexity(array)},");
-            //        writer.Write($"{Linearity(array)},");
-            //        writer.Write($"{Leniency(simplified.ToArray())}\n");
-            //        writer.Flush();
-            //    }
-
-            //    writer.Close();
-            //}
-        }
+    }
 }
 #endif
