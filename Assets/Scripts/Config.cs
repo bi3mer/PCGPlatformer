@@ -15,6 +15,8 @@ public class Config
     public bool UsingSimplifiedNGram;
     public bool HeiarchalEnabled;
     public float HeiarchalMemory;
+    public bool BackOffEnabled;
+    public float BackOffMemory;
     public int LevelSize;
     public int MaxLevelSize;
     public bool UsingTieredGeneration;

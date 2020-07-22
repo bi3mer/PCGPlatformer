@@ -1,6 +1,7 @@
 ﻿using UnityEngine.Assertions;
 using UnityEngine.UI;
 using UnityEngine;
+using Tools.AI.NGram;
 
 public class ConfigUI : MonoBehaviour
 {
@@ -38,6 +39,12 @@ public class ConfigUI : MonoBehaviour
 
     [SerializeField]
     private Slider heiarchalMemory = null;
+
+    [SerializeField]
+    private Toggle backoffNGramEanbled = null;
+
+    [SerializeField]
+    private Slider backoffMemory = null;
 
     [Header("Level Sizes")]
     [SerializeField]
@@ -82,6 +89,9 @@ public class ConfigUI : MonoBehaviour
         Assert.IsNotNull(nLevel);
         Assert.IsNotNull(simplifiedNGramEnabled);
         Assert.IsNotNull(heiarchalNGramEanbled);
+        Assert.IsNotNull(heiarchalMemory);
+        Assert.IsNotNull(backoffNGramEanbled);
+        Assert.IsNotNull(backoffMemory);
 
         Assert.IsNotNull(levelSize);
 
@@ -96,22 +106,7 @@ public class ConfigUI : MonoBehaviour
 
     private void Start()
     {
-        Config = new Config
-        {
-            Game = Games.Custom,
-            ProcedurallyGenerateLevels = procedurallyGenerateLevels.isOn,
-            N = (int)nLevel.value,
-            UsingSimplifiedNGram = simplifiedNGramEnabled.isOn,
-            HeiarchalEnabled = heiarchalNGramEanbled.isOn,
-            HeiarchalMemory = heiarchalMemory.value,
-            LevelSize = (int)levelSize.value,
-            UsingTieredGeneration = tieredGenerationEnabled.isOn,
-            TieredGenerationMemoryUpdate = (int)tieredGenerationMemoryUpdate.value,
-            DifficultyNGramEnabled = difficultyNGramEnabled.isOn,
-            DifficultyNGramMemoryUpdate = difficultyNGramMemoryUpdate.value,
-            DifficultyNGramLeftColumns = (int)leftColumns.value,
-            DifficultyNGramRightColumns = (int)rightColumns.value
-        };
+        backoffNGramEanbled.isOn = false;
 
         procedurallyGenerateLevels.onValueChanged.AddListener((bool val) => 
         {
@@ -155,12 +150,32 @@ public class ConfigUI : MonoBehaviour
 
         heiarchalNGramEanbled.onValueChanged.AddListener((bool val) =>
         {
+            if (val == true)
+            {
+                backoffNGramEanbled.isOn = false;
+            }
+
             Config.HeiarchalEnabled = val;
         });
 
         heiarchalMemory.onValueChanged.AddListener((float val) =>
         {
             Config.HeiarchalMemory = val;
+        });
+
+        backoffNGramEanbled.onValueChanged.AddListener((bool val) =>
+        {
+            if (val == true)
+            { 
+                heiarchalNGramEanbled.isOn = false;
+            }
+
+            Config.HeiarchalEnabled = val;
+        });
+
+        backoffMemory.onValueChanged.AddListener((float val) =>
+        {
+            Config.BackOffMemory = val;
         });
 
         levelSize.onValueChanged.AddListener((float val) =>
@@ -197,6 +212,25 @@ public class ConfigUI : MonoBehaviour
         { 
             Config.DifficultyNGramRightColumns = (int) val;
         });
+
+        Config = new Config
+        {
+            Game = Games.Custom,
+            ProcedurallyGenerateLevels = procedurallyGenerateLevels.isOn,
+            N = (int)nLevel.value,
+            UsingSimplifiedNGram = simplifiedNGramEnabled.isOn,
+            HeiarchalEnabled = heiarchalNGramEanbled.isOn,
+            HeiarchalMemory = heiarchalMemory.value,
+            BackOffEnabled = backoffNGramEanbled.isOn,
+            BackOffMemory = backoffMemory.value,
+            LevelSize = (int)levelSize.value,
+            UsingTieredGeneration = tieredGenerationEnabled.isOn,
+            TieredGenerationMemoryUpdate = (int)tieredGenerationMemoryUpdate.value,
+            DifficultyNGramEnabled = difficultyNGramEnabled.isOn,
+            DifficultyNGramMemoryUpdate = difficultyNGramMemoryUpdate.value,
+            DifficultyNGramLeftColumns = (int)leftColumns.value,
+            DifficultyNGramRightColumns = (int)rightColumns.value
+        };
 
         StartCalled = true;
     }
