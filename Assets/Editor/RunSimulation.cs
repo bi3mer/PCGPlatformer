@@ -198,7 +198,7 @@ namespace CustomUnityWindow
                     NGramTrainer.Train(gram, level);
                 }
 
-                threads.Add(BuildThread(gram, null, startInput, game, $"{name}_ngram"));
+                threads.Add(BuildThread(gram, null, startInput, game, $"{name}_{size}_ngram"));
 
                 if (i != 1)
                 { 
@@ -217,11 +217,11 @@ namespace CustomUnityWindow
                                 game == Games.Custom));
                     }
 
-                    threads.Add(BuildThread(gram, null, startInput, game, $"{name}_heirarchical"));
-                    threads.Add(BuildThread(gram, simpleGram, startInput, game, $"{name}_simple_heirarchical"));
+                    threads.Add(BuildThread(gram, null, startInput, game, $"{name}_{size}_heirarchical"));
+                    threads.Add(BuildThread(gram, simpleGram, startInput, game, $"{name}_{size}_simple_heirarchical"));
 
-                    threads.Add(BuildThread(bgram, null, startInput, game, $"{name}_backoff"));
-                    threads.Add(BuildThread(bgram, simpleGram, startInput, game, $"{name}_simple_backoff"));
+                    threads.Add(BuildThread(bgram, null, startInput, game, $"{name}_{size}_backoff"));
+                    threads.Add(BuildThread(bgram, simpleGram, startInput, game, $"{name}_{size}_simple_backoff"));
                 }
             }
 

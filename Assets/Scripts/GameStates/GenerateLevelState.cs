@@ -194,8 +194,8 @@ public class GenerateLevelState : BaseState
                     levelColumns.Add(columns);
                     simplifiedLevelColumns.Add(simpleColumns);
 
-                    NGramTrainer.Train(grammar, columns);
-                    NGramTrainer.Train(simpleGrammar, simpleColumns);
+                    NGramTrainer.Train(grammar, columns, skipFirst:true);
+                    NGramTrainer.Train(simpleGrammar, simpleColumns, skipFirst:true);
 
                     if (blackBoard.ProgressIndex != i)
                     {

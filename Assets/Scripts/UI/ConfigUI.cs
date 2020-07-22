@@ -106,8 +106,6 @@ public class ConfigUI : MonoBehaviour
 
     private void Start()
     {
-        backoffNGramEanbled.isOn = false;
-
         procedurallyGenerateLevels.onValueChanged.AddListener((bool val) => 
         {
             Config.ProcedurallyGenerateLevels = val;
@@ -153,6 +151,7 @@ public class ConfigUI : MonoBehaviour
             if (val == true)
             {
                 backoffNGramEanbled.isOn = false;
+                Config.BackOffEnabled = false;
             }
 
             Config.HeiarchalEnabled = val;
@@ -168,9 +167,10 @@ public class ConfigUI : MonoBehaviour
             if (val == true)
             { 
                 heiarchalNGramEanbled.isOn = false;
+                Config.HeiarchalEnabled = false;
             }
 
-            Config.HeiarchalEnabled = val;
+            Config.BackOffEnabled = val;
         });
 
         backoffMemory.onValueChanged.AddListener((float val) =>
@@ -213,6 +213,7 @@ public class ConfigUI : MonoBehaviour
             Config.DifficultyNGramRightColumns = (int) val;
         });
 
+        
         Config = new Config
         {
             Game = Games.Custom,
@@ -231,6 +232,9 @@ public class ConfigUI : MonoBehaviour
             DifficultyNGramLeftColumns = (int)leftColumns.value,
             DifficultyNGramRightColumns = (int)rightColumns.value
         };
+
+        backoffNGramEanbled.isOn = false;
+        Config.BackOffEnabled = false;
 
         StartCalled = true;
     }

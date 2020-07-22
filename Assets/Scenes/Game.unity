@@ -6806,6 +6806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objects:
   - {fileID: 1754740932}
+  StartActive: 1
 --- !u!1 &896285550
 GameObject:
   m_ObjectHideFlags: 0
@@ -9266,6 +9267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objects:
   - {fileID: 985573024}
+  StartActive: 1
 --- !u!1001 &1220999703
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9531,6 +9533,7 @@ MonoBehaviour:
   - {fileID: 1638421777}
   - {fileID: 1918702508}
   - {fileID: 300089529}
+  StartActive: 1
 --- !u!114 &1225721488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11195,6 +11198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objects:
   - {fileID: 955317082}
+  StartActive: 0
 --- !u!114 &1586160138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13310,6 +13314,7 @@ MonoBehaviour:
   - {fileID: 1809371185}
   - {fileID: 928483070}
   - {fileID: 158755821}
+  StartActive: 1
 --- !u!1 &1941533452
 GameObject:
   m_ObjectHideFlags: 0
