@@ -84,9 +84,9 @@ namespace CustomUnityWindow
                 }
 
                 string[] array = columns.ToArray();
-                List<int> positions = LevelAnalyzer.Positions(array);
+                List<double> positions = LevelAnalyzer.Positions(array);
                 JsonArray jsonPositions = new JsonArray();
-                foreach (int pos in positions)
+                foreach (double pos in positions)
                 {
                     jsonPositions.Add(pos);
                 }

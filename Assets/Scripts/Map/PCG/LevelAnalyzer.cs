@@ -7,20 +7,20 @@ namespace PCG
         // @NOTE: this could be improved by using linear regression on the result
         // but implementing is more pain than it's worth. Instead, it's done on 
         // python/analysis side.
-        public static List<int> Positions(string[] columns)
+        public static List<double> Positions(string[] columns)
         {
-            List<int> positions = new List<int>();
+            List<double> positions = new List<double>();
 
             foreach (string col in columns)
             {
-                int position = -1;
+                double position = -1;
                 for (int i = 1; i < col.Length; ++i)
                 {
                     Tile neighbor = col[i - 1].ToTile();
                     if (col[i].Equals(TileChar.Block) &&
                        (neighbor == Tile.empty || neighbor.IsEnemy()))
                     {
-                        position = col.Length - i;
+                        position = (col.Length - i) / (double) col.Length;
                         break;
                     }
                 }
