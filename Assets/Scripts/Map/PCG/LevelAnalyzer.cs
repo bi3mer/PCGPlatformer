@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PCG
 { 
@@ -34,6 +35,8 @@ namespace PCG
             return positions;
         }
 
+        // for context 1 is easiest and that is linear. ) is hardest and that
+        // is where a platform is forced and there is an enemy.
         public static double Leniency(string[] simplified)
         {
             double score = 0;
@@ -41,23 +44,26 @@ namespace PCG
             {
                 switch (token)
                 {
+                    case SimplifiedColumns.Linear:
+                        score += 1.0;
+                        break;
                     case SimplifiedColumns.LinearEnemy:
                         score += 0.5;
                         break;
                     case SimplifiedColumns.PlatformOptional:
-                        score += 0.10;
+                        score += 0.9;
                         break;
                     case SimplifiedColumns.PlatformOptionalEnemy:
-                        score += 0.6;
+                        score += 0.4;
                         break;
                     case SimplifiedColumns.PlatformForced:
                         score += 0.5;
                         break;
                     case SimplifiedColumns.PlatformForcedEnemy:
-                        score += 1.0;
+                        // + 0
                         break;
-                    case SimplifiedColumns.Linear:
                     default:
+                        UnityEngine.Debug.LogError($"{token} is unknown.");
                         break;
                 }
             }
