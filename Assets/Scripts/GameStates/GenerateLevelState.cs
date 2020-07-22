@@ -85,6 +85,16 @@ public class GenerateLevelState : BaseState
                     blackBoard.ConfigUI.Config.N,
                     blackBoard.ConfigUI.Config.HeiarchalMemory);
             }
+            else if (blackBoard.ConfigUI.Config.BackOffEnabled)
+            {
+                blackBoard.DifficultyNGram = NGramFactory.InitBackOffNGram(
+                    blackBoard.ConfigUI.Config.N,
+                    blackBoard.ConfigUI.Config.BackOffMemory);
+
+                blackBoard.SimpleDifficultyNGram = NGramFactory.InitBackOffNGram(
+                    blackBoard.ConfigUI.Config.N,
+                    blackBoard.ConfigUI.Config.BackOffMemory);
+            }
             else
             {
                 blackBoard.DifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
@@ -108,8 +118,18 @@ public class GenerateLevelState : BaseState
                         blackBoard.ConfigUI.Config.N,
                         blackBoard.ConfigUI.Config.HeiarchalMemory);
                 }
-                else 
-                { 
+                else if (blackBoard.ConfigUI.Config.BackOffEnabled)
+                {
+                    blackBoard.DifficultyNGram = NGramFactory.InitBackOffNGram(
+                        blackBoard.ConfigUI.Config.N,
+                        blackBoard.ConfigUI.Config.BackOffMemory);
+
+                    blackBoard.SimpleDifficultyNGram = NGramFactory.InitBackOffNGram(
+                        blackBoard.ConfigUI.Config.N,
+                        blackBoard.ConfigUI.Config.BackOffMemory);
+                }
+                else
+                {
                     blackBoard.DifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
                     blackBoard.SimpleDifficultyNGram = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
                 }
@@ -141,7 +161,17 @@ public class GenerateLevelState : BaseState
                 blackBoard.ConfigUI.Config.N,
                 blackBoard.ConfigUI.Config.HeiarchalMemory);
         }
-        else 
+        else if (blackBoard.ConfigUI.Config.BackOffEnabled)
+        {
+            grammar = NGramFactory.InitHierarchicalNGram(
+                    blackBoard.ConfigUI.Config.N,
+                    blackBoard.ConfigUI.Config.BackOffMemory);
+
+            simpleGrammar = NGramFactory.InitHierarchicalNGram(
+                blackBoard.ConfigUI.Config.N,
+                blackBoard.ConfigUI.Config.BackOffMemory);
+        }
+        else
         {
             grammar = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
             simpleGrammar = NGramFactory.InitGrammar(blackBoard.ConfigUI.Config.N);
