@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System;
 
 using Tools.AI.NGram;
+using Tools.Utility;
 using LightJson;
 using PCG;
 
@@ -9,6 +11,8 @@ namespace Simulator
 {
     public class SimulationThread
     {
+        private const int maxAttempts = 5;
+
         private int numSimulations;
         private int size;
         private Games game;
@@ -36,7 +40,7 @@ namespace Simulator
             this.gram = gram;
             this.simplifiedGram = simplifiedGram;
             this.startInput = startInput;
-        }
+}
 
         public void Execute()
         {
@@ -48,28 +52,32 @@ namespace Simulator
             writer.WriteLine("Sequence_Probability,Perplexity,Linearity_JSON_Positions,Leniency");
 
             ICompiledGram compiled = gram.Compile();
+            ICompiledGram simpleCompiled = simplifiedGram?.Compile();
+
             for (int i = 0; i < numSimulations; ++i)
             {
+                UtilityRandom.SetSeed(new DateTime().Millisecond);
                 List<string> columns;
                 List<string> simplified;
 
                 if (simplifiedGram == null)
                 {
-                    columns = NGramGenerator.Generate(compiled, startInput, size, includeStart: false);
-                    simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
-                        columns,
-                        game == Games.Custom);
+                    //columns = NGramGenerator.GenerateBestAttempt(compiled, startInput, size, maxAttempts);
+                    //simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
+                    //    columns,
+                    //    game == Games.Custom);
+                    continue;
                 }
                 else
                 {
-                    ICompiledGram simpleCompiled = simplifiedGram.Compile();
-                    simplified = NGramGenerator.Generate(
+                    simplified = NGramGenerator.GenerateBestAttempt(
                         simpleCompiled,
                         LevelParser.BreakColumnsIntoSimplifiedTokens(startInput, game == Games.Custom),
-                        size);
+                        size,
+                        maxAttempts);
 
                     Games localGame = game;
-                    columns = NGramGenerator.GenerateRestricted(
+                    columns = NGramGenerator.GenerateBestRestrictedAttempt(
                         compiled,
                         startInput,
                         simplified,
@@ -77,24 +85,29 @@ namespace Simulator
                         {
                             return LevelParser.ClassifyColumn(inColumn, localGame);
                         },
-                        includeStart: false);
+                        maxAttempts);
                 }
 
-                string[] array = columns.ToArray();
-                List<double> positions = LevelAnalyzer.Positions(array);
+                string[] columnsArray = columns.ToArray();
+                List<double> positions = LevelAnalyzer.Positions(columnsArray);
                 JsonArray jsonPositions = new JsonArray();
                 foreach (double pos in positions)
                 {
                     jsonPositions.Add(pos);
                 }
 
-                writer.Write($"{compiled.SequenceProbability(array)},");
-                writer.Write($"{compiled.Perplexity(array)},");
+                writer.Write($"{compiled.SequenceProbability(columnsArray)},");
+                writer.Write($"{compiled.Perplexity(columnsArray)},");
                 writer.Write($"{jsonPositions},");
                 writer.Write($"{LevelAnalyzer.Leniency(simplified.ToArray())}\n");
-                writer.Flush();
+
+                if (i % 200 == 0)
+                { 
+                    writer.Flush();
+                }
             }
 
+            writer.Flush();
             writer.Close();
             //watch.Stop();
             //Debug.Log($"Execution Time for {extension}_{gram.GetN()}: {watch.ElapsedMilliseconds / 1000d} seconds");

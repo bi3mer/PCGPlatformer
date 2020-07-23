@@ -38,7 +38,6 @@ namespace Simulator
         private List<Tuple<Thread, System.Diagnostics.Stopwatch>> runningThreads;
         private CircularQueue<string> relevantText = new CircularQueue<string>(12);
 
-
         private int threadCount;
 
         public void Start()
@@ -60,7 +59,7 @@ namespace Simulator
             totalThreads = threads.Count;
             this.threads = new Stack<Thread>(threads);
 
-            threadCount = Environment.ProcessorCount;
+            threadCount = Environment.ProcessorCount - 1;
             TextField.text = "Threads built. Starting Process.";
         }
 
@@ -91,7 +90,7 @@ namespace Simulator
                         {
                             System.Diagnostics.Stopwatch watch = runningThreads[i].Item2;
                             watch.Stop();
-                            relevantText.Add($"Thread finished after {watch.ElapsedMilliseconds / 1000d} seconds.");
+                            relevantText.Add($"Thread finished after {watch.ElapsedMilliseconds / 60000d} minutes.");
                             runningThreads.RemoveAt(i);
                             break;
                         }
@@ -106,7 +105,7 @@ namespace Simulator
                     {
                         System.Diagnostics.Stopwatch watch = runningThreads[i].Item2;
                         watch.Stop();
-                        relevantText.Add($"Thread finished after {watch.ElapsedMilliseconds / 1000d} seconds.");
+                        relevantText.Add($"Thread finished after {watch.ElapsedMilliseconds / 60000d} minutes.");
                         runningThreads.RemoveAt(i);
                         break;
                     }
@@ -114,10 +113,11 @@ namespace Simulator
 
                 if (runningThreads.Count == 0)
                 {
-                    TextField.text = "done";
+                    relevantText.Add("Done");
+                    TextField.text = string.Join("\n", relevantText.ToArray());
+                    enabled = false;
                 }
             }
-
         }
 
         public void OnDestroy()
@@ -182,7 +182,7 @@ namespace Simulator
             return threads;
         }
 
-        private static List<List<string>> GetLevels(string gameFlowAssetName)
+        public static List<List<string>> GetLevels(string gameFlowAssetName)
         {
             List<List<string>> levels = new List<List<string>>();
 

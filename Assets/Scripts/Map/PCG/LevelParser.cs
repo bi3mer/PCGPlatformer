@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PCG
 {
     public static class LevelParser
     {
-        private static readonly char acrEnemy = Tile.acceleratingEnemyReverse.ToChar();
-        private static readonly char acEnemy = Tile.acceleratingEnemy.ToChar();
-        private static readonly char brEnemy = Tile.basicEnemyReverse.ToChar();
-        private static readonly char bnemy = Tile.basicEnemy.ToChar();
-        private static readonly char empty = Tile.empty.ToChar();
-        private static readonly char block = Tile.block.ToChar();
-
         public static List<string> BreakMapIntoColumns(string levelName)
         {
             string[] map = Utility.Load(levelName);
@@ -45,11 +37,11 @@ namespace PCG
             List<string> returnColumns;
             if (isCustom)
             {
-                returnColumns = BreakIntoSimplified(columns, 17);
+                returnColumns = BreakIntoSimplified(columns, 38);
             }
             else
             {
-                returnColumns = BreakIntoSimplified(columns, 0);            
+                returnColumns = BreakIntoSimplified(columns, columns[0].Length - 1);
             }
 
             return returnColumns;
@@ -72,11 +64,11 @@ namespace PCG
             string result;
             if (game == Games.Custom)
             {
-                result = ClassifyColumn(column, 17);
+                result = ClassifyColumn(column, 38);
             }
             else
             {
-                result = ClassifyColumn(column, 0);
+                result = ClassifyColumn(column, column.Length - 1);
             }
 
             return result;
@@ -84,22 +76,21 @@ namespace PCG
 
         private static string ClassifyColumn(string column, int startIndex)
         {
-            char[] toReverse = column.ToCharArray();
-            Array.Reverse(toReverse);
-            string col = new string(toReverse);
-
             string result;
             bool hasEnemies = false;
             bool hasPlatforms = false;
 
-            for (int i = 0; i < col.Length; ++i)
+            for (int i = column.Length - 1; i >= 0; --i)
             {
-                char token = col[i];
-                if (token == acrEnemy || token == acEnemy || token == brEnemy || token == bnemy)
+                char token = column[i];
+                if (token == TileChar.AcceleratingEnemyReverse || 
+                    token == TileChar.AcceleratingEnemy        || 
+                    token == TileChar.BasicEnemyReverse        || 
+                    token == TileChar.BasicEnemy)
                 {
                     hasEnemies = true;
                 }
-                else if (i != startIndex && token == block)
+                else if (i != startIndex && token == TileChar.Block)
                 {
                     hasPlatforms = true;
                 }
@@ -110,10 +101,10 @@ namespace PCG
             // also tests for the alternative situation where there is a block
             // in the rwo directly above the bottom. In this case the player 
             // will also have to jump.
-            if (col[startIndex] != block ||
-                (col[startIndex] == block &&
-                 col[startIndex + 1] != empty &&
-                 col[startIndex + 1].ToTile().IsEnemy() == false))
+            if (column[startIndex] != TileChar.Block ||
+                (column[startIndex] == TileChar.Block &&
+                 column[startIndex - 1] != TileChar.Empty &&
+                 column[startIndex - 1].ToTile().IsEnemy() == false))
             {
                 if (hasEnemies)
                 {
