@@ -625,14 +625,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934830308}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f395541e3b43c5c409a1ed68bf54f3dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TextField: {fileID: 656441209}
   Ratio: {fileID: 150443851}
-  numSimulations: 10
+  numSimulations: 1000
   size: 50
 --- !u!114 &934830314
 MonoBehaviour:
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934830308}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 489a19a28e97f5a42a1bdc721aacb1b8, type: 3}
   m_Name: 

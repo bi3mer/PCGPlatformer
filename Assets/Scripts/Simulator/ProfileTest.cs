@@ -4,7 +4,6 @@ using System.IO;
 
 using Tools.AI.NGram;
 using PCG;
-using System.Collections;
 
 namespace Simulator
 { 
@@ -87,10 +86,10 @@ namespace Simulator
                     }
 
                     //threads.Add(BuildThread(gram, null, startInput, game, $"{name}_{Size}_heirarchical"));
-                    //threads.Add(BuildThread(gram, simpleGram, startInput, game, $"{name}_{Size}_simple_heirarchical"));
+                    threads.Add(BuildThread(gram, simpleGram, startInput, game, $"{name}_{Size}_simple_heirarchical"));
 
                     //threads.Add(BuildThread(bgram, null, startInput, game, $"{name}_{Size}_backoff"));
-                    threads.Add(BuildThread(bgram, simpleGram, startInput, game, $"{name}_{Size}_simple_backoff"));
+                    // threads.Add(BuildThread(bgram, simpleGram, startInput, game, $"{name}_{Size}_simple_backoff"));
                 }
             }
 

@@ -62,11 +62,10 @@ namespace Simulator
 
                 if (simplifiedGram == null)
                 {
-                    //columns = NGramGenerator.GenerateBestAttempt(compiled, startInput, size, maxAttempts);
-                    //simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
-                    //    columns,
-                    //    game == Games.Custom);
-                    continue;
+                    columns = NGramGenerator.GenerateBestAttempt(compiled, startInput, size, maxAttempts);
+                    simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
+                        columns,
+                        game == Games.Custom);
                 }
                 else
                 {
@@ -96,8 +95,18 @@ namespace Simulator
                     jsonPositions.Add(pos);
                 }
 
-                writer.Write($"{compiled.SequenceProbability(columnsArray)},");
-                writer.Write($"{compiled.Perplexity(columnsArray)},");
+                double sequenceProbability = compiled.SequenceProbability(columnsArray);
+                writer.Write($"{sequenceProbability},");
+                if (sequenceProbability == 0)
+                {
+                    writer.Write($"0,");
+                }
+                else
+                { 
+                    writer.Write($"{1d/sequenceProbability},");
+
+                }
+
                 writer.Write($"{jsonPositions},");
                 writer.Write($"{LevelAnalyzer.Leniency(simplified.ToArray())}\n");
 
