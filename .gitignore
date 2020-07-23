@@ -63,3 +63,5 @@ crashlytics-build.properties
 
 # converted levels location
 python/data/*
+
+data/*

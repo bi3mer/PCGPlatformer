@@ -1,2 +1,0 @@
-Sequence_Probability,Perplexity,Linearity_JSON_Positions,Leniency
-1.81710732170535E-124,5.50325227384756E+123,[],25
