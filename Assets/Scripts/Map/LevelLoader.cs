@@ -182,7 +182,7 @@ public static class LevelLoader
         return text.text.Split('\n');
     }
 
-    public static List<string> LoadIntoColumns(string levelName)
+    public static List<string> LoadIntoColumns(string levelName, bool removeLastColumn = false)
     {
         string[] rows = Load(levelName);
         List<string> columns = new List<string>(rows[0].Length);
@@ -200,6 +200,11 @@ public static class LevelLoader
 
                 columns[j] += row[j];
             }
+        }
+
+        if (removeLastColumn)
+        {
+            columns.RemoveAt(columns.Count - 1);
         }
 
         return columns;

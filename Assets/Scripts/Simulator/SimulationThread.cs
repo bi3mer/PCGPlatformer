@@ -40,15 +40,17 @@ namespace Simulator
             this.gram = gram;
             this.simplifiedGram = simplifiedGram;
             this.startInput = startInput;
-}
+        }
 
         public void Execute()
         {
-            //System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-            //watch.Start();
+            string keyDirectory = Path.Combine(basePath, $"{extension}_{gram.GetN()}");
+            if (Directory.Exists(keyDirectory) == false)
+            {
+                Directory.CreateDirectory(keyDirectory);
+            }
 
-            string path = Path.Combine(basePath, $"{extension}_{gram.GetN()}.txt");
-            StreamWriter writer = File.CreateText(path);
+            StreamWriter writer = File.CreateText($"{keyDirectory}.txt");
             writer.WriteLine("Sequence_Probability,Perplexity,Linearity_JSON_Positions,Leniency");
 
             ICompiledGram compiled = gram.Compile();
@@ -88,9 +90,9 @@ namespace Simulator
                 }
 
                 string[] columnsArray = columns.ToArray();
-                List<double> positions = LevelAnalyzer.Positions(columnsArray);
+                List<int> positions = LevelAnalyzer.Positions(columnsArray);
                 JsonArray jsonPositions = new JsonArray();
-                foreach (double pos in positions)
+                foreach (int pos in positions)
                 {
                     jsonPositions.Add(pos);
                 }
@@ -110,6 +112,11 @@ namespace Simulator
                 writer.Write($"{jsonPositions},");
                 writer.Write($"{LevelAnalyzer.Leniency(simplified.ToArray())}\n");
 
+                StreamWriter levelWriter = File.CreateText(Path.Combine(keyDirectory, $"{i}.txt"));
+                levelWriter.Write(string.Join("\n", columnsArray));
+                levelWriter.Flush();
+                levelWriter.Close();
+
                 if (i % 200 == 0)
                 { 
                     writer.Flush();
@@ -118,8 +125,6 @@ namespace Simulator
 
             writer.Flush();
             writer.Close();
-            //watch.Stop();
-            //Debug.Log($"Execution Time for {extension}_{gram.GetN()}: {watch.ElapsedMilliseconds / 1000d} seconds");
         }
     }
 }

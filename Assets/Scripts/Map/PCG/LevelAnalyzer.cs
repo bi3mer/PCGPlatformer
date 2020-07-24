@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace PCG
 { 
@@ -8,28 +7,26 @@ namespace PCG
         // @NOTE: this could be improved by using linear regression on the result
         // but implementing is more pain than it's worth. Instead, it's done on 
         // python/analysis side.
-        public static List<double> Positions(string[] columns)
+        public static List<int> Positions(string[] columns)
         {
-            List<double> positions = new List<double>();
+            List<int> positions = new List<int>();
 
             foreach (string col in columns)
             {
-                double position = -1;
+                int position = -1;
                 for (int i = 1; i < col.Length; ++i)
                 {
                     Tile neighbor = col[i - 1].ToTile();
                     if (col[i].Equals(TileChar.Block) &&
                        (neighbor == Tile.empty || neighbor.IsEnemy()))
                     {
-                        position = (col.Length - i) / (double) col.Length;
+                        position = col.Length - i;
                         break;
                     }
                 }
 
-                if (position != -1)
-                {
-                    positions.Add(position);
-                }
+                // if -1, the parser needs to skip in the analysis step
+                positions.Add(position);
             }
             
             return positions;

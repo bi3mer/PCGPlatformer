@@ -122,9 +122,12 @@ namespace Simulator
 
         public void OnDestroy()
         {
-            foreach (Tuple<Thread, System.Diagnostics.Stopwatch> tuple in runningThreads)
-            {
-                tuple.Item1.Abort();
+            if (runningThreads != null)
+            { 
+                foreach (Tuple<Thread, System.Diagnostics.Stopwatch> tuple in runningThreads)
+                {
+                    tuple.Item1.Abort();
+                }
             }
         }
 
@@ -194,9 +197,25 @@ namespace Simulator
             {
                 foreach (string path in jo["resources"].AsJsonArray)
                 {
-                    levels.Add(LevelLoader.LoadIntoColumns(path));
+                    levels.Add(LevelLoader.LoadIntoColumns(path, removeLastColumn: true));
                 }
             }
+
+            //if (gameFlowAssetName.Contains("PCGPlatform"))
+            //{
+            //    foreach (List<string> level in levels)
+            //    {
+            //        foreach (string token in level)
+            //        {
+            //            if (token == TileString.PlayerOneFinish)
+            //            {
+            //                Debug.Log("Found flag!");
+            //            }
+            //        }
+            //    }
+
+            //    Debug.Break();
+            //}
 
             return levels;
         }

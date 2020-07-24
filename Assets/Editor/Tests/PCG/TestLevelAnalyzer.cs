@@ -47,12 +47,12 @@ namespace Editor.Tests.PCG
                 "----b",
                 "----b"
             };
-            List<double> result = LevelAnalyzer.Positions(columns.ToArray());
+            List<int> result = LevelAnalyzer.Positions(columns.ToArray());
             Assert.AreEqual(4, result.Count);
-            Assert.AreEqual(1 / 5d, result[0]);
-            Assert.AreEqual(1 / 5d, result[1]);
-            Assert.AreEqual(1 / 5d, result[2]);
-            Assert.AreEqual(1 / 5d, result[3]);
+            Assert.AreEqual(1, result[0]);
+            Assert.AreEqual(1, result[1]);
+            Assert.AreEqual(1, result[2]);
+            Assert.AreEqual(1, result[3]);
 
             columns = new List<string>()
             {
@@ -67,11 +67,15 @@ namespace Editor.Tests.PCG
             };
 
             result = LevelAnalyzer.Positions(columns.ToArray());
-            Assert.AreEqual(4, result.Count);
-            Assert.AreEqual(1 / 5d, result[0]);
-            Assert.AreEqual(2 / 5d, result[1]);
-            Assert.AreEqual(3 / 5d, result[2]);
-            Assert.AreEqual(4 / 5d, result[3]);
+            Assert.AreEqual( 8, result.Count);
+            Assert.AreEqual( 1, result[0]);
+            Assert.AreEqual(-1, result[1]);
+            Assert.AreEqual( 2, result[2]);
+            Assert.AreEqual(-1, result[3]);
+            Assert.AreEqual( 3, result[4]);
+            Assert.AreEqual(-1, result[5]);
+            Assert.AreEqual( 4, result[6]);
+            Assert.AreEqual(-1, result[7]);
 
             columns = new List<string>()
             {
@@ -83,11 +87,12 @@ namespace Editor.Tests.PCG
             };
 
             result = LevelAnalyzer.Positions(columns.ToArray());
-            Assert.AreEqual(4, result.Count);
-            Assert.AreEqual(1 / 5d, result[0]);
-            Assert.AreEqual(4 / 5d, result[1]);
-            Assert.AreEqual(1 / 5d, result[2]);
-            Assert.AreEqual(3 / 5d, result[3]);
+            Assert.AreEqual( 5, result.Count);
+            Assert.AreEqual( 1, result[0]);
+            Assert.AreEqual( 4, result[1]);
+            Assert.AreEqual(-1, result[2]);
+            Assert.AreEqual( 1, result[3]);
+            Assert.AreEqual( 3, result[4]);
         }
     }
 }

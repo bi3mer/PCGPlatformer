@@ -42,7 +42,7 @@ namespace Simulator
             if (time > 0.1)
             {
                 time = 0;
-                Debug.Break();
+                //Debug.Break();
             }
             time += Time.deltaTime;
         }
@@ -58,12 +58,12 @@ namespace Simulator
             List<string> startInput = levels[0].GetRange(0, 10);
             List<SimulationThread> threads = new List<SimulationThread>();
 
-            for (int i = 6; i <= 6; ++i)
+            for (int i = 1; i <= 6; ++i)
             {
                 IGram gram = NGramFactory.InitGrammar(i);
                 foreach (List<string> level in levels)
                 {
-                    NGramTrainer.Train(gram, level);
+                    NGramTrainer.Train(gram, level, skipFirst: true);
                 }
 
                 //threads.Add(BuildThread(gram, null, startInput, game, $"{name}_{Size}_ngram"));
@@ -76,13 +76,14 @@ namespace Simulator
                     IGram bgram = NGramFactory.InitBackOffNGram(i, 0.6f);
                     foreach (List<string> level in levels)
                     {
-                        NGramTrainer.Train(gram, level);
-                        NGramTrainer.Train(bgram, level);
+                        NGramTrainer.Train(gram, level, skipFirst: true);
+                        NGramTrainer.Train(bgram, level, skipFirst: true);
                         NGramTrainer.Train(
                             simpleGram,
                             LevelParser.BreakColumnsIntoSimplifiedTokens(
                                 level,
-                                game == Games.Custom));
+                                game == Games.Custom),
+                            skipFirst: true);
                     }
 
                     //threads.Add(BuildThread(gram, null, startInput, game, $"{name}_{Size}_heirarchical"));
