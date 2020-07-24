@@ -60,7 +60,7 @@ public class PlayState : BaseState
                 blackBoard.SimpleDifficultyNGram,
                 LevelParser.BreakColumnsIntoSimplifiedTokens(
                     difficultPart, 
-                    blackBoard.ConfigUI.Config.Game == Games.Custom));
+                    blackBoard.ConfigUI.Config.Game));
         }
     }
 }

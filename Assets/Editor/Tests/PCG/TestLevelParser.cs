@@ -10,11 +10,11 @@ namespace Editor.Tests.PCG
         public void TestParseCustomLevelLinear()
         {
             List<string> columns = new List<string>() { "--------------------------------------b-----------------" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.Linear, result[0]);
             columns.Add("--------------------------------------b-------$$--------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.Linear, result[0]);
             Assert.AreEqual(SimplifiedColumns.Linear, result[1]);
@@ -24,25 +24,25 @@ namespace Editor.Tests.PCG
         public void TestParseCustomLevelLinearEnemy()
         {
             List<string> columns = new List<string>() { "-------------------------------------Ab-----------------" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
 
             columns.Add("--------------------------------------bC----------------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
 
             columns.Add("C-------------------------------------b------------------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[2]);
 
             columns.Add("--------------------------------------b-----------------D");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(4, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
@@ -54,25 +54,25 @@ namespace Editor.Tests.PCG
         public void TestParseCustomLevelPlatform()
         {
             List<string> columns = new List<string>() { "----------b---------------------------------------------" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
 
             columns.Add("-------------------------------------bb-----------------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[1]);
 
             columns.Add("------------------------------------bbbbb---------------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[1]);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[2]);
 
             columns.Add("--------------------------------------------------------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(4, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[1]);
@@ -84,25 +84,25 @@ namespace Editor.Tests.PCG
         public void TestParseCustomLevelPlatformEnemy()
         {
             List<string> columns = new List<string>() { "--------------------------------------A-----------------" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[0]);
 
             columns.Add("------------------------------------Bbb-----------------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[1]);
 
             columns.Add("-------------------------------------bbb---------------C");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[1]);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[2]);
 
             columns.Add("---------------------------------------------Ab---------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(4, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[1]);
@@ -114,12 +114,12 @@ namespace Editor.Tests.PCG
         public void TestParseCustomLevelPlatformOptional()
         {
             List<string> columns = new List<string>() { "--------------------------------b-----b-----------------" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformOptional, result[0]);
 
             columns.Add("--------------------------------------b----------------b");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformOptional, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformOptional, result[1]);
@@ -129,12 +129,12 @@ namespace Editor.Tests.PCG
         public void TestParseCustomLevelPlatformOptionalEnemy()
         {
             List<string> columns = new List<string>() { "--------------------------------------b---------------Ab" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformOptionalEnemy, result[0]);
 
             columns.Add("-------------------------------Cb-----b-----------------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformOptionalEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformOptionalEnemy, result[1]);
@@ -151,7 +151,7 @@ namespace Editor.Tests.PCG
                 "--------------------------------------b----------------b",
                 "-------------------------------Cb-----b-----------------",
             };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, true);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.Custom);
             Assert.AreEqual(6, result.Count);
             Assert.AreEqual(SimplifiedColumns.Linear, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
@@ -165,18 +165,18 @@ namespace Editor.Tests.PCG
         public void TestParseVGLCLevelLinear()
         {
             List<string> columns = new List<string>() { "-----------b" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.Linear, result[0]);
 
             columns.Add("-----------b");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.Linear, result[0]);
             Assert.AreEqual(SimplifiedColumns.Linear, result[1]);
 
             columns.Add("---$$$$----b");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros);
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(SimplifiedColumns.Linear, result[0]);
             Assert.AreEqual(SimplifiedColumns.Linear, result[1]);
@@ -187,25 +187,25 @@ namespace Editor.Tests.PCG
         public void TestParseVGLCLevelLinearEnemy()
         {
             List<string> columns = new List<string>() { "------A----b" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros2);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
 
             columns.Add("----------Bb");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros2);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
 
             columns.Add("C----------b");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros2);
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[2]);
 
             columns.Add("-----D-----b");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros2);
             Assert.AreEqual(4, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
@@ -213,7 +213,7 @@ namespace Editor.Tests.PCG
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[3]);
 
             columns.Add("B-C--DA----b");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros2);
             Assert.AreEqual(5, result.Count);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);
@@ -226,18 +226,18 @@ namespace Editor.Tests.PCG
         public void TestParseVGLCLevelPlatform()
         {
             List<string> columns = new List<string>() { "---------bb" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros2Japan);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
 
             columns.Add("-----------");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros2Japan);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[1]);
 
             columns.Add("-------bbbb");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioBros2Japan);
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForced, result[1]);
@@ -248,12 +248,12 @@ namespace Editor.Tests.PCG
         public void TestParseVGLCLevelPlatformEnemy()
         {
             List<string> columns = new List<string>() { "--------Abb" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioLand);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[0]);
 
             columns.Add("-------C---");
-            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioLand);
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[0]);
             Assert.AreEqual(SimplifiedColumns.PlatformForcedEnemy, result[1]);
@@ -263,7 +263,7 @@ namespace Editor.Tests.PCG
         public void TestParseVGLCLevelPlatformOptional()
         {
             List<string> columns = new List<string>() { "---b----b" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioLand);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformOptional, result[0]);
         }
@@ -272,7 +272,7 @@ namespace Editor.Tests.PCG
         public void TestParseVGLCLevelPlatformOptionalEnemy()
         {
             List<string> columns = new List<string>() { "---Ab----b" };
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioLand);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(SimplifiedColumns.PlatformOptionalEnemy, result[0]);
         }
@@ -290,7 +290,7 @@ namespace Editor.Tests.PCG
                "D----b---b"
             };
 
-            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, false);
+            List<string> result = LevelParser.BreakColumnsIntoSimplifiedTokens(columns, Games.SuperMarioLand);
             Assert.AreEqual(6, result.Count);
             Assert.AreEqual(SimplifiedColumns.Linear, result[0]);
             Assert.AreEqual(SimplifiedColumns.LinearEnemy, result[1]);

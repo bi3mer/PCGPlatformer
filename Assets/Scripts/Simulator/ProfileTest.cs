@@ -82,7 +82,7 @@ namespace Simulator
                             simpleGram,
                             LevelParser.BreakColumnsIntoSimplifiedTokens(
                                 level,
-                                game == Games.Custom),
+                                game),
                             skipFirst: true);
                     }
 

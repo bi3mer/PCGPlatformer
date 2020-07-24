@@ -189,7 +189,7 @@ public class GenerateLevelState : BaseState
                     columns.RemoveAt(columns.Count - 1); // remove flag at the end
                     List<string> simpleColumns = LevelParser.BreakColumnsIntoSimplifiedTokens(
                         columns,
-                        blackBoard.ConfigUI.Config.Game == Games.Custom);
+                        blackBoard.ConfigUI.Config.Game);
 
                     levelColumns.Add(columns);
                     simplifiedLevelColumns.Add(simpleColumns);

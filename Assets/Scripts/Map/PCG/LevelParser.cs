@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PCG
 {
@@ -32,28 +31,13 @@ namespace PCG
             return columns;
         }
 
-        public static List<string> BreakColumnsIntoSimplifiedTokens(List<string> columns, bool isCustom)
-        {
-            List<string> returnColumns;
-            if (isCustom)
-            {
-                returnColumns = BreakIntoSimplified(columns, 38);
-            }
-            else
-            {
-                returnColumns = BreakIntoSimplified(columns, columns[0].Length - 1);
-            }
-
-            return returnColumns;
-        }
-
-        private static List<string> BreakIntoSimplified(List<string> columns, int startIndex)
+        public static List<string> BreakColumnsIntoSimplifiedTokens(List<string> columns, Games game)
         {
             List<string> simplifiedTokens = new List<string>();
 
             foreach (string col in columns)
             {
-                simplifiedTokens.Add(ClassifyColumn(col, startIndex));
+                simplifiedTokens.Add(ClassifyColumn(col, game));
             }
 
             return simplifiedTokens;
@@ -62,26 +46,21 @@ namespace PCG
         public static string ClassifyColumn(string column, Games game)
         {
             string result;
-            if (game == Games.Custom)
-            {
-                result = ClassifyColumn(column, 38);
-            }
-            else
-            {
-                result = ClassifyColumn(column, column.Length - 1);
-            }
-
-            return result;
-        }
-
-        private static string ClassifyColumn(string column, int startIndex)
-        {
-            string result;
-            bool hasEnemies = false;
             bool hasPlatforms = false;
+            bool hasEnemies = false;
+            int startIndex = 0;
 
             for (int i = column.Length - 1; i >= 0; --i)
             {
+                if (game == Games.Custom)
+                {
+                    startIndex = 38;
+                }
+                else
+                {
+                    startIndex = column.Length - 1;
+                }
+
                 char token = column[i];
                 if (token == TileChar.AcceleratingEnemyReverse || 
                     token == TileChar.AcceleratingEnemy        || 

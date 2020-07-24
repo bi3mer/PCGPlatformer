@@ -67,13 +67,13 @@ namespace Simulator
                     columns = NGramGenerator.GenerateBestAttempt(compiled, startInput, size, maxAttempts);
                     simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
                         columns,
-                        game == Games.Custom);
+                        game);
                 }
                 else
                 {
                     simplified = NGramGenerator.GenerateBestAttempt(
                         simpleCompiled,
-                        LevelParser.BreakColumnsIntoSimplifiedTokens(startInput, game == Games.Custom),
+                        LevelParser.BreakColumnsIntoSimplifiedTokens(startInput, game),
                         size,
                         maxAttempts);
 

@@ -60,7 +60,9 @@ namespace Simulator
             this.threads = new Stack<Thread>(threads);
 
             threadCount = Environment.ProcessorCount - 1;
-            TextField.text = "Threads built. Starting Process.";
+
+            relevantText.Add($"{numSimulations} simulations per a thread.");
+            relevantText.Add("Threads built. Starting Process.");
         }
 
         public void Update()
@@ -171,7 +173,7 @@ namespace Simulator
                             simpleGram,
                             LevelParser.BreakColumnsIntoSimplifiedTokens(
                                 level,
-                                game == Games.Custom));
+                                game));
                     }
 
                     threads.Add(BuildThread(gram, null, startInput, game, $"{name}_{size}_heirarchical"));
@@ -200,22 +202,6 @@ namespace Simulator
                     levels.Add(LevelLoader.LoadIntoColumns(path, removeLastColumn: true));
                 }
             }
-
-            //if (gameFlowAssetName.Contains("PCGPlatform"))
-            //{
-            //    foreach (List<string> level in levels)
-            //    {
-            //        foreach (string token in level)
-            //        {
-            //            if (token == TileString.PlayerOneFinish)
-            //            {
-            //                Debug.Log("Found flag!");
-            //            }
-            //        }
-            //    }
-
-            //    Debug.Break();
-            //}
 
             return levels;
         }
