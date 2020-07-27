@@ -632,7 +632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TextField: {fileID: 656441209}
   Ratio: {fileID: 150443851}
-  numSimulations: 2
+  numSimulations: 1000
   size: 50
 --- !u!114 &934830314
 MonoBehaviour:

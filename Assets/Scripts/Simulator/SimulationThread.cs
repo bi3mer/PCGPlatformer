@@ -59,36 +59,21 @@ namespace Simulator
             for (int i = 0; i < numSimulations; ++i)
             {
                 UtilityRandom.SetSeed(new DateTime().Millisecond);
-                List<string> columns;
-                List<string> simplified;
 
-                if (simplifiedGram == null)
+                Tuple<List<string>, List<string>> tuple;
+
+                if (gram as NGram == null)
                 {
-                    columns = NGramGenerator.GenerateBestAttempt(compiled, startInput, size, maxAttempts);
-                    simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
-                        columns,
-                        game);
+                    tuple = GetColumnsBestGuess(compiled, simpleCompiled);
                 }
                 else
                 {
-                    simplified = NGramGenerator.GenerateBestAttempt(
-                        simpleCompiled,
-                        LevelParser.BreakColumnsIntoSimplifiedTokens(startInput, game),
-                        size,
-                        maxAttempts);
-
-                    Games localGame = game;
-                    columns = NGramGenerator.GenerateBestRestrictedAttempt(
-                        compiled,
-                        startInput,
-                        simplified,
-                        (inColumn) =>
-                        {
-                            return LevelParser.ClassifyColumn(inColumn, localGame);
-                        },
-                        maxAttempts);
+                    tuple = GetColumnsSemiGuaranteed(compiled, simpleCompiled);
                 }
 
+                List<string> columns = tuple.Item1;
+                List<string> simplified = tuple.Item2;
+                
                 string[] columnsArray = columns.ToArray();
                 List<int> positions = LevelAnalyzer.Positions(columnsArray);
                 JsonArray jsonPositions = new JsonArray();
@@ -125,6 +110,76 @@ namespace Simulator
 
             writer.Flush();
             writer.Close();
+        }
+
+        private Tuple<List<string>, List<string>> GetColumnsBestGuess(ICompiledGram compiled, ICompiledGram simpleCompiled)
+        {
+            List<string> columns;
+            List<string> simplified;
+
+            if (simplifiedGram == null)
+            {
+                columns = NGramGenerator.GenerateBestAttempt(compiled, startInput, size, maxAttempts);
+                simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
+                    columns,
+                    game);
+            }
+            else
+            {
+                simplified = NGramGenerator.GenerateBestAttempt(
+                    simpleCompiled,
+                    LevelParser.BreakColumnsIntoSimplifiedTokens(startInput, game),
+                    size,
+                    maxAttempts);
+
+                Games localGame = game;
+                columns = NGramGenerator.GenerateBestRestrictedAttempt(
+                    compiled,
+                    startInput,
+                    simplified,
+                    (inColumn) =>
+                    {
+                        return LevelParser.ClassifyColumn(inColumn, localGame);
+                    },
+                    maxAttempts);
+            }
+
+            return new Tuple<List<string>, List<string>>(columns, simplified);
+        }
+
+        private Tuple<List<string>, List<string>> GetColumnsSemiGuaranteed(ICompiledGram compiled, ICompiledGram simpleCompiled)
+        {
+            List<string> columns;
+            List<string> simplified;
+
+            if (simplifiedGram == null)
+            {
+                columns = NGramGenerator.Generate(compiled, startInput, size, includeStart:false);
+                simplified = LevelParser.BreakColumnsIntoSimplifiedTokens(
+                    columns,
+                    game);
+            }
+            else
+            {
+                simplified = NGramGenerator.GenerateBestAttempt(
+                    simpleCompiled,
+                    LevelParser.BreakColumnsIntoSimplifiedTokens(startInput, game),
+                    size,
+                    maxAttempts);
+
+                Games localGame = game;
+                columns = NGramGenerator.GenerateRestricted(
+                    compiled,
+                    startInput,
+                    simplified,
+                    (inColumn) =>
+                    {
+                        return LevelParser.ClassifyColumn(inColumn, localGame);
+                    },
+                    includeStart: false);
+            }
+
+            return new Tuple<List<string>, List<string>>(columns, simplified);
         }
     }
 }
