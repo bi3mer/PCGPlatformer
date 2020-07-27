@@ -176,11 +176,11 @@ namespace Simulator
                                 game));
                     }
 
-                    threads.Add(BuildThread(gram, null, startInput, game, $"{name}_{size}_heirarchical"));
-                    threads.Add(BuildThread(gram, simpleGram, startInput, game, $"{name}_{size}_simple_heirarchical"));
+                    //threads.Add(BuildThread(gram, null, startInput, game, $"{name}_{size}_heirarchical"));
+                    //threads.Add(BuildThread(gram, simpleGram, startInput, game, $"{name}_{size}_simple_heirarchical"));
 
-                    threads.Add(BuildThread(bgram, null, startInput, game, $"{name}_{size}_backoff"));
-                    threads.Add(BuildThread(bgram, simpleGram, startInput, game, $"{name}_{size}_simple_backoff"));
+                    //threads.Add(BuildThread(bgram, null, startInput, game, $"{name}_{size}_backoff"));
+                    //threads.Add(BuildThread(bgram, simpleGram, startInput, game, $"{name}_{size}_simple_backoff"));
                 }
             }
 
