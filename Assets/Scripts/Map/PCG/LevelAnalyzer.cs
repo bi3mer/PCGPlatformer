@@ -41,23 +41,20 @@ namespace PCG
             {
                 switch (token)
                 {
+                    case SimplifiedColumns.PlatformOptional:
                     case SimplifiedColumns.Linear:
-                        score += 1.0;
                         break;
                     case SimplifiedColumns.LinearEnemy:
                         score += 0.5;
                         break;
-                    case SimplifiedColumns.PlatformOptional:
-                        score += 0.9;
-                        break;
                     case SimplifiedColumns.PlatformOptionalEnemy:
-                        score += 0.4;
+                        score += 0.5;
                         break;
                     case SimplifiedColumns.PlatformForced:
                         score += 0.5;
                         break;
                     case SimplifiedColumns.PlatformForcedEnemy:
-                        // + 0
+                        score += 1.0;
                         break;
                     default:
                         UnityEngine.Debug.LogError($"{token} is unknown.");
